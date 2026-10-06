@@ -56,7 +56,7 @@ for phase in ('all','panel'):
         if times:
             summary[phase][method] = dict(n=len(times), median_ms=statistics.median(times)*1000, p95_ms=times[min(len(times)-1, int(.95*len(times)))]*1000)
 receipt = dict(identical_rankings=all(r['identical'] for r in equal), comparisons=equal, summary=summary, rows=rows,
-               conditions='Fresh Python process per CLI call, cached model files, filesystem caches not cleared. Same interpreter and host, alternating methods. Panel uses ABBA ordering on query 00 per repository. No daemon or corpus index.')
+               conditions='Fresh CLI process per call, cached model files, filesystem caches not cleared. Python baselines use the runner interpreter; native binaries run directly. Same host, alternating methods. Panel uses ABBA ordering on query 00 per repository. No daemon or corpus index.')
 (args.output/'summary.json').write_text(json.dumps(receipt,indent=2))
 print(json.dumps({'identical_rankings':receipt['identical_rankings'], 'summary':summary},indent=2))
 assert receipt['identical_rankings'], 'ranked results changed; inspect the saved JSON pairs'

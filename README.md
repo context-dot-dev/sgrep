@@ -6,6 +6,14 @@ sgrep finds files that match your query, then ranks relevant passages by meaning
 
 [Benchmarks](#benchmarks) · [Releases](https://github.com/mrmps/sgrep/releases) · [Context.dev](https://context.dev)
 
+## Benchmarks
+
+![Code-search benchmark comparing function retrieval and median latency for sgrep, CK, Jevgrep, and ripgrep.](benchmarks/benchmark.svg)
+
+On this code-search sample, sgrep matched CK's 76.7% function-retrieval rate at 71 ms median latency, without a source index. Jevgrep was best at ranking the correct file first, while CK returned complete functions more often. These results cover small source snapshots, not large monorepos or general-document retrieval.
+
+See the [full results and methodology](benchmarks/README.md), including the exact metric, per-query scores, setup costs, and limitations. The earlier Rust rewrite reduced median latency from 397 ms to 74 ms while preserving all 100 Python-query rankings.
+
 ## Install
 
 ```sh
@@ -41,14 +49,6 @@ Directory searches follow ripgrep's ignore rules and skip hidden and binary file
 Ripgrep finds files containing query words, and Rust processes those files in parallel. Python functions form chunks; other text uses windows of up to 120 lines. BM25 selects 200 candidates, static embeddings rank their meaning, and reciprocal rank fusion combines the two rankings before removing overlapping results. Files without query-word matches cannot be recovered by the semantic step.
 
 The embeddings come from **[Minish Lab](https://github.com/MinishLab)**, the team behind [Model2Vec](https://github.com/MinishLab/model2vec): [Potion Code 16M v2](https://huggingface.co/minishlab/potion-code-16M-v2) for code and [Potion Base 8M](https://huggingface.co/minishlab/potion-base-8M) for general English text. Both models are MIT-licensed and pinned to specific revisions.
-
-## Benchmarks
-
-![Code-search benchmark comparing function retrieval and median latency for sgrep, CK, Jevgrep, and ripgrep.](benchmarks/benchmark.svg)
-
-On this code-search sample, sgrep matched CK's 76.7% function-retrieval rate at 71 ms median latency, without a source index. Jevgrep was best at ranking the correct file first, while CK returned complete functions more often. These results cover small source snapshots, not large monorepos or general-document retrieval.
-
-See the [full results and methodology](benchmarks/README.md), including the exact metric, per-query scores, setup costs, and limitations. The earlier Rust rewrite reduced median latency from 397 ms to 74 ms while preserving all 100 Python-query rankings.
 
 ## Alternatives
 

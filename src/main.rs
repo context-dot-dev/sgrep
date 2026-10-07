@@ -1,4 +1,4 @@
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use half::f16;
 use rayon::prelude::*;
 use regex::Regex;
@@ -10,8 +10,31 @@ use std::process::{Command, ExitCode};
 use std::sync::LazyLock;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
-const MODEL: &str = "minishlab/potion-code-16M-v2";
-const REVISION: &str = "e9d2a44ca6a05ac6685f3b23709ea57eb7352d5b";
+struct Model {
+    repo: &'static str,
+    revision: &'static str,
+    rows: usize,
+    dtype: safetensors::Dtype,
+}
+const CODE: Model = Model {
+    repo: "minishlab/potion-code-16M-v2",
+    revision: "e9d2a44ca6a05ac6685f3b23709ea57eb7352d5b",
+    rows: 63457,
+    dtype: safetensors::Dtype::F16,
+};
+const TEXT: Model = Model {
+    repo: "minishlab/potion-base-8M",
+    revision: "bf8b056651a2c21b8d2565580b8569da283cab23",
+    rows: 29528,
+    dtype: safetensors::Dtype::F32,
+};
+
+#[derive(Clone, Copy, PartialEq, ValueEnum)]
+enum ModelChoice {
+    Auto,
+    Code,
+    Text,
+}
 static CAMEL: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"([a-z0-9])([A-Z])").unwrap());
 static WORD: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[\p{L}\p{N}]+").unwrap());
 static STOP: LazyLock<HashSet<&str>> = LazyLock::new(|| {
@@ -19,7 +42,10 @@ static STOP: LazyLock<HashSet<&str>> = LazyLock::new(|| {
 });
 
 #[derive(Parser)]
-#[command(about = "Ripgrep candidates, ranked with static code embeddings.")]
+#[command(
+    version,
+    about = "Search code and text with ripgrep and local static embeddings."
+)]
 struct Args {
     query: String,
     #[arg(default_value = ".")]
@@ -28,6 +54,9 @@ struct Args {
     count: u32,
     #[arg(long)]
     json: bool,
+    /// Auto uses text embeddings for prose-only candidates, code embeddings otherwise.
+    #[arg(long, value_enum, default_value_t = ModelChoice::Auto)]
+    model: ModelChoice,
 }
 
 #[derive(Serialize)]
@@ -242,15 +271,15 @@ fn bm25(chunks: &[Chunk], terms: &[String]) -> Vec<usize> {
     order
 }
 
-fn model_file(name: &str) -> Result<PathBuf> {
+fn model_file(model: &Model, name: &str) -> Result<PathBuf> {
     let cache = std::env::var_os("HF_HUB_CACHE")
         .or_else(|| std::env::var_os("HUGGINGFACE_HUB_CACHE"))
         .map(PathBuf::from)
         .unwrap_or_else(|| hf_hub::Cache::from_env().path().clone());
     let file = cache
-        .join("models--minishlab--potion-code-16M-v2")
+        .join(format!("models--{}", model.repo.replace('/', "--")))
         .join("snapshots")
-        .join(REVISION)
+        .join(model.revision)
         .join(name);
     if file.is_file() {
         return Ok(file);
@@ -262,9 +291,11 @@ fn model_file(name: &str) -> Result<PathBuf> {
             .as_str(),
         "1" | "TRUE" | "YES" | "ON"
     ) {
-        return Err(
-            format!("model file {name} is not cached; run once online to download it").into(),
-        );
+        return Err(format!(
+            "{} {name} is not cached; run once online to download it",
+            model.repo
+        )
+        .into());
     }
     let api = hf_hub::api::sync::ApiBuilder::from_env()
         .with_cache_dir(cache)
@@ -272,26 +303,34 @@ fn model_file(name: &str) -> Result<PathBuf> {
         .build()?;
     Ok(api
         .repo(hf_hub::Repo::with_revision(
-            MODEL.into(),
+            model.repo.into(),
             hf_hub::RepoType::Model,
-            REVISION.into(),
+            model.revision.into(),
         ))
         .get(name)?)
 }
 
-fn embed(texts: Vec<String>) -> Result<Vec<Vec<f32>>> {
-    let tokenizer = tokenizers::Tokenizer::from_file(model_file("tokenizer.json")?)?;
-    let file = std::fs::read(model_file("model.safetensors")?)?;
+fn embed(texts: Vec<String>, model: &Model) -> Result<Vec<Vec<f32>>> {
+    let tokenizer = tokenizers::Tokenizer::from_file(model_file(model, "tokenizer.json")?)?;
+    let file = std::fs::read(model_file(model, "model.safetensors")?)?;
     let tensors = safetensors::SafeTensors::deserialize(&file)?;
     let tensor = tensors.tensor("embeddings")?;
-    if tensor.dtype() != safetensors::Dtype::F16 || tensor.shape() != [63457, 256] {
+    if tensor.dtype() != model.dtype || tensor.shape() != [model.rows, 256] {
         return Err("unexpected model tensor".into());
     }
-    let weights: Vec<f32> = tensor
-        .data()
-        .chunks_exact(2)
-        .map(|b| f16::from_le_bytes([b[0], b[1]]).to_f32())
-        .collect();
+    let weights: Vec<f32> = match model.dtype {
+        safetensors::Dtype::F16 => tensor
+            .data()
+            .chunks_exact(2)
+            .map(|b| f16::from_le_bytes([b[0], b[1]]).to_f32())
+            .collect(),
+        safetensors::Dtype::F32 => tensor
+            .data()
+            .chunks_exact(4)
+            .map(|b| f32::from_le_bytes([b[0], b[1], b[2], b[3]]))
+            .collect(),
+        _ => return Err("unsupported model dtype".into()),
+    };
     let unknown = tokenizer.token_to_id("[UNK]");
     let encoded = tokenizer.encode_batch_fast(texts, false)?;
     let mut vectors = Vec::new();
@@ -352,7 +391,24 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
             chunks[i].content
         )
     }));
-    let vectors = embed(texts)?;
+    let prose_only = order.iter().all(|&i| {
+        let extension = Path::new(&chunks[i].path)
+            .extension()
+            .unwrap_or_default()
+            .to_string_lossy()
+            .to_ascii_lowercase();
+        matches!(
+            extension.as_str(),
+            "md" | "mdx" | "txt" | "rst" | "adoc" | "org" | "text"
+        )
+    });
+    let model =
+        if args.model == ModelChoice::Text || (args.model == ModelChoice::Auto && prose_only) {
+            &TEXT
+        } else {
+            &CODE
+        };
+    let vectors = embed(texts, model)?;
     let scores: Vec<f32> = vectors[1..]
         .iter()
         .map(|v| v.iter().zip(&vectors[0]).map(|(a, b)| a * b).sum())

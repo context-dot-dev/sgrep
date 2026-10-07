@@ -1,10 +1,11 @@
 [package]
 name = "sgrep"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 rust-version = "1.90"
 license = "MIT"
-description = "Ripgrep + static code embeddings. No index."
+description = "Search code and text with ripgrep and local static embeddings."
+repository = "https://github.com/mrmps/sgrep"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }

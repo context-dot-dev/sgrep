@@ -3,7 +3,9 @@
 Failure contract: bad arguments, absent ripgrep, empty results, ignore leaks,
 unsafe query/path handling, wrong source offsets, missing module-level code,
 non-Python files, stale results after edits, broken offline model reuse, and
-unexpected writes to the searched repository. No mocked embedding model.
+unexpected writes to the searched repository, incorrect auto model selection,
+manual overrides ignored, mixed embedding spaces, and missing offline text weights.
+No mocked embedding model.
 """
 import hashlib
 import json
@@ -31,6 +33,9 @@ def main():
         (root / "broken.py").write_text('def brokenSyntax(:\n    pass\n')
         (root / "nested.py").write_text('try:\n    raise ValueError()\nexcept ValueError:\n    def exceptneedle():\n        pass\n\nmatch 1:\n    case 1:\n        def matchneedle():\n            pass\n\ndef outer():\n    def innerneedle():\n        pass\n    return innerneedle\n')
         (root / "binary").write_bytes(b'\x00binaryneedle\x00')
+        (root / "docs").mkdir()
+        (root / "docs" / "shipping.MD").write_text("# Shipping orders\n\nDelivery takes three business days. Track your shipment with the delivery confirmation.\n")
+        (root / "docs" / "returns.txt").write_text("# Returning orders\n\nRefunds are available within thirty days of purchase.\n")
         before = {str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
 
         def run(name, args, code=0, env=None):
@@ -44,6 +49,7 @@ def main():
         run("help", ["--help"])
         run("blank query", ["   "], 2)
         run("punctuation query", ["***"], 2)
+        run("invalid model", ["read", "--model", "wrong"], 2)
         run("invalid count", ["read", "-n", "0"], 2)
         run("missing path", ["read", "missing-dir"], 2)
         run("missing ripgrep", ["read"], 2, {"PATH":str(Path(os.sys.executable).parent)})
@@ -53,6 +59,19 @@ def main():
         assert len(results)==1 and results[0]['path']=='file utils.py' and 'def read_file' in results[0]['content']
         for b in results:
             assert b['content']==''.join((root/b['path']).read_text().splitlines(keepends=True)[b['start']-1:b['end']])
+        assert json.loads(run("forced code", ["read a file from disk", "--model", "code", "--json", "-n", "1"])) == results
+        text_args = ["track shipping delivery", "docs", "--json"]
+        text_results = json.loads(run("auto text", text_args))
+        assert text_results and text_results[0]['path'] == 'shipping.MD'
+        assert json.loads(run("forced text", text_args + ["--model", "text"])) == text_results
+        assert json.loads(run("offline text", text_args, env={"HF_HUB_OFFLINE":"1"})) == text_results
+        run("text model on code", ["read a file", "file utils.py", "--model", "text", "--json"])
+        mixed = json.loads(run("auto mixed", ["read shipping", "--json"]))
+        assert json.loads(run("code mixed", ["read shipping", "--model", "code", "--json"])) == mixed
+        with tempfile.TemporaryDirectory(prefix="sgrep-empty-cache-") as cache:
+            env = {"HF_HUB_CACHE":cache, "HF_HUB_OFFLINE":"1"}
+            run("text cache missing offline", text_args, 2, env)
+            assert not list(Path(cache).rglob('*')), 'offline search wrote to empty cache'
         assert json.loads(run("offline repeat", ["read a file from disk", "--json", "-n", "1"], env={"HF_HUB_OFFLINE":"1"})) == results
         pipe = subprocess.Popen([cli, "read a file", "--json"], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         pipe.stdout.close()

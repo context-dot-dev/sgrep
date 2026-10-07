@@ -1,0 +1,5532 @@
+{
+  "summary": {
+    "sgrep": {
+      "n": 60,
+      "file1": 0.5333333333333333,
+      "file5": 0.8666666666666667,
+      "file10": 0.9166666666666666,
+      "mrr10": 0.6629365079365079,
+      "hit2k": 0.5833333333333334,
+      "hit8k": 0.7666666666666667,
+      "full8k": 0.6666666666666666,
+      "median_ms": 71.1882500036154,
+      "p95_ms": 90.85187913151458,
+      "statuses": {
+        "complete": 60
+      },
+      "quality_run_median_ms": 72.92056252481416,
+      "latency_n": 12,
+      "latency_statuses": {
+        "complete": 12
+      }
+    },
+    "ripgrep": {
+      "n": 60,
+      "file1": 0.0,
+      "file5": 0.05,
+      "file10": 0.16666666666666666,
+      "mrr10": 0.041130952380952386,
+      "hit2k": 0.05,
+      "hit8k": 0.15,
+      "full8k": 0.016666666666666666,
+      "median_ms": 22.77868750388734,
+      "p95_ms": 41.435989958699786,
+      "statuses": {
+        "complete": 60
+      },
+      "quality_run_median_ms": 18.202541978098452,
+      "latency_n": 12,
+      "latency_statuses": {
+        "complete": 12
+      }
+    },
+    "ck": {
+      "n": 60,
+      "file1": 0.43333333333333335,
+      "file5": 0.7666666666666667,
+      "file10": 0.8,
+      "mrr10": 0.571686507936508,
+      "hit2k": 0.65,
+      "hit8k": 0.7666666666666667,
+      "full8k": 0.75,
+      "median_ms": 226.33897900232114,
+      "p95_ms": 296.8140937300631,
+      "statuses": {
+        "complete": 60
+      },
+      "quality_run_median_ms": 216.15102101350203,
+      "latency_n": 12,
+      "latency_statuses": {
+        "complete": 12
+      }
+    },
+    "jevgrep": {
+      "n": 60,
+      "file1": 0.75,
+      "file5": 0.8,
+      "file10": 0.8,
+      "mrr10": 0.7708333333333334,
+      "hit2k": 0.6,
+      "hit8k": 0.6,
+      "full8k": 0.6,
+      "median_ms": 10183.1147715,
+      "p95_ms": 16965.0789561,
+      "statuses": {
+        "complete": 60
+      },
+      "quality_run_median_ms": 8634.174478999996,
+      "latency_n": 12,
+      "latency_statuses": {
+        "complete": 12
+      }
+    }
+  },
+  "by_language": {
+    "cpp": {
+      "sgrep": {
+        "n": 10,
+        "file1": 0.5,
+        "file5": 0.9,
+        "file10": 0.9,
+        "mrr10": 0.6333333333333333,
+        "hit2k": 0.4,
+        "hit8k": 0.6,
+        "full8k": 0.6,
+        "median_ms": 65.73879200732335,
+        "p95_ms": 216.1001919768748,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ripgrep": {
+        "n": 10,
+        "file1": 0.0,
+        "file5": 0.0,
+        "file10": 0.0,
+        "mrr10": 0.0,
+        "hit2k": 0.0,
+        "hit8k": 0.0,
+        "full8k": 0.0,
+        "median_ms": 14.827500010142103,
+        "p95_ms": 20.077974873129275,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ck": {
+        "n": 10,
+        "file1": 0.1,
+        "file5": 0.7,
+        "file10": 0.9,
+        "mrr10": 0.3601190476190476,
+        "hit2k": 0.5,
+        "hit8k": 0.8,
+        "full8k": 0.8,
+        "median_ms": 209.69864600920118,
+        "p95_ms": 246.95772760605902,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "jevgrep": {
+        "n": 10,
+        "file1": 0.8,
+        "file5": 0.9,
+        "file10": 0.9,
+        "mrr10": 0.825,
+        "hit2k": 0.3,
+        "hit8k": 0.3,
+        "full8k": 0.3,
+        "median_ms": 9644.977041499995,
+        "p95_ms": 16863.883506399994,
+        "statuses": {
+          "complete": 10
+        }
+      }
+    },
+    "go": {
+      "sgrep": {
+        "n": 10,
+        "file1": 0.3,
+        "file5": 0.9,
+        "file10": 0.9,
+        "mrr10": 0.5116666666666666,
+        "hit2k": 0.4,
+        "hit8k": 0.7,
+        "full8k": 0.5,
+        "median_ms": 83.39970849920064,
+        "p95_ms": 89.1218207863858,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ripgrep": {
+        "n": 10,
+        "file1": 0.0,
+        "file5": 0.0,
+        "file10": 0.0,
+        "mrr10": 0.0,
+        "hit2k": 0.0,
+        "hit8k": 0.0,
+        "full8k": 0.0,
+        "median_ms": 30.89241698035039,
+        "p95_ms": 63.57736278441732,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ck": {
+        "n": 10,
+        "file1": 0.3,
+        "file5": 0.6,
+        "file10": 0.6,
+        "mrr10": 0.4333333333333333,
+        "hit2k": 0.2,
+        "hit8k": 0.5,
+        "full8k": 0.5,
+        "median_ms": 239.93837551097386,
+        "p95_ms": 269.5592895644949,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "jevgrep": {
+        "n": 10,
+        "file1": 0.6,
+        "file5": 0.6,
+        "file10": 0.6,
+        "mrr10": 0.6,
+        "hit2k": 0.6,
+        "hit8k": 0.6,
+        "full8k": 0.6,
+        "median_ms": 9126.462646,
+        "p95_ms": 17009.272716599993,
+        "statuses": {
+          "complete": 10
+        }
+      }
+    },
+    "java": {
+      "sgrep": {
+        "n": 10,
+        "file1": 0.6,
+        "file5": 0.9,
+        "file10": 0.9,
+        "mrr10": 0.7083333333333333,
+        "hit2k": 0.7,
+        "hit8k": 0.9,
+        "full8k": 0.8,
+        "median_ms": 66.54652100405656,
+        "p95_ms": 77.67094562004785,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ripgrep": {
+        "n": 10,
+        "file1": 0.0,
+        "file5": 0.1,
+        "file10": 0.2,
+        "mrr10": 0.06,
+        "hit2k": 0.1,
+        "hit8k": 0.1,
+        "full8k": 0.0,
+        "median_ms": 14.873020991217345,
+        "p95_ms": 23.611093751969747,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ck": {
+        "n": 10,
+        "file1": 0.7,
+        "file5": 0.8,
+        "file10": 0.8,
+        "mrr10": 0.7333333333333333,
+        "hit2k": 0.7,
+        "hit8k": 0.8,
+        "full8k": 0.8,
+        "median_ms": 218.02843749173917,
+        "p95_ms": 242.8876918449532,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "jevgrep": {
+        "n": 10,
+        "file1": 0.5,
+        "file5": 0.6,
+        "file10": 0.6,
+        "mrr10": 0.55,
+        "hit2k": 0.0,
+        "hit8k": 0.0,
+        "full8k": 0.0,
+        "median_ms": 4495.374854500012,
+        "p95_ms": 9861.374852599994,
+        "statuses": {
+          "complete": 10
+        }
+      }
+    },
+    "python": {
+      "sgrep": {
+        "n": 10,
+        "file1": 0.7,
+        "file5": 0.9,
+        "file10": 1.0,
+        "mrr10": 0.8166666666666667,
+        "hit2k": 0.7,
+        "hit8k": 0.8,
+        "full8k": 0.8,
+        "median_ms": 71.71539598493837,
+        "p95_ms": 76.24595435627269,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ripgrep": {
+        "n": 10,
+        "file1": 0.0,
+        "file5": 0.1,
+        "file10": 0.1,
+        "mrr10": 0.05,
+        "hit2k": 0.1,
+        "hit8k": 0.1,
+        "full8k": 0.1,
+        "median_ms": 18.006333470111713,
+        "p95_ms": 22.531276737572625,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ck": {
+        "n": 10,
+        "file1": 0.4,
+        "file5": 0.7,
+        "file10": 0.7,
+        "mrr10": 0.55,
+        "hit2k": 0.7,
+        "hit8k": 0.7,
+        "full8k": 0.7,
+        "median_ms": 213.19108348689042,
+        "p95_ms": 249.99413284240288,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "jevgrep": {
+        "n": 10,
+        "file1": 0.7,
+        "file5": 0.8,
+        "file10": 0.8,
+        "mrr10": 0.75,
+        "hit2k": 0.8,
+        "hit8k": 0.8,
+        "full8k": 0.8,
+        "median_ms": 9295.808021000004,
+        "p95_ms": 15560.4654045,
+        "statuses": {
+          "complete": 10
+        }
+      }
+    },
+    "rust": {
+      "sgrep": {
+        "n": 10,
+        "file1": 0.5,
+        "file5": 0.7,
+        "file10": 0.9,
+        "mrr10": 0.5992857142857143,
+        "hit2k": 0.5,
+        "hit8k": 0.7,
+        "full8k": 0.6,
+        "median_ms": 81.44829151569866,
+        "p95_ms": 94.77872905845287,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ripgrep": {
+        "n": 10,
+        "file1": 0.0,
+        "file5": 0.1,
+        "file10": 0.3,
+        "mrr10": 0.08333333333333333,
+        "hit2k": 0.1,
+        "hit8k": 0.3,
+        "full8k": 0.0,
+        "median_ms": 26.586979016428813,
+        "p95_ms": 44.02977497375103,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ck": {
+        "n": 10,
+        "file1": 0.4,
+        "file5": 0.8,
+        "file10": 0.8,
+        "mrr10": 0.5283333333333333,
+        "hit2k": 0.8,
+        "hit8k": 0.8,
+        "full8k": 0.8,
+        "median_ms": 223.3701040095184,
+        "p95_ms": 254.36746631457936,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "jevgrep": {
+        "n": 10,
+        "file1": 0.9,
+        "file5": 0.9,
+        "file10": 0.9,
+        "mrr10": 0.9,
+        "hit2k": 0.9,
+        "hit8k": 0.9,
+        "full8k": 0.9,
+        "median_ms": 14949.09156249999,
+        "p95_ms": 30918.934426599986,
+        "statuses": {
+          "complete": 10
+        }
+      }
+    },
+    "typescript": {
+      "sgrep": {
+        "n": 10,
+        "file1": 0.6,
+        "file5": 0.9,
+        "file10": 0.9,
+        "mrr10": 0.7083333333333333,
+        "hit2k": 0.8,
+        "hit8k": 0.9,
+        "full8k": 0.7,
+        "median_ms": 66.51631247950718,
+        "p95_ms": 77.95178547676187,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ripgrep": {
+        "n": 10,
+        "file1": 0.0,
+        "file5": 0.0,
+        "file10": 0.4,
+        "mrr10": 0.05345238095238095,
+        "hit2k": 0.0,
+        "hit8k": 0.4,
+        "full8k": 0.0,
+        "median_ms": 16.23635401483625,
+        "p95_ms": 31.374716467689705,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "ck": {
+        "n": 10,
+        "file1": 0.7,
+        "file5": 1.0,
+        "file10": 1.0,
+        "mrr10": 0.825,
+        "hit2k": 1.0,
+        "hit8k": 1.0,
+        "full8k": 0.9,
+        "median_ms": 207.31231247191317,
+        "p95_ms": 221.36338385462292,
+        "statuses": {
+          "complete": 10
+        }
+      },
+      "jevgrep": {
+        "n": 10,
+        "file1": 1.0,
+        "file5": 1.0,
+        "file10": 1.0,
+        "mrr10": 1.0,
+        "hit2k": 1.0,
+        "hit8k": 1.0,
+        "full8k": 1.0,
+        "median_ms": 4799.09322900002,
+        "p95_ms": 21909.853409899988,
+        "statuses": {
+          "complete": 10
+        }
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "cpp-apache__logging-log4cxx-02",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.3345539169968106,
+      "status": "complete",
+      "record_sha256": "cc3e8481f9b2ae096f9b25c810ecad558622ba55f3ec6b0b4141d553d1704f64"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-05",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.0675349590019323,
+      "status": "complete",
+      "record_sha256": "ff0dbb7768e0c2364b4dd325c7967d5d4fb6979e0adac049fe7a82b622f752a0"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-06",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.07107525004539639,
+      "status": "complete",
+      "record_sha256": "1ac910e6f0d0a6915da41f62e3f3b6d07c0e6cb14ebcbea7cb27a751232b77cc"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-09",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07132341695250943,
+      "status": "complete",
+      "record_sha256": "3f421f739c5fab529ab4c81056bd614aa187833a2655efe2ce8bb4b3702d33e7"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-07",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07101095898542553,
+      "status": "complete",
+      "record_sha256": "bbcffb7cd2efe0486d943cdbbcacfa667025a87cb4f0f97ecbbdbaf41f3c1e79"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-08",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.06158687494462356,
+      "status": "complete",
+      "record_sha256": "6d207f68ae287881b25e1e623f08416c7ad153a77d27d732d23bdd5bc65281d2"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-04",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.05993799999123439,
+      "status": "complete",
+      "record_sha256": "e0c245dd82191daaf84e91fe3b3b7066e63f1654aeb311e8130b9825968d9f18"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-02",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.06394262501271442,
+      "status": "complete",
+      "record_sha256": "0ddb23407d5fcf1fe4bd4815964f1342ef06118eae8d19d851770009007f8fb9"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-01",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.05971566599328071,
+      "status": "complete",
+      "record_sha256": "989908507189c60937c7c8d6db7440d8ff3642c4e1982e49c87b09a966d5d02e"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-00",
+      "language": "cpp",
+      "method": "sgrep",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.06270675000268966,
+      "status": "complete",
+      "record_sha256": "265ecbe3aa8a3efbc200455c7e096246fe335e5408622b8d9208359f326d2f17"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-07",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.08709862502291799,
+      "status": "complete",
+      "record_sha256": "ed6fb3be53654f4eb983665c9c437418b857d4827fb26fff92a0bac0adf2cbdc"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-05",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.08876079198671505,
+      "status": "complete",
+      "record_sha256": "2e6c991949942f1dbc8f7164f127aea320457b1821d60983de90cb69e243dfcd"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-02",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 5,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.08941720798611641,
+      "status": "complete",
+      "record_sha256": "3f6726814cc55aa6cd6db64bb2140da26f1eba0a0d525744e3b2afd566869c9e"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-06",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.08709391701268032,
+      "status": "complete",
+      "record_sha256": "f4ceb4ad1aec0fb6b27c9492a6f6f8fa2c4da342b9daa5bd4895de9b08a8f106"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-03",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.08568874996853992,
+      "status": "complete",
+      "record_sha256": "09e2f5ab3deee780429184292516e7352065ffbb19a62fd9f8f325c16ea4a897"
+    },
+    {
+      "id": "go-caddyserver__caddy-02",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.40476190476190477
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.40476190476190477
+        }
+      },
+      "seconds": 0.07959216699237004,
+      "status": "complete",
+      "record_sha256": "ed4a7a618a10578a9a07432888ce35b5345835c01e056823a44eb5f24df6ffa4"
+    },
+    {
+      "id": "go-caddyserver__caddy-07",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07880729204043746,
+      "status": "complete",
+      "record_sha256": "e533c84b106edbdad1fe59eb637cd6fc6c449a6d456871ab094c3571e3458127"
+    },
+    {
+      "id": "go-caddyserver__caddy-03",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.8913043478260869
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.8913043478260869
+        }
+      },
+      "seconds": 0.08111066702986136,
+      "status": "complete",
+      "record_sha256": "174208272d53c8eba8cc8ceb5c15e84ff0f2b07d376dc211557214963addfda2"
+    },
+    {
+      "id": "go-caddyserver__caddy-00",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.875
+        }
+      },
+      "seconds": 0.07764099998166785,
+      "status": "complete",
+      "record_sha256": "2b82a20a8c2f56a5101d9fc51e8496469db722f37622a3ca76a19d7d51a36354"
+    },
+    {
+      "id": "go-caddyserver__caddy-06",
+      "language": "go",
+      "method": "sgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07976416702149436,
+      "status": "complete",
+      "record_sha256": "e03a5d0d67f7aafb7847d4fabfe947af1ba613b05df0760c658b0af92ca59f69"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-00",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07270716701168567,
+      "status": "complete",
+      "record_sha256": "2cc89724290c92ec054817c5b2a4d254a85628eb1fbd3f213277f9fda0048703"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-02",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.0760219999938272,
+      "status": "complete",
+      "record_sha256": "2c5f73248769e7b0f7e5cb1cf03caaae8703d4cde9c1ff793af357aaba1c6b75"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-07",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07902008295059204,
+      "status": "complete",
+      "record_sha256": "5e1b56885c1f679ad2971c8e10493ccd7f053d33bad55e1c7cfe2c39a8845b5d"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-04",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.0759443329880014,
+      "status": "complete",
+      "record_sha256": "3973429f3a0e576cfc1a9c30900c3601d2556a4331754db9c9bd16234464514d"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-09",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7391304347826086
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7391304347826086
+        }
+      },
+      "seconds": 0.07560104102594778,
+      "status": "complete",
+      "record_sha256": "1feb9e5846201a5048ae480139c4461146e2f800dafd17851ea96d32d31d0c5c"
+    },
+    {
+      "id": "java-Password4j__password4j-08",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.06038587499642745,
+      "status": "complete",
+      "record_sha256": "1176e885be8fbae4d2491348f61839763628e0c4c9652f6bf7c9454880444594"
+    },
+    {
+      "id": "java-Password4j__password4j-05",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.5
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.05420091701671481,
+      "status": "complete",
+      "record_sha256": "312cdc6fd7546aadec7b30d610a501bfdb36fd5bcfd8d00ffbc3257ff705dada"
+    },
+    {
+      "id": "java-Password4j__password4j-06",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.0576670829905197,
+      "status": "complete",
+      "record_sha256": "c8af294a2eb205cc8fe09f696437168d8ce19d0961bb89c1a76a6b76439f9d4b"
+    },
+    {
+      "id": "java-Password4j__password4j-01",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.055867708986625075,
+      "status": "complete",
+      "record_sha256": "cba5642dec87a7f44822d09bd8eb5eaf18750c006ad60fd4561378897870ffc4"
+    },
+    {
+      "id": "java-Password4j__password4j-07",
+      "language": "java",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.05472020898014307,
+      "status": "complete",
+      "record_sha256": "6ff5893107e60aef84536e35ef58d25f7fadd136f023dd8019fcec9fa5423f33"
+    },
+    {
+      "id": "python-python-poetry__poetry-01",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07014912500744686,
+      "status": "complete",
+      "record_sha256": "91de7082ba416047af931cdc4f6db671b9886db627d85ea2a4d80ed55c2edf5c"
+    },
+    {
+      "id": "python-python-poetry__poetry-09",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 6,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.06980300002032891,
+      "status": "complete",
+      "record_sha256": "dee5473719695c5fd925c8bd7fa105c4ce6e6d8ad511d07f68ee11d89f461656"
+    },
+    {
+      "id": "python-python-poetry__poetry-05",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07476925000082701,
+      "status": "complete",
+      "record_sha256": "5b001af4cb3cca5e117707fea5027950307689d4c04d7b7020a2654262139e90"
+    },
+    {
+      "id": "python-python-poetry__poetry-04",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07384883298072964,
+      "status": "complete",
+      "record_sha256": "20d712c56e117aff7d3bb653e609ff46616a6d827fbb4adf5b51004197327bb2"
+    },
+    {
+      "id": "python-python-poetry__poetry-03",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.06963737501064315,
+      "status": "complete",
+      "record_sha256": "a52bb1b0d4092cef3ad41e7b92e1cf10fb1a7b4e9319d231ec4fa285984e8d4e"
+    },
+    {
+      "id": "python-openai__openai-python-06",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07745416701072827,
+      "status": "complete",
+      "record_sha256": "33e81b607e50b6386f89a3cec6c9538457ba3d181fabd36d1a0a71b2143b609e"
+    },
+    {
+      "id": "python-openai__openai-python-09",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07206212496384978,
+      "status": "complete",
+      "record_sha256": "dab537f5de93f31d6865074f4d159fd26e6a2e024ca530f66ed842be7f324e94"
+    },
+    {
+      "id": "python-openai__openai-python-04",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.06798270804574713,
+      "status": "complete",
+      "record_sha256": "bc0e685fe417214ba7bcf9202dc8ddcfe59ff1cf49aa2f1a470c487386ad3ba8"
+    },
+    {
+      "id": "python-openai__openai-python-07",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07313395803794265,
+      "status": "complete",
+      "record_sha256": "1b33bf233f8ea7958508fa9f717c41b2b535f4caa9f47b4bbc81fc6333d3edac"
+    },
+    {
+      "id": "python-openai__openai-python-00",
+      "language": "python",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07136866700602695,
+      "status": "complete",
+      "record_sha256": "7ef147d0acddf2fa9ec9262c47760d412b3f682149da8c555b295f108c9d80c8"
+    },
+    {
+      "id": "rust-cloudflare__pingora-03",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 7,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.06810729199787602,
+      "status": "complete",
+      "record_sha256": "137d75e212759901130dc3462becd4b4f73b1291c8aa7bb90924be2130ddce03"
+    },
+    {
+      "id": "rust-cloudflare__pingora-00",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.0674022079911083,
+      "status": "complete",
+      "record_sha256": "56b5eadfe1e514783a3028acf475dbf7d507df89856637297810b2f52c1d3bc3"
+    },
+    {
+      "id": "rust-cloudflare__pingora-01",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07021312497090548,
+      "status": "complete",
+      "record_sha256": "8b63c94fb59f78ef75ebcdf9d2d2d3ccec28fe95cd1dc53296e3f8c730fb5d75"
+    },
+    {
+      "id": "rust-cloudflare__pingora-05",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07760320801753551,
+      "status": "complete",
+      "record_sha256": "f200ac5dd4cf6df090690cf8e230a775fd3e9fcb59a747cc38104c0f918455b1"
+    },
+    {
+      "id": "rust-cloudflare__pingora-09",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.0698704999522306,
+      "status": "complete",
+      "record_sha256": "59a269bc191506ca2cdf8879c765cc72e8b1e19d5411c93280dcc51f2d7c72a7"
+    },
+    {
+      "id": "rust-rust-lang__cargo-01",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.9555555555555556
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.9555555555555556
+        }
+      },
+      "seconds": 0.10075004096142948,
+      "status": "complete",
+      "record_sha256": "817298eb06f453228e0f102de25a1287a92e861a0f22ff9f47e8e7044f42641c"
+    },
+    {
+      "id": "rust-rust-lang__cargo-06",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.0852933750138618,
+      "status": "complete",
+      "record_sha256": "861eda29a6abb38d0f218ac800166a151ef633cfd4f0956a76810fa17b9f309f"
+    },
+    {
+      "id": "rust-rust-lang__cargo-02",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 10,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.08603658399078995,
+      "status": "complete",
+      "record_sha256": "51ade4b360bd0acb794e13d10c3396ac39bc140c4a1450d1d87f4ce2447e277d"
+    },
+    {
+      "id": "rust-rust-lang__cargo-09",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.48148148148148145
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.48148148148148145
+        }
+      },
+      "seconds": 0.08742233400698751,
+      "status": "complete",
+      "record_sha256": "345efe8357a154c30ecc73a81c6720a5183d4dccc4e43f21142dd68e6bacb6df"
+    },
+    {
+      "id": "rust-rust-lang__cargo-07",
+      "language": "rust",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.08748045895481482,
+      "status": "complete",
+      "record_sha256": "6207ed06d2d0f01da97085ab1109f3770595ed9742b24fdf208f9c986a9152b2"
+    },
+    {
+      "id": "typescript-expressjs__express-04",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.0483799580251798,
+      "status": "complete",
+      "record_sha256": "1a59390f67cadb6c116bb88a18146ba58a1f88fd55accb82d5403b646d89c63e"
+    },
+    {
+      "id": "typescript-expressjs__express-07",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.051381625002250075,
+      "status": "complete",
+      "record_sha256": "02413eca9407957e3710530a018532783d3b12894e92ab4cb86139c6d18a13fe"
+    },
+    {
+      "id": "typescript-expressjs__express-00",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7752808988764045
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7752808988764045
+        }
+      },
+      "seconds": 0.0517443330027163,
+      "status": "complete",
+      "record_sha256": "cd6d582daa45ca519e231de48b80b4635b560d064995fddada192e98565fbbb4"
+    },
+    {
+      "id": "typescript-expressjs__express-01",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7368421052631579
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7368421052631579
+        }
+      },
+      "seconds": 0.05921308300457895,
+      "status": "complete",
+      "record_sha256": "b87d5e20e83635b62d7a83d63557a15220b10f3809ccc3b9b1ab2a86f16a0ed0"
+    },
+    {
+      "id": "typescript-expressjs__express-08",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.05457208398729563,
+      "status": "complete",
+      "record_sha256": "e5c3928941154e04538857459facaee0901303955bc6329d2b7444466f37a9ba"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-05",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07841054204618558,
+      "status": "complete",
+      "record_sha256": "9236091135c98013bac058c6fb27a271a9e19bde851277d60da35fef7a593be5"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-03",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07381954195443541,
+      "status": "complete",
+      "record_sha256": "04c5b38fb7de5d112c3c40b6eecedf0a70e0c9c00787ce8f2ee260fb23ed7fc3"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-08",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.07501500000944361,
+      "status": "complete",
+      "record_sha256": "aa0162a82e51852ecb3c2c9426c9caea297c64909a87bf648045927c0faa2e06"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-07",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07625270896824077,
+      "status": "complete",
+      "record_sha256": "74b668279ffa5c4c3cff08d7a2e25ae84687eeca2054d3cb66b37e35e051a912"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-09",
+      "language": "typescript",
+      "method": "sgrep",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.07739108300302178,
+      "status": "complete",
+      "record_sha256": "ddfaad85fc722fb40c7cc0733fef53bbf7585b64a0850485f4fb20d444d8ba99"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-02",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.01651383301941678,
+      "status": "complete",
+      "record_sha256": "127c976262bbad93f0104f341507ff1ee74eb6050eb8b51e79bdaa409c030ec4"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-05",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.015575792000163347,
+      "status": "complete",
+      "record_sha256": "fcbdec7570be342df2ef5e559d2ee1605dc9097f3cfa5a08cfd4d745fb70e273"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-06",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.3333333333333333
+        }
+      },
+      "seconds": 0.016691999975591898,
+      "status": "complete",
+      "record_sha256": "0e3df3bd58240aafc17c51f2f87e800813265cd8925c9fb025d1e15ef6dd4e29"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-09",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.021154000016395003,
+      "status": "complete",
+      "record_sha256": "f70be68f2180cfaa6a64ad2fb42d6d543d25f32fa9d5561bfedcf41f47203c6a"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-07",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.01876283303136006,
+      "status": "complete",
+      "record_sha256": "a98ccfc55c12c07a2caeb59c3a494a0f6f815038d103c5ebbbad180f615793a7"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-08",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.01407920802012086,
+      "status": "complete",
+      "record_sha256": "7e3e074f6c68bb5deb75babb58631c8fa51c1ae52b98507b35b0f7726fb3142c"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-04",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.013755666033830494,
+      "status": "complete",
+      "record_sha256": "d211743c7ede45fcae25ed7da60298739b52ca59a6a0b5f0e26625a99b1cccf6"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-02",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.012815124995540828,
+      "status": "complete",
+      "record_sha256": "8db3fadd03e4e136668f5c4a1b24632fd59e8b6be69fba2599b9aa2ba2a7b294"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-01",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.011326292005833238,
+      "status": "complete",
+      "record_sha256": "51a1004db7e2532695ca313adf9c41f959925baf9ffc6577a7607d9a5d46ed06"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-00",
+      "language": "cpp",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.013140249997377396,
+      "status": "complete",
+      "record_sha256": "f4f130e0c29e6b950a681b62bc9f84c5284e9100f55c3a827edd872e0fb7c20f"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-07",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.07497424999019131,
+      "status": "complete",
+      "record_sha256": "0d9f7d7c51a07603ab8312ccf43429529232a19ebefd0811a4e58814cca543bd"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-05",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.04964783397736028,
+      "status": "complete",
+      "record_sha256": "b063199ba829bf6cc62c9cad3f72e50a000d23c23cf6116476141970c62d4ba8"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-02",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.03832783398684114,
+      "status": "complete",
+      "record_sha256": "891e713918740187ac4396597fc8a2df670b96ca35d461163cfc66afc0f9eecc"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-06",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.03620895795756951,
+      "status": "complete",
+      "record_sha256": "01329e2b731f1d014d742961226948a329559b52738dec25d1cf52984e0978e0"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-03",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.03403254196746275,
+      "status": "complete",
+      "record_sha256": "6f258ecd7de47ee5a822101e465ce17eb5cc921a70106ba2d0091b9541ef65b9"
+    },
+    {
+      "id": "go-caddyserver__caddy-02",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.027298958972096443,
+      "status": "complete",
+      "record_sha256": "1eb53e250fb98b8ec4e4887efc8f12ac7ef8a9c29144dd5b37f21c38ebcf9509"
+    },
+    {
+      "id": "go-caddyserver__caddy-07",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.020023500022944063,
+      "status": "complete",
+      "record_sha256": "e0c95c53f8d08c0e37b86b88ad7d7d2f21284c94ded895462b3012f1df7e57f6"
+    },
+    {
+      "id": "go-caddyserver__caddy-03",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.025257291039451957,
+      "status": "complete",
+      "record_sha256": "795ee5faca97593619a6c21002537ad52f88baf493bc758dfd0e0f5af6ebb95c"
+    },
+    {
+      "id": "go-caddyserver__caddy-00",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.027752291993238032,
+      "status": "complete",
+      "record_sha256": "9632a3c7f0267e47f769bbd9b8123015a53b38a017bf4b9d91edc93ad8ca9785"
+    },
+    {
+      "id": "go-caddyserver__caddy-06",
+      "language": "go",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.020715458027552813,
+      "status": "complete",
+      "record_sha256": "02d67c365135005d8daa12137193a6e4de894884a79e67a8dce8cd754e61a61c"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-00",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.013289916969370097,
+      "status": "complete",
+      "record_sha256": "c31164d5268cf280fd1f671514aa9000150df0081e2abe8a5512266a4ff00f2e"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-02",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.016456125013064593,
+      "status": "complete",
+      "record_sha256": "63231340b88c95a9919568628f9a2e452d49f694914afd163ababfed77417a49"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-07",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.02256574999773875,
+      "status": "complete",
+      "record_sha256": "f7f2196c9850df004d3957aa64c9c5166dfaa043fd1bd60efb800872d7367af7"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-04",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.024466375005431473,
+      "status": "complete",
+      "record_sha256": "eaa404761f421b8c29f3b917a3ed8a39a5ac2bf3dc8e5cf21aab62c38550937d"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-09",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.021626709029078484,
+      "status": "complete",
+      "record_sha256": "93a0cd61e555d73bce02fb39d4133dbd418277ad2652ed1b2a4b6ca7bcc69e07"
+    },
+    {
+      "id": "java-Password4j__password4j-08",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.016959000029601157,
+      "status": "complete",
+      "record_sha256": "134cf357ee536ea15308100b2e379313b6a0f59e7baf2ca15ad408d8e70033d3"
+    },
+    {
+      "id": "java-Password4j__password4j-05",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.008059500018134713,
+      "status": "complete",
+      "record_sha256": "608430fec76cecb48e1d683775475a3cdcab70f65d1956a29edee8ef83b5a30f"
+    },
+    {
+      "id": "java-Password4j__password4j-06",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.5
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.5
+        }
+      },
+      "seconds": 0.010888333024922758,
+      "status": "complete",
+      "record_sha256": "9cfc1a8275b8b089d8939c1e3c2f2abae0a819f8059697a63f2099d748a88fd1"
+    },
+    {
+      "id": "java-Password4j__password4j-01",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.008949249982833862,
+      "status": "complete",
+      "record_sha256": "e6cb03224bff141bbc3998d1109cca6343c4f79f258044ed12a796a2a46912ef"
+    },
+    {
+      "id": "java-Password4j__password4j-07",
+      "language": "java",
+      "method": "ripgrep",
+      "file_rank": 10,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.008899541979189962,
+      "status": "complete",
+      "record_sha256": "8f97ee42473f4148efdc5034428d212d066af518adfa923968e512a0b1076edf"
+    },
+    {
+      "id": "python-python-poetry__poetry-01",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.018225999956484884,
+      "status": "complete",
+      "record_sha256": "e51ae6a996c8bc9d81ef0380468781a6ca1d373d0e99b6a146077d87f21d2586"
+    },
+    {
+      "id": "python-python-poetry__poetry-09",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.017388875014148653,
+      "status": "complete",
+      "record_sha256": "1fca2709356030c319ad3409204e633a5be5d5652724548905558d9c245d4fe5"
+    },
+    {
+      "id": "python-python-poetry__poetry-05",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.023116333002690226,
+      "status": "complete",
+      "record_sha256": "a9850d579814514ebe8f0f83748620a710412a4d58d340cd666d01421baf7267"
+    },
+    {
+      "id": "python-python-poetry__poetry-04",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.3076923076923077
+        }
+      },
+      "seconds": 0.021164833975490183,
+      "status": "complete",
+      "record_sha256": "4b3dbaccda46b4b0fae55d781133dee614e6d62985ba4ec09fca9b444557f8b6"
+    },
+    {
+      "id": "python-python-poetry__poetry-03",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.014171333983540535,
+      "status": "complete",
+      "record_sha256": "92127128d38ab7190f001f23177561f39ab961aa27c5e97ee947269879e2dbc9"
+    },
+    {
+      "id": "python-openai__openai-python-06",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.021816207969095558,
+      "status": "complete",
+      "record_sha256": "e81f81e13d96849ec25bd37b5936a93a55d3c59119fff041f203ece15c78782d"
+    },
+    {
+      "id": "python-openai__openai-python-09",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.013932332978583872,
+      "status": "complete",
+      "record_sha256": "d0a8ef61abad4cc04e58ff3b0bcd026db69b230c7b6001d50d78c53dc9a5bc5f"
+    },
+    {
+      "id": "python-openai__openai-python-04",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.01778666698373854,
+      "status": "complete",
+      "record_sha256": "fd35238b28c89497534c6b815158c0af07b84fa6ce9889f683d0bf6ad1c6b739"
+    },
+    {
+      "id": "python-openai__openai-python-07",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.01867616700474173,
+      "status": "complete",
+      "record_sha256": "ec9199cbcc7c62c80cf296d9e9e65e4fc0742ca427ff2f3023a69ffe63da36f9"
+    },
+    {
+      "id": "python-openai__openai-python-00",
+      "language": "python",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.017604249995201826,
+      "status": "complete",
+      "record_sha256": "60b7450f5cfc0189fc013a22511bf0133251f04926ff735c03465f7600b47be2"
+    },
+    {
+      "id": "rust-cloudflare__pingora-03",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 6,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7
+        }
+      },
+      "seconds": 0.02472470805514604,
+      "status": "complete",
+      "record_sha256": "39f0c186ec68e6c9a4d775ff34a16146eecf465218ff9214b912eea7e1f80f38"
+    },
+    {
+      "id": "rust-cloudflare__pingora-00",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.6666666666666666
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.6666666666666666
+        }
+      },
+      "seconds": 0.014110333053395152,
+      "status": "complete",
+      "record_sha256": "88ac7ebfb1906521133295b3e5da91ccb04ac7cbd3fac05f2369c245d84b712e"
+    },
+    {
+      "id": "rust-cloudflare__pingora-01",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.01817908399971202,
+      "status": "complete",
+      "record_sha256": "414988b4962e9ac4be20d8849a26a37747db47aeec0e002568d3ce8cf30baa41"
+    },
+    {
+      "id": "rust-cloudflare__pingora-05",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 6,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.8333333333333334
+        }
+      },
+      "seconds": 0.011916416988242418,
+      "status": "complete",
+      "record_sha256": "ba4cdc46a91de20322d0318e7e4be5ed748040e0d4e8c083d5a85d46167b7e9f"
+    },
+    {
+      "id": "rust-cloudflare__pingora-09",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.01124770799651742,
+      "status": "complete",
+      "record_sha256": "9f20fc206401d574d6a77758225d78f2aaaabda0fa3536f44ada2f24f914adfb"
+    },
+    {
+      "id": "rust-rust-lang__cargo-01",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.048657124978490174,
+      "status": "complete",
+      "record_sha256": "4027d90becf4a5368c1f5a644afc2f3084fe01c0c9b7890b92dea46d5eb5b0cd"
+    },
+    {
+      "id": "rust-rust-lang__cargo-06",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.033830208994913846,
+      "status": "complete",
+      "record_sha256": "c4579bd32920173b51fca3124c2fe901163568847e8a50e612611ca877b759a3"
+    },
+    {
+      "id": "rust-rust-lang__cargo-02",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.03837412496795878,
+      "status": "complete",
+      "record_sha256": "9727bccaed655e1af42ba39571a3fb15d3b84f023aaa5370099618478d701bf2"
+    },
+    {
+      "id": "rust-rust-lang__cargo-09",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.028449249977711588,
+      "status": "complete",
+      "record_sha256": "c9134ef2065e4251ea05abc2aaa9e608948c2da334dcee4025c307f8e5cc6666"
+    },
+    {
+      "id": "rust-rust-lang__cargo-07",
+      "language": "rust",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.03363429103046656,
+      "status": "complete",
+      "record_sha256": "090bc86a931a52aeac6109b3fbfddeee346feb811191848bc680141d860ac3da"
+    },
+    {
+      "id": "typescript-expressjs__express-04",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 10,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.3333333333333333
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.3333333333333333
+        }
+      },
+      "seconds": 0.005904167017433792,
+      "status": "complete",
+      "record_sha256": "89780d32051e54e58919173e01ff69b4944717dcdf242e9821b2c5633b3a6481"
+    },
+    {
+      "id": "typescript-expressjs__express-07",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 8,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.5555555555555556
+        }
+      },
+      "seconds": 0.009872124996036291,
+      "status": "complete",
+      "record_sha256": "19e62bab4b2bdb3465ddf01c18af1a6f634d613606b41376c3f46a3584801c24"
+    },
+    {
+      "id": "typescript-expressjs__express-00",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 6,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.5393258426966292
+        }
+      },
+      "seconds": 0.010430624999571592,
+      "status": "complete",
+      "record_sha256": "392537306615552f1e6b991cb0a6f961d7d8534c38519d121e48a06d8ff2b971"
+    },
+    {
+      "id": "typescript-expressjs__express-01",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 7,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.6578947368421053
+        }
+      },
+      "seconds": 0.015517332998570055,
+      "status": "complete",
+      "record_sha256": "c64cf3ea7feb775d12adf6f8c9f987f069d14ab038c54bc866f49df2e4043319"
+    },
+    {
+      "id": "typescript-expressjs__express-08",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.4444444444444444
+        }
+      },
+      "seconds": 0.007657375012058765,
+      "status": "complete",
+      "record_sha256": "26b207f1298ce22168e801ee70aa3499db57daf0b0076dddade252bf2ac95e47"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-05",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.03874279104638845,
+      "status": "complete",
+      "record_sha256": "64c0345725ef8bd0f3892d8ce31c51d9cef3515979c3d296ecbb519528840686"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-03",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.01695537503110245,
+      "status": "complete",
+      "record_sha256": "80b1b7a3f8d025253604ace5b7b42f549dd9fab7642c4fbffee549d24bb4cac9"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-08",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.022369291982613504,
+      "status": "complete",
+      "record_sha256": "e8471b150a28cb2ce7900ae6e2f53c3542347d40fbbf30978db7c63aeaa0b6a8"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-07",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.02103520795935765,
+      "status": "complete",
+      "record_sha256": "31cc05d2f763bd7f297761643f0dc805ef652943f737b8f771d0cb599cbf8599"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-09",
+      "language": "typescript",
+      "method": "ripgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.64
+        }
+      },
+      "seconds": 0.020370916987303644,
+      "status": "complete",
+      "record_sha256": "b95ebc2e04ec2579cd3c53f74465152e59f265a6b24434dfb3d3486342f7baa1"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-02",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.2623042089981027,
+      "status": "complete",
+      "record_sha256": "4a04927359bb9c17f9a4055a2e236065e8f408a97615bc7dbe81e64c58a898bb"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-05",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.22289816598640755,
+      "status": "complete",
+      "record_sha256": "2af094f80cda251b480810ddd7a974998ff08afb90f24eb828b997268d5a10a5"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-06",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.21111320902127773,
+      "status": "complete",
+      "record_sha256": "d43c0b92bb83ae1959fcf1cad4ee9b51b3ecd40d37b4749bc7010bddeddd272b"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-09",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20843825000338256,
+      "status": "complete",
+      "record_sha256": "b35a54766db6ed9bfcff95e7ec04d490ff518eaaf9b4e8431aae973e03772a80"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-07",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2109590420150198,
+      "status": "complete",
+      "record_sha256": "18e28e8929643d0c1226780077b3b162587cb3c712462060d5a569a0239b547c"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-08",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 7,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2282009170157835,
+      "status": "complete",
+      "record_sha256": "ceb1c81537290b650ae9612afa0164fb5084e8947fd365b8662349d17d77c274"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-04",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20564295799704269,
+      "status": "complete",
+      "record_sha256": "d0547e1780bdee115f5e56e2a37a0cb67fad873b9e29a33b6bf0833a7f332dc5"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-02",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20400349999545142,
+      "status": "complete",
+      "record_sha256": "82c7f3df4f1cd920202cb9c02390c0d8a883e83ce16d1e7d8a9b15edba97decb"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-01",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20725004200357944,
+      "status": "complete",
+      "record_sha256": "7203c65b9de96727a563518b885bde646bd6fa09183d8653a5bd34ebbbcbc9d9"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-00",
+      "language": "cpp",
+      "method": "ck",
+      "file_rank": 8,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.2079585420433432,
+      "status": "complete",
+      "record_sha256": "2506a23244d7aa408af54722a31c011b4a66c8c0b245c4e2223be73616ea6ba4"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-07",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.28949070803355426,
+      "status": "complete",
+      "record_sha256": "15aacde0ba91290479ce9afaa11dca41e5bc916239bb33818f7101731fbf29ad"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-05",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.2373665840132162,
+      "status": "complete",
+      "record_sha256": "0437c75106b6d1f628b7b1c4e3908782142455ccb2cc09f4002421c0be0b8737"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-02",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2446918340283446,
+      "status": "complete",
+      "record_sha256": "cc0b23bba610aa2583fd9d208fa63ae050bc9926d0c6dc6d1d9ecc821ad9adb4"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-06",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.24358029197901487,
+      "status": "complete",
+      "record_sha256": "99609a57085f144cfc014d7e25220e12be65974871e7b1da45bd8ddfa9e1f40b"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-03",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.2451986669912003,
+      "status": "complete",
+      "record_sha256": "0ff5b945aafde28a6db3ab0d8f861fd5f354896a03611bc1481a1312a1a1322c"
+    },
+    {
+      "id": "go-caddyserver__caddy-02",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.24251016700873151,
+      "status": "complete",
+      "record_sha256": "8af97ab25b843b39798f8968d5a552cbe1b9e78208506545991cb9f6baa3f846"
+    },
+    {
+      "id": "go-caddyserver__caddy-07",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.21575591701548547,
+      "status": "complete",
+      "record_sha256": "33520ac2a320f1bcfb0927ec164f72684be9f2a7c3701fb992e6c88b2019bf98"
+    },
+    {
+      "id": "go-caddyserver__caddy-03",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.21766829199623317,
+      "status": "complete",
+      "record_sha256": "698a5c602129dc4f431387458e43fc4e802731cb2afe4bb68eb2ed9e2e9ba2ab"
+    },
+    {
+      "id": "go-caddyserver__caddy-00",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.22910774999763817,
+      "status": "complete",
+      "record_sha256": "c93a73e745f25318961068e0e64ca2cbffee98c5b21b78438c22ece0d6a749e2"
+    },
+    {
+      "id": "go-caddyserver__caddy-06",
+      "language": "go",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.21903874998679385,
+      "status": "complete",
+      "record_sha256": "8d696348be89c11e378efe5133e3bd962f8f4c3d4dd6a750532834ebf7f48a88"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-00",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.25194379198364913,
+      "status": "complete",
+      "record_sha256": "139efdcf7b9838a328c644a1ff322250c3a38a71c558c7f1214acef7700e35df"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-02",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.22815674997400492,
+      "status": "complete",
+      "record_sha256": "2ede132c4a7201741687601d8f6d612e0a6e5b94d1fa6bc44136dd71abb8b3bc"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-07",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.23181912500876933,
+      "status": "complete",
+      "record_sha256": "84a1a1bfe4132da239836545da74200d52f17e55236b9656eb58dcba06d2662b"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-04",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.22110500000417233,
+      "status": "complete",
+      "record_sha256": "988c81b2173b0142c56afc39bddda6b12e500460a8dd6aa013f53104e8bf243d"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-09",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7391304347826086
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.21795887500047684,
+      "status": "complete",
+      "record_sha256": "7524d6ec3fa183beec1a6bc0b941c1cf354a0d8ece621ec5fd641d4650f40cae"
+    },
+    {
+      "id": "java-Password4j__password4j-08",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.2180979999830015,
+      "status": "complete",
+      "record_sha256": "0d3353aec07f48a824bf5e234084885d538aee909d07616aed221dd1ed3d057b"
+    },
+    {
+      "id": "java-Password4j__password4j-05",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.203325665963348,
+      "status": "complete",
+      "record_sha256": "dbe26353759f21cab1a7bdde73d1e96637befb85c30038c83a460e40e020d494"
+    },
+    {
+      "id": "java-Password4j__password4j-06",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2035140839871019,
+      "status": "complete",
+      "record_sha256": "45356afaf9b2bbdb85015afafe80305dca301af1ecd1db8c5c5aefc1b27bfe22"
+    },
+    {
+      "id": "java-Password4j__password4j-01",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.2015858749509789,
+      "status": "complete",
+      "record_sha256": "140120d3cc9a58e277d286c0ac0d00eb29a6ca73c51b344f21ee267c74108a46"
+    },
+    {
+      "id": "java-Password4j__password4j-07",
+      "language": "java",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.19758316699881107,
+      "status": "complete",
+      "record_sha256": "17cf0c97dc9533578b06464ccbe4c608f2f6f91bf7cfd0a95da3e794759252e0"
+    },
+    {
+      "id": "python-python-poetry__poetry-01",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.23284641600912437,
+      "status": "complete",
+      "record_sha256": "f0c2d7b597029c6fe7cae21e34548c6c55ef04ebf47e09a4ac8a26b091a741f0"
+    },
+    {
+      "id": "python-python-poetry__poetry-09",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.21200800000224262,
+      "status": "complete",
+      "record_sha256": "31e29f22ec166c8e936fb28e318d9328931c36a430d00644d3b33df31f7e161e"
+    },
+    {
+      "id": "python-python-poetry__poetry-05",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.21341816696804017,
+      "status": "complete",
+      "record_sha256": "5f42edb4c8dd95a5c51ed901d6806fe7b73c51c560f210c135cd88607ab55d85"
+    },
+    {
+      "id": "python-python-poetry__poetry-04",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.21296400000574067,
+      "status": "complete",
+      "record_sha256": "7239962069e3ea3847be4d418abada95b9c9a8ba9c8eed51f2d524994d6435f9"
+    },
+    {
+      "id": "python-python-poetry__poetry-03",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.22012295800959691,
+      "status": "complete",
+      "record_sha256": "7aaa42628b98899105487b2e954fb59c7eb198adb0dd70d6a0501bf50a49f6cd"
+    },
+    {
+      "id": "python-openai__openai-python-06",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2640240829787217,
+      "status": "complete",
+      "record_sha256": "baac6e9b9ffa42941605f2fdcd8f30a9b8d723fe989c22c1cc43b144b1bec26d"
+    },
+    {
+      "id": "python-openai__openai-python-09",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2118529169820249,
+      "status": "complete",
+      "record_sha256": "cc64b8a42682e30955c5c99a10356ba62af9d4d815c83ef1292448e260adc2e7"
+    },
+    {
+      "id": "python-openai__openai-python-04",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2165461250115186,
+      "status": "complete",
+      "record_sha256": "a810ea0a18c789fdcb8b81a4e5c1c2f5f346913630cf5504d02e133ac021c02a"
+    },
+    {
+      "id": "python-openai__openai-python-07",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2104200409958139,
+      "status": "complete",
+      "record_sha256": "2cabd077ea8d960c9690a4ff4c2e985142dff16f4275562510f2045216a7948c"
+    },
+    {
+      "id": "python-openai__openai-python-00",
+      "language": "python",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.21188266604440287,
+      "status": "complete",
+      "record_sha256": "b99bcf01397b695b3cb1d9f104306306a77eda6f97a879055dfd5323b23de02a"
+    },
+    {
+      "id": "rust-cloudflare__pingora-03",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.222145207982976,
+      "status": "complete",
+      "record_sha256": "be4fd35dec135aa3d2f171648da8a28f99c7f67ac413e660be7c300a7362e478"
+    },
+    {
+      "id": "rust-cloudflare__pingora-00",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 5,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20183899998664856,
+      "status": "complete",
+      "record_sha256": "5810f2fe89f8f4dfe50fe581669065751df80aadd7bb44451c1b830b33b9165f"
+    },
+    {
+      "id": "rust-cloudflare__pingora-01",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 3,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2064864169806242,
+      "status": "complete",
+      "record_sha256": "528609442eabf6164a28e631c12bc1472fc4e754b7140d46f1298db0e56be821"
+    },
+    {
+      "id": "rust-cloudflare__pingora-05",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.23183562501799315,
+      "status": "complete",
+      "record_sha256": "8cdb50afab536850867c8ac0855b8f077eed936007fe6987d5f59e60447061be"
+    },
+    {
+      "id": "rust-cloudflare__pingora-09",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.21365287498338148,
+      "status": "complete",
+      "record_sha256": "34911a8d569acb761313c5e91a7db1aeea10dbbae791baf6a1a5869e8b22bcda"
+    },
+    {
+      "id": "rust-rust-lang__cargo-01",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2674512910307385,
+      "status": "complete",
+      "record_sha256": "c53fb30335fa91a3752f2a7ce58179c5d275d1f5d574f33bb46fa74800f80974"
+    },
+    {
+      "id": "rust-rust-lang__cargo-06",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.22915733297122642,
+      "status": "complete",
+      "record_sha256": "dd42cea9db7dff14ff2ae759afe345f6a9373d8cbd9fa64ebed55bcf760b67ad"
+    },
+    {
+      "id": "rust-rust-lang__cargo-02",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.2383761249948293,
+      "status": "complete",
+      "record_sha256": "433983e0a8491a348d1b02a49138498eea81384f281dba54852a6f7b9a0340b3"
+    },
+    {
+      "id": "rust-rust-lang__cargo-09",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2222932910080999,
+      "status": "complete",
+      "record_sha256": "7cf6c8cd332f6813014b1d5f696c185283bf734f2be18c96d1d5b411a0a2b4a8"
+    },
+    {
+      "id": "rust-rust-lang__cargo-07",
+      "language": "rust",
+      "method": "ck",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.22444691701093689,
+      "status": "complete",
+      "record_sha256": "4bce19f7c5b4cd8e3e1edfa7095917d8b31cb9291779901f2ad5b8a4a8aaa4c2"
+    },
+    {
+      "id": "typescript-expressjs__express-04",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20377924997592345,
+      "status": "complete",
+      "record_sha256": "c968916660dcb8c66f5e0fd817a0de6b4c61f04cf9ac406651141737497b179f"
+    },
+    {
+      "id": "typescript-expressjs__express-07",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2021625829511322,
+      "status": "complete",
+      "record_sha256": "74f95e48db9ebe8de40b6315918ea4468e4359b2f64b276de83d59a0ddd17ef6"
+    },
+    {
+      "id": "typescript-expressjs__express-00",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2023018340114504,
+      "status": "complete",
+      "record_sha256": "5ba6a9bcc7e52b42b650a447bb509e2cfaebaa3683a62b30fa64d0d57f133e16"
+    },
+    {
+      "id": "typescript-expressjs__express-01",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20861949998652562,
+      "status": "complete",
+      "record_sha256": "5c4f93d7b2c8b52971c42d6579a2fd570ee0b93cb2b88ce11b5235152e39b7ed"
+    },
+    {
+      "id": "typescript-expressjs__express-08",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.19787120900582522,
+      "status": "complete",
+      "record_sha256": "92b620676f6afdc0c91e26e6f7091911eaacc32b02a1669ea5b7ccf4a268c382"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-05",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7
+        },
+        "8000": {
+          "half": true,
+          "full": false,
+          "coverage": 0.7
+        }
+      },
+      "seconds": 0.22777595900697634,
+      "status": "complete",
+      "record_sha256": "613c6325dbde34270748765ff62e68b743e139a4d010d291eb38029eb35194f7"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-03",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20600512495730072,
+      "status": "complete",
+      "record_sha256": "1d292eb4ffc54855978648763a5d5ef8dba4436fcddc4d51707f9ee91fd1df0e"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-08",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.20970891695469618,
+      "status": "complete",
+      "record_sha256": "eacd5cd0d02256c268d693b645dbd224d1f1d7b6038ba94ddc59ab54e8081e46"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-07",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2135257920017466,
+      "status": "complete",
+      "record_sha256": "00d04cd3ad04998951bff8422e7297828331e6de3614d0ee011956c56255030c"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-09",
+      "language": "typescript",
+      "method": "ck",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.2108065409702249,
+      "status": "complete",
+      "record_sha256": "f1358ba36191b69aceea6296fbf3723ec9a0a7dee628efa69e0694bd1a7ef85a"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-02",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 13.081381041,
+      "status": "complete",
+      "record_sha256": "a5926c0911483bf338217ee5a82c98b0a7879d073952b6281516c82b0bb130dc"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-05",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 4,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 15.895964792,
+      "status": "complete",
+      "record_sha256": "34e25446f47e8023eb44f93ea796ea1d2a6fea840b9487a3d81dd832d56ef316"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-06",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 14.48567725,
+      "status": "complete",
+      "record_sha256": "a1aa2f8dda07e750630a1c25eae9d8a447dac145a7a962d546c8e35a546f63aa"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-09",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 17.655816999999995,
+      "status": "complete",
+      "record_sha256": "4a11b99b6d639721eaef4d50bddea211a96e87d3fad955f236267b71c5be866f"
+    },
+    {
+      "id": "cpp-apache__logging-log4cxx-07",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 14.57660274999999,
+      "status": "complete",
+      "record_sha256": "5ccd3eb43f278662481e9767d65b2bd8f36497590dcbf3fc71c2499afed5ab4d"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-08",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 3.772929500000013,
+      "status": "complete",
+      "record_sha256": "a3b5dbef13e7ca32cdcc2ed6fdecacbe6423320f9e0d745988319f68741965e9"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-04",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 4.7821374589999905,
+      "status": "complete",
+      "record_sha256": "9d6c5f0ba8b852baa2e37b0e0d494402c4c32ede58072217c6bd30094147386e"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-02",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 3.204863000000012,
+      "status": "complete",
+      "record_sha256": "ca2aa024fcc05d9da6585a6653da13ed46a9b6596189b693d6c6a7708eb7fcbb"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-01",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 6.208573041999989,
+      "status": "complete",
+      "record_sha256": "6a03955d7f8b33756401ee4c006dd5c41832134e5d1e105457bd512b69f651be"
+    },
+    {
+      "id": "cpp-ClickHouse__clickhouse-cpp-00",
+      "language": "cpp",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 3.5639816250000003,
+      "status": "complete",
+      "record_sha256": "878330bd3840660f8d800fd7bc77df233c27b86efd8461b21cd24515ebf2634e"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-07",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 4.265949584000002,
+      "status": "complete",
+      "record_sha256": "b191fb412725e930119c96a914385f6fa6edea841f1f893fae1309b76691a884"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-05",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 12.770510500000004,
+      "status": "complete",
+      "record_sha256": "c5f34fff36e3a8c670b2029cbe5b5ce1a51a63ca356bcb19d9e0f74cee26eb2c"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-02",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 14.345241333999992,
+      "status": "complete",
+      "record_sha256": "5a9a7ec403d7b602c1537312d213644026c567531f221226bcc4d6cfc6d415b9"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-06",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 2.4684859590000126,
+      "status": "complete",
+      "record_sha256": "9f5cb2d425589b60c8e75aeb3d99109289e7017977cd141d96417a0a66b73746"
+    },
+    {
+      "id": "go-projectdiscovery__nuclei-03",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 12.673236042000005,
+      "status": "complete",
+      "record_sha256": "c1fa00331a54276cce154e1b704d200261dbc5c2f7db3384e60656fa3a83a004"
+    },
+    {
+      "id": "go-caddyserver__caddy-02",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 14.805011958999996,
+      "status": "complete",
+      "record_sha256": "9ae782b56fd713c1f753c4686b392fabf36e97283f5a07747de85ba7913c72ea"
+    },
+    {
+      "id": "go-caddyserver__caddy-07",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 5.579689249999996,
+      "status": "complete",
+      "record_sha256": "9734c0218df08b1ef566edc3e435b1547093e04210d67c2a2470cc701fdfc34a"
+    },
+    {
+      "id": "go-caddyserver__caddy-03",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.21729020799999124,
+      "status": "complete",
+      "record_sha256": "6a1b1c0bc955e3808360e7d3658d44c716e3fe48d25e8b48248a9e042992c4ab"
+    },
+    {
+      "id": "go-caddyserver__caddy-00",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 18.812758791,
+      "status": "complete",
+      "record_sha256": "e61d7ad854b2dd9245b6ec44b6904f719540a5362a7149fd2365bba6f5a522e6"
+    },
+    {
+      "id": "go-caddyserver__caddy-06",
+      "language": "go",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.1800423329999903,
+      "status": "complete",
+      "record_sha256": "908c2d3fb4b187b4d38b28d5038b44f8fdafda338e1951df208d3a8d4cef5f25"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-00",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.1391547089999949,
+      "status": "complete",
+      "record_sha256": "36d38b8855d993f1b688119079110cd7224034253ad56516ebb57fb31efa676c"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-02",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.3585750410000037,
+      "status": "complete",
+      "record_sha256": "71e7f21b4b31eede678d6315ffaea8ead9c868f1ab55beb5ebc3c58e3162b326"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-07",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 12.583947209000005,
+      "status": "complete",
+      "record_sha256": "361e3665ff11eea8f28adb266742d9b3606497f9810874fb8e0875a0d8a7f558"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-04",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 4.661820792000013,
+      "status": "complete",
+      "record_sha256": "82942aee977f95f38ad90985c26828239cef9c5e356fed080f60a7ebc0914427"
+    },
+    {
+      "id": "java-GoogleContainerTools__jib-09",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 6.5337864169999955,
+      "status": "complete",
+      "record_sha256": "f8f9ab06c0e14aecc0b8d8d6fd638cc53797be58f79eadba224521cac1ef364b"
+    },
+    {
+      "id": "java-Password4j__password4j-08",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 5.300446584000019,
+      "status": "complete",
+      "record_sha256": "4e064f2b4253b13d757689a12f8a521e7285492c402908d614d04e0c2358a5ae"
+    },
+    {
+      "id": "java-Password4j__password4j-05",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 4.102527417000005,
+      "status": "complete",
+      "record_sha256": "30271a575d97fe7223331281c27f937c732fdc15eb454a4eaeeafcf5621d92b9"
+    },
+    {
+      "id": "java-Password4j__password4j-06",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 4.328928917000012,
+      "status": "complete",
+      "record_sha256": "1cb0341f88ba9ed36a232bf99571951ddc351c010f718374916ca6e988272860"
+    },
+    {
+      "id": "java-Password4j__password4j-01",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 4.197979417000024,
+      "status": "complete",
+      "record_sha256": "2821dae3786c119be5368b5abc84cc463f1d367b22a904d72d13bfeb29e16ce6"
+    },
+    {
+      "id": "java-Password4j__password4j-07",
+      "language": "java",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 6.084808958000009,
+      "status": "complete",
+      "record_sha256": "7624ea799e49d3881871161cc95f1101ca8ef1db89e55d9fe13b51c01ff4682d"
+    },
+    {
+      "id": "python-python-poetry__poetry-01",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 8.810355624999996,
+      "status": "complete",
+      "record_sha256": "24f662720e3454ac90e87929124e7a385ec81cf3df716d93b3a48e2f42b7e297"
+    },
+    {
+      "id": "python-python-poetry__poetry-09",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 13.941262792000023,
+      "status": "complete",
+      "record_sha256": "b3b1fe8382f69d835d35f0915d05866bc74af0edfaaed17e6a827dc38089310e"
+    },
+    {
+      "id": "python-python-poetry__poetry-05",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 2,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 9.781260417000013,
+      "status": "complete",
+      "record_sha256": "2cb3dd240b0f2e05b1371ce4a9c0258522f67a59385058761797df2bd3b26142"
+    },
+    {
+      "id": "python-python-poetry__poetry-04",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 9.910904334000021,
+      "status": "complete",
+      "record_sha256": "5f884ce201fb428686d9c959e996813017eac2364804c71867846d1ac5a84456"
+    },
+    {
+      "id": "python-python-poetry__poetry-03",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 10.806364000000002,
+      "status": "complete",
+      "record_sha256": "c739ac06e641473b767e41ec8cf72efc5f4c696544f9612f59341061a87b8e23"
+    },
+    {
+      "id": "python-openai__openai-python-06",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 16.885267541999987,
+      "status": "complete",
+      "record_sha256": "670877fdc2c1c5da5691f5b526023555871b2a1c57b0311a07d7b92fb563fce4"
+    },
+    {
+      "id": "python-openai__openai-python-09",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 8.167981874999997,
+      "status": "complete",
+      "record_sha256": "255bfe06def050832b82dbe91d82131618c4c01bd2752781ae1c7afaa9fd8475"
+    },
+    {
+      "id": "python-openai__openai-python-04",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 5.03296991699998,
+      "status": "complete",
+      "record_sha256": "3ffa57117db20e226fcc0e733cb00947854c17d2e6adc7e8c609e2f83ff74e01"
+    },
+    {
+      "id": "python-openai__openai-python-07",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 0.10708733300003223,
+      "status": "complete",
+      "record_sha256": "0b2620605013ab23303a7dd178469eb8085a824b8e855ed03e21ce93f338ea6f"
+    },
+    {
+      "id": "python-openai__openai-python-00",
+      "language": "python",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 8.306976583999989,
+      "status": "complete",
+      "record_sha256": "ee76f4bd68cfc3a84ef6318dd5c2f6803241ae69f73cb21973cbe97f75d926f9"
+    },
+    {
+      "id": "rust-cloudflare__pingora-03",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 11.379480457999977,
+      "status": "complete",
+      "record_sha256": "07fd3234b768d9dd760b99e85d5e63cd0c4676d06d61f17ff4dceada4974ed2f"
+    },
+    {
+      "id": "rust-cloudflare__pingora-00",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 8.457993332999992,
+      "status": "complete",
+      "record_sha256": "1e187eb1e0c8a69a866b5dad75206f5b5778ab4b30bb397228ef95df384ed04f"
+    },
+    {
+      "id": "rust-cloudflare__pingora-01",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 13.190844041999954,
+      "status": "complete",
+      "record_sha256": "d60faa7df9dfb63cc100c66d371bd5a4bd30deee79b19d38e40e9dcb4063987d"
+    },
+    {
+      "id": "rust-cloudflare__pingora-05",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 8.999222749999957,
+      "status": "complete",
+      "record_sha256": "dcb3aeb5b82ad298f3de8e95e0c2cb27f34a6d59ad6c4aa0b92558a8e5a33b10"
+    },
+    {
+      "id": "rust-cloudflare__pingora-09",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 8.902561000000045,
+      "status": "complete",
+      "record_sha256": "1cb5b6dba488222fb9f78ec5db54132b4f89fcba13db53233d5e2b4f1aa4580d"
+    },
+    {
+      "id": "rust-rust-lang__cargo-01",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 16.70733908300003,
+      "status": "complete",
+      "record_sha256": "48a7b0e0e2c618a2d8d9400fb6603f85cdfe1ca13dacc9ece002f984045d8a5a"
+    },
+    {
+      "id": "rust-rust-lang__cargo-06",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 31.115870082999987,
+      "status": "complete",
+      "record_sha256": "60b7f0f45f48ae7449f11a1a090f04c85b7b05fb3982807c5c2ea70fa4a96a3d"
+    },
+    {
+      "id": "rust-rust-lang__cargo-02",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 30.67823529099999,
+      "status": "complete",
+      "record_sha256": "f6e9836f0b681669f2f47d1af97a6018f293436a42c77a8f611c88bc0b5c0006"
+    },
+    {
+      "id": "rust-rust-lang__cargo-09",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 17.56693612500001,
+      "status": "complete",
+      "record_sha256": "499a51cda92880b23ef380274038afe21cf7997843145d60f489762ac0781964"
+    },
+    {
+      "id": "rust-rust-lang__cargo-07",
+      "language": "rust",
+      "method": "jevgrep",
+      "file_rank": 0,
+      "hits": {
+        "2000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        },
+        "8000": {
+          "half": false,
+          "full": false,
+          "coverage": 0.0
+        }
+      },
+      "seconds": 21.831930125000014,
+      "status": "complete",
+      "record_sha256": "0cf83beaa8dc6d2af997fc5a00675cadf78646d7a76769abd91f8f6700ec75d6"
+    },
+    {
+      "id": "typescript-expressjs__express-04",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.47413899999996645,
+      "status": "complete",
+      "record_sha256": "eca56c7cdcc9c2cf0e3df44ba08a8204baf93415b2fb875832c2919c130e1162"
+    },
+    {
+      "id": "typescript-expressjs__express-07",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 2.319505917000002,
+      "status": "complete",
+      "record_sha256": "92172c68d92992d68e25441b83c6fb7e0af8fb96546a930e42dfc08f29beae04"
+    },
+    {
+      "id": "typescript-expressjs__express-00",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 1.2482211670000105,
+      "status": "complete",
+      "record_sha256": "55538c2368a125632484ad034aadff4d0ddb8e46da5f3da49530ad944e9254c2"
+    },
+    {
+      "id": "typescript-expressjs__express-01",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 1.3401111249999957,
+      "status": "complete",
+      "record_sha256": "4e77a4737fed4a42675cc0f0f0e79ad02a749e9b7b2b3b653cf3fbc1e85f6368"
+    },
+    {
+      "id": "typescript-expressjs__express-08",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 0.5988971669999883,
+      "status": "complete",
+      "record_sha256": "5b6b224542ff19333afb52520baf6127f6d7c531b526bc2fdb020518c13b158f"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-05",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 11.753095958999998,
+      "status": "complete",
+      "record_sha256": "d9c5ec50424c1aec2b2c4e08b1eede07e4554042e32f8c7b6f7d52fc42e30288"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-03",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 7.278680541000038,
+      "status": "complete",
+      "record_sha256": "5a8d58493d67d9d1c19af2cd1029916d15211be0f898b16e59e4c6389aad6561"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-08",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 26.82908891599998,
+      "status": "complete",
+      "record_sha256": "c8a1ef29ae3beb275de5ab054226e22652f030bc519fee226d833d1f03d6c1cf"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-07",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 15.897454458000022,
+      "status": "complete",
+      "record_sha256": "aa998698296969c3fad824d5f02ac8a7dbe2bd7f07d165f26d90f8a8fba28669"
+    },
+    {
+      "id": "typescript-firebase__firebase-admin-node-09",
+      "language": "typescript",
+      "method": "jevgrep",
+      "file_rank": 1,
+      "hits": {
+        "2000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        },
+        "8000": {
+          "half": true,
+          "full": true,
+          "coverage": 1.0
+        }
+      },
+      "seconds": 11.924833417000016,
+      "status": "complete",
+      "record_sha256": "4b1334a74d3c3221d0c0cf35637f34554400ffae19ddba2d6dbc75e3310b5e7c"
+    }
+  ],
+  "setup": {
+    "ck_index_seconds": 411.03127845807467,
+    "ck_index_bytes": 54743552
+  },
+  "verification": {
+    "source_lines_checked": true,
+    "corpus_hashes_unchanged": true,
+    "all_results_present": true,
+    "tokens_checked": true,
+    "jev_native_8k_evidence_verified": true
+  },
+  "protocol": {
+    "dataset": "RepoQA release2024-06-23; retrieval adaptation",
+    "selection": "Frozen before scores: per language, two repositories sorted by SHA256(sgrep-eval-v1:repo); five needles each by SHA256(sgrep-eval-v1:repo:original_index). 60 queries/12 repos/6 languages. No post-score selection or tuning.",
+    "primary": "target file Recall@1/5/10 and MRR@10; at least 50% target-function source lines within 8000 o200k tokens; secondary2000 tokens. Deduplicate lines preserving output rank.",
+    "methods": {
+      "sgrep": "Rust binary pinned before scores, -n50 --json",
+      "ripgrep": "literal OR of identical sgrep query terms, case insensitive, --json --sort path, no semantic ranking; return matching lines only",
+      "ck": "0.7.11 bge-small --sem --full-section --threshold0 --topk50, freshly built per-repository indexes",
+      "jevgrep": "dzhng/jevgrep703aba1 native TypeSafe provider jev-1.13.0, no answer cache, concurrency32, default token/request budgeting unchanged, native excerpts rendered in tool order"
+    },
+    "timing": "Quality runs may overlap CK index setup; their elapsed time is diagnostic only. Reported latency comes from a separate sequential replay on the first selected question per repository (12 queries, two per language), after indexing and quality runs finish, across all four methods. Fresh process for native CLIs, resident native Jev adapter, cached model downloads, no answer cache. All failures included.",
+    "limits": "This is a stratified 10% sample of the six-language local release (600 queries), not full-repo real-world issue resolution. Source snapshots ~1MB average, public model training overlap unaudited. Python seen before; other language queries not used for tuning.",
+    "failure_contract": [
+      "gold outside searchroots",
+      "unchanged sourcehashes",
+      "no endpoint errors dropped",
+      "source locations real",
+      "matching token budgets",
+      "full100rankingregression completed before freezing new multilingual scoring"
+    ]
+  }
+}

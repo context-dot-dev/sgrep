@@ -1,4 +1,5 @@
 //! Query-independent chunks, postings and vectors, published atomically.
+use crate::cache::{Cache, IndexCache};
 use crate::{
     Args, CODE, Chunk, ModelChoice, Result, TEXT, candidates, embed, identifier_pattern, rank,
     source_files,
@@ -9,19 +10,14 @@ use sha2::{Digest, Sha256};
 use std::{
     collections::{BTreeMap, HashSet},
     fs::File,
-    io::Write,
+    io::{Read, Write},
     path::Path,
 };
 
 #[derive(Serialize, Deserialize, PartialEq)]
 struct Stamp {
     path: std::path::PathBuf,
-    len: u64,
-    modified: u128,
-    #[cfg(not(unix))]
     digest: [u8; 32],
-    #[cfg(unix)]
-    identity: (u64, u64, i64, i64),
 }
 
 fn manifest(path: &Path) -> Result<Vec<Stamp>> {
@@ -29,28 +25,19 @@ fn manifest(path: &Path) -> Result<Vec<Stamp>> {
     files
         .into_iter()
         .map(|path| {
-            let metadata = std::fs::metadata(root.join(&path))?;
-            #[cfg(not(unix))]
-            let digest = Sha256::digest(std::fs::read(root.join(&path))?).into();
+            let mut file = File::open(root.join(&path))?;
+            let mut digest = Sha256::new();
+            let mut buffer = [0; 65536];
+            loop {
+                let n = file.read(&mut buffer)?;
+                if n == 0 {
+                    break;
+                }
+                digest.update(&buffer[..n]);
+            }
             Ok(Stamp {
-                #[cfg(not(unix))]
-                digest,
                 path,
-                len: metadata.len(),
-                modified: metadata
-                    .modified()?
-                    .duration_since(std::time::UNIX_EPOCH)?
-                    .as_nanos(),
-                #[cfg(unix)]
-                identity: {
-                    use std::os::unix::fs::MetadataExt;
-                    (
-                        metadata.dev(),
-                        metadata.ino(),
-                        metadata.ctime(),
-                        metadata.ctime_nsec(),
-                    )
-                },
+                digest: digest.finalize().into(),
             })
         })
         .collect()
@@ -61,6 +48,8 @@ struct Header {
     version: u32,
     manifest: Vec<Stamp>,
     revision: String,
+    tokenizer_sha256: String,
+    weights_sha256: String,
     count: usize,
     total_length: usize,
     vectors: usize,
@@ -108,8 +97,14 @@ struct Index {
     start: usize,
 }
 impl Index {
-    fn open(file: &Path, stamps: &[Stamp], choice: ModelChoice) -> Result<Self> {
+    fn open(file: &Path, stamps: &[Stamp], choice: ModelChoice, max_bytes: u64) -> Result<Self> {
+        if !std::fs::symlink_metadata(file)?.is_file() {
+            return Err("not a regular index file".into());
+        }
         let file = File::open(file)?;
+        if file.metadata()?.len() > max_bytes {
+            return Err("index exceeds cache budget".into());
+        }
         // Writers replace the cache atomically; mapped files are never modified in place.
         let map = unsafe { Mmap::map(&file)? };
         if map.get(..8) != Some(b"SGREPIX1") {
@@ -119,7 +114,7 @@ impl Index {
             .checked_add(number(&map, 8)?)
             .ok_or("index overflow")?;
         let header: Header = serde_json::from_slice(map.get(16..start).ok_or("truncated index")?)?;
-        if header.version != 3
+        if header.version != 4
             || header.manifest != stamps
             || (choice == ModelChoice::Code && header.revision != CODE.revision)
             || (choice == ModelChoice::Text && header.revision != TEXT.revision)
@@ -127,7 +122,20 @@ impl Index {
         {
             return Err("stale index".into());
         }
+        let model = if header.revision == CODE.revision {
+            &CODE
+        } else {
+            &TEXT
+        };
+        if header.tokenizer_sha256 != model.tokenizer.sha256
+            || header.weights_sha256 != model.weights.sha256
+        {
+            return Err("stale model in index".into());
+        }
         let end = map.len().checked_sub(4).ok_or("truncated index")?;
+        if start > end {
+            return Err("truncated index".into());
+        }
         let checksum = u32::from_le_bytes(map.get(end..).ok_or("truncated index")?.try_into()?);
         if crc32fast::hash(map.get(..end).ok_or("truncated index")?) != checksum {
             return Err("corrupt index".into());
@@ -140,6 +148,7 @@ impl Index {
         {
             return Err("invalid vector index".into());
         }
+        file.set_modified(std::time::SystemTime::now())?;
         Ok(index)
     }
     fn data(&self) -> &[u8] {
@@ -186,13 +195,13 @@ impl Index {
         }
         Ok(scores)
     }
-    fn search(&self, args: &Args, terms: &[String]) -> Result<Vec<Chunk>> {
+    fn search(&self, args: &Args, terms: &[String], assets: &Cache) -> Result<Vec<Chunk>> {
         let model = if self.header.revision == CODE.revision {
             &CODE
         } else {
             &TEXT
         };
-        let query = embed(vec![args.query.clone()], model)?.remove(0);
+        let query = embed(vec![args.query.clone()], model, assets)?.remove(0);
         let lexical = self.lexical(terms)?;
         let vectors = &self.data()[self.header.vectors..][..self.header.count * 256 * 4];
         let similarities: Vec<f64> = vectors
@@ -240,10 +249,28 @@ impl Index {
     }
 }
 
-fn build(args: &Args, path: &Path, stamps: Vec<Stamp>, file: &Path) -> Result<()> {
-    let mut chunks = candidates(path)?;
+fn build(
+    args: &Args,
+    path: &Path,
+    stamps: Vec<Stamp>,
+    file: &Path,
+    assets: &Cache,
+    cache: &IndexCache,
+) -> Result<Option<Index>> {
+    let expected = stamps
+        .iter()
+        .map(|stamp| (stamp.path.clone(), stamp.digest))
+        .collect();
+    let mut chunks = candidates(path, Some(&expected))?;
     let mut seen = HashSet::new();
     chunks.retain(|c| seen.insert((c.path.clone(), c.start, c.end)));
+    if chunks.iter().fold(0u64, |n, c| {
+        n.saturating_add(c.content.len() as u64)
+            .saturating_add(256 * 4)
+    }) > cache.max_bytes
+    {
+        return Ok(None);
+    }
     let prose = chunks.iter().all(|c| crate::is_prose(&c.path));
     let model = if args.model == ModelChoice::Text || (args.model == ModelChoice::Auto && prose) {
         &TEXT
@@ -259,6 +286,7 @@ fn build(args: &Args, path: &Path, stamps: Vec<Stamp>, file: &Path) -> Result<()
                 .map(|c| format!("{}\n{}", c.path, c.content))
                 .collect(),
             model,
+            assets,
         )?
     };
     let mut data = Vec::new();
@@ -302,9 +330,11 @@ fn build(args: &Args, path: &Path, stamps: Vec<Stamp>, file: &Path) -> Result<()
         return Err("source changed while building index; retry search".into());
     }
     let header = Header {
-        version: 3,
+        version: 4,
         manifest: stamps,
         revision: model.revision.into(),
+        tokenizer_sha256: model.tokenizer.sha256.into(),
+        weights_sha256: model.weights.sha256.into(),
         count: chunks.len(),
         total_length: total,
         vectors: 0,
@@ -312,27 +342,38 @@ fn build(args: &Args, path: &Path, stamps: Vec<Stamp>, file: &Path) -> Result<()
         terms,
         term_count,
     };
-    let header = serde_json::to_vec(&header)?;
+    let header_bytes = serde_json::to_vec(&header)?;
     let mut bytes = b"SGREPIX1".to_vec();
-    put(&mut bytes, header.len());
-    bytes.extend(header);
+    put(&mut bytes, header_bytes.len());
+    bytes.extend(header_bytes);
     bytes.extend(data);
     let checksum = crc32fast::hash(&bytes);
     bytes.extend_from_slice(&checksum.to_le_bytes());
-    let directory = file.parent().unwrap();
-    std::fs::create_dir_all(directory)?;
-    let mut temporary = tempfile::NamedTempFile::new_in(directory)?;
+    if bytes.len() as u64 > cache.max_bytes {
+        return Ok(None);
+    }
+    let _lock = cache.maintain(Some((file, bytes.len() as u64)))?;
+    let mut temporary = tempfile::Builder::new()
+        .prefix("sgrep-index-")
+        .suffix(".tmp")
+        .tempfile_in(&cache.directory)?;
     temporary.write_all(&bytes)?;
     temporary.persist(file)?;
-    Ok(())
+    Ok(Some(Index::open(
+        file,
+        &header.manifest,
+        args.model,
+        cache.max_bytes,
+    )?))
 }
 
-pub fn search(args: &Args, path: &Path, terms: &[String]) -> Result<Option<Vec<Chunk>>> {
-    let directory = std::env::var_os("SGREP_CACHE_DIR")
-        .map(std::path::PathBuf::from)
-        .or_else(|| std::env::var_os("XDG_CACHE_HOME").map(|p| Path::new(&p).join("sgrep")))
-        .or_else(|| std::env::var_os("HOME").map(|p| Path::new(&p).join(".cache/sgrep")));
-    let Some(directory) = directory else {
+pub fn search(
+    args: &Args,
+    path: &Path,
+    terms: &[String],
+    assets: &Cache,
+) -> Result<Option<Vec<Chunk>>> {
+    let Some(cache) = IndexCache::new(args.cache_dir.as_deref())? else {
         return Ok(None);
     };
     let mut identity = Sha256::new();
@@ -343,26 +384,47 @@ pub fn search(args: &Args, path: &Path, terms: &[String]) -> Result<Option<Vec<C
         .iter()
         .map(|b| format!("{b:02x}"))
         .collect();
-    let file = directory.join(format!("index-{name}.bin"));
+    let file = cache.directory.join(format!("index-{name}.bin"));
     let stamps = manifest(path)?;
+    let index = {
+        let _lock = match cache.maintain(None) {
+            Ok(lock) => lock,
+            Err(error) => {
+                eprintln!("sgrep: could not use search cache: {error}");
+                return Ok(None);
+            }
+        };
+        if args.refresh_cache {
+            None
+        } else {
+            Index::open(&file, &stamps, args.model, cache.max_bytes).ok()
+        }
+    };
     if stamps.is_empty() {
         return Ok(Some(Vec::new()));
     }
-    if let Ok(index) = Index::open(&file, &stamps, args.model) {
-        if index.header.count == 0 {
-            return Ok(Some(Vec::new()));
+    if let Some(index) = index {
+        let results = if index.header.count == 0 {
+            Ok(Vec::new())
+        } else {
+            index.search(args, terms, assets)
+        };
+        if let Ok(results) = results {
+            return Ok((manifest(path)? == stamps).then_some(results));
         }
-        if let Ok(results) = index.search(args, terms) {
-            return Ok(Some(results));
+    }
+    match build(args, path, stamps, &file, assets, &cache) {
+        Ok(Some(index)) => {
+            if index.header.count == 0 {
+                return Ok(Some(Vec::new()));
+            }
+            let results = index.search(args, terms, assets)?;
+            Ok((manifest(path)? == index.header.manifest).then_some(results))
+        }
+        Ok(None) => Ok(None),
+        Err(error) => {
+            eprintln!("sgrep: could not save search index: {error}");
+            Ok(None)
         }
     }
-    if let Err(error) = build(args, path, stamps, file.as_path()) {
-        eprintln!("sgrep: could not save search index: {error}");
-        return Ok(None);
-    }
-    let index = Index::open(&file, &manifest(path)?, args.model)?;
-    if index.header.count == 0 {
-        return Ok(Some(Vec::new()));
-    }
-    Ok(Some(index.search(args, terms)?))
 }

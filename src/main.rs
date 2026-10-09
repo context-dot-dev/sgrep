@@ -1,3 +1,4 @@
+mod cache;
 mod codechunker;
 mod index;
 mod rg_input;
@@ -20,18 +21,40 @@ struct Model {
     revision: &'static str,
     rows: usize,
     dtype: safetensors::Dtype,
+    tokenizer: cache::Asset,
+    weights: cache::Asset,
 }
 const CODE: Model = Model {
     repo: "minishlab/potion-code-16M-v2",
     revision: "e9d2a44ca6a05ac6685f3b23709ea57eb7352d5b",
     rows: 63457,
     dtype: safetensors::Dtype::F16,
+    tokenizer: cache::Asset {
+        name: "tokenizer.json",
+        size: 1024340,
+        sha256: "107bbdcbad4bff1d299b7a4c3a2fb17c52890688b7dd0e4c9deab79d3c4f3d45",
+    },
+    weights: cache::Asset {
+        name: "model.safetensors",
+        size: 32490072,
+        sha256: "75cf7a6c2171b230ad19b1e7d8e0b1aee86da5a02af8e7cacedd9921d227623c",
+    },
 };
 const TEXT: Model = Model {
     repo: "minishlab/potion-base-8M",
     revision: "bf8b056651a2c21b8d2565580b8569da283cab23",
     rows: 29528,
     dtype: safetensors::Dtype::F32,
+    tokenizer: cache::Asset {
+        name: "tokenizer.json",
+        size: 683666,
+        sha256: "e67e803f624fb4d67dea1c730d06e1067e1b14d830e2c2202569e3ef0f70bb50",
+    },
+    weights: cache::Asset {
+        name: "model.safetensors",
+        size: 30236760,
+        sha256: "f65d0f325faadc1e121c319e2faa41170d3fa07d8c89abd48ca5358d9a223de2",
+    },
 };
 
 #[derive(Clone, Copy, PartialEq, ValueEnum)]
@@ -52,6 +75,15 @@ static STOP: LazyLock<HashSet<&str>> = LazyLock::new(|| {
     about = "Search code and text with ripgrep and local static embeddings."
 )]
 struct Args {
+    /// Store models, parsers and search indexes under this directory.
+    #[arg(long, value_name = "DIR")]
+    cache_dir: Option<PathBuf>,
+    /// Recompute and replace this corpus's search index before searching.
+    #[arg(long, conflicts_with = "no_cache")]
+    refresh_cache: bool,
+    /// Download assets into a disposable cache and compute embeddings without reuse.
+    #[arg(long, conflicts_with = "cache_dir")]
+    fresh_assets: bool,
     query: String,
     #[arg(default_value = ".")]
     path: PathBuf,
@@ -68,7 +100,7 @@ struct Args {
     /// Rank only ripgrep --json passages read from standard input.
     #[arg(long, conflicts_with = "rg_json")]
     stdin: bool,
-    /// Compute fresh corpus embeddings without reading or writing the cache.
+    /// Search without reading or writing the search index.
     #[arg(long)]
     no_cache: bool,
     /// Include lexical, semantic and fused scores in JSON output.
@@ -183,7 +215,7 @@ fn source_files(path: &Path) -> Result<(&Path, Vec<PathBuf>)> {
     Ok((root, files))
 }
 
-fn candidates(path: &Path) -> Result<Vec<Chunk>> {
+fn candidates(path: &Path, expected: Option<&HashMap<PathBuf, [u8; 32]>>) -> Result<Vec<Chunk>> {
     let (root, files) = source_files(path)?;
     let chunks: Result<Vec<Vec<Chunk>>> = files
         .par_iter()
@@ -193,6 +225,13 @@ fn candidates(path: &Path) -> Result<Vec<Chunk>> {
             let relative = relative.strip_prefix(".").unwrap_or(relative);
             let file = root.join(relative);
             let bytes = std::fs::read(&file)?;
+            if let Some(expected) = expected {
+                use sha2::Digest;
+                let digest: [u8; 32] = sha2::Sha256::digest(&bytes).into();
+                if expected.get(name) != Some(&digest) {
+                    return Err("source changed while reading index input; retry search".into());
+                }
+            }
             if bytes.contains(&0) {
                 return Ok(chunks);
             }
@@ -276,51 +315,12 @@ fn relative_scores(scores: &[f64]) -> Vec<f64> {
         .collect()
 }
 
-fn model_file(model: &Model, name: &str) -> Result<PathBuf> {
-    let cache = std::env::var_os("HF_HUB_CACHE")
-        .or_else(|| std::env::var_os("HUGGINGFACE_HUB_CACHE"))
-        .map(PathBuf::from)
-        .unwrap_or_else(|| hf_hub::Cache::from_env().path().clone());
-    let file = cache
-        .join(format!("models--{}", model.repo.replace('/', "--")))
-        .join("snapshots")
-        .join(model.revision)
-        .join(name);
-    if file.is_file() {
-        return Ok(file);
-    }
-    if matches!(
-        std::env::var("HF_HUB_OFFLINE")
-            .unwrap_or_default()
-            .to_uppercase()
-            .as_str(),
-        "1" | "TRUE" | "YES" | "ON"
-    ) {
-        return Err(format!(
-            "{} {name} is not cached; run once online to download it",
-            model.repo
-        )
-        .into());
-    }
-    let api = hf_hub::api::sync::ApiBuilder::from_env()
-        .with_cache_dir(cache)
-        .with_progress(false)
-        .build()?;
-    Ok(api
-        .repo(hf_hub::Repo::with_revision(
-            model.repo.into(),
-            hf_hub::RepoType::Model,
-            model.revision.into(),
-        ))
-        .get(name)?)
-}
-
-fn embed(texts: Vec<String>, model: &Model) -> Result<Vec<Vec<f32>>> {
-    let mut tokenizer = tokenizers::Tokenizer::from_file(model_file(model, "tokenizer.json")?)?;
+fn embed(texts: Vec<String>, model: &Model, cache: &cache::Cache) -> Result<Vec<Vec<f32>>> {
+    let mut tokenizer =
+        tokenizers::Tokenizer::from_bytes(cache.model_bytes(model, &model.tokenizer)?)?;
     tokenizer.with_truncation(None)?;
     tokenizer.with_padding(None);
-    let model_handle = std::fs::File::open(model_file(model, "model.safetensors")?)?;
-    let file = unsafe { memmap2::Mmap::map(&model_handle)? };
+    let file = cache.model_bytes(model, &model.weights)?;
     let tensors = safetensors::SafeTensors::deserialize(&file)?;
     let tensor = tensors.tensor("embeddings")?;
     if tensor.dtype() != model.dtype || tensor.shape() != [model.rows, 256] {
@@ -416,17 +416,19 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
     if !path.is_file() && !path.is_dir() {
         return Err("not a file or directory".into());
     }
+    let cache = cache::Cache::new(args.cache_dir.as_deref(), args.fresh_assets)?;
     if !args.no_cache
+        && !args.fresh_assets
         && !args.stdin
         && args.rg_json.is_none()
-        && let Some(results) = index::search(args, &path, &terms)?
+        && let Some(results) = index::search(args, &path, &terms, &cache)?
     {
         return Ok(results);
     }
     let mut chunks = if args.stdin {
         rg_input::read(Path::new("-"), &path)?
     } else {
-        candidates(&path)?
+        candidates(&path, None)?
     };
     let mut seen = HashSet::new();
     chunks.retain(|c| seen.insert((c.path.clone(), c.start, c.end)));
@@ -464,7 +466,7 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
         .map(|c| format!("{}\n{}", c.path, c.content))
         .collect();
     texts.insert(0, args.query.clone());
-    let mut vectors = embed(texts, model)?;
+    let mut vectors = embed(texts, model, &cache)?;
     let query_vector = vectors.remove(0);
     let similarities: Vec<f64> = vectors
         .iter()

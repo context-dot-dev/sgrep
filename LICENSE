@@ -1,6 +1,9 @@
 MIT License
 
 Copyright (c) 2026 mrmps
+Copyright (c) 2025 Chonkie (CodeChunker port in src/splitter.rs)
+Copyright 2025-2026 Kreuzberg, Inc. (src/codechunker.rs)
+Copyright (c) 2023 Benjamin Brandt (src/codechunker.rs)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

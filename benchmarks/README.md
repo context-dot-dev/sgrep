@@ -1,4 +1,60 @@
-# Code-search benchmark
+# Code-search benchmarks
+
+## CoSQA: full retrieval test
+
+[CoSQA](https://github.com/Jun-jie-Huang/CoCLR) provides real web-search queries paired with Python code. This October 9, 2026 comparison uses **all 500 test queries and all 6,267 original snippets** at upstream commit `14ebcacf9e9bc3e7109102632bc63047876f27d2`. The 500 queries refer to 472 distinct labeled snippets. No model or query tuning was performed.
+
+![CoSQA accuracy and latency](cosqa.svg)
+
+| Tool | Hit@1 | Hit@5 | Hit@10 | MRR@10 | Median | p95 | Errors / 500 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| sgrep (current main) | 27.2% | 52.6% | 61.6% | 0.376 | 108.3 ms | 137.2 ms | 0 |
+| sgrep (previous main) | 25.6% | 51.4% | 60.4% | 0.364 | 122.4 ms | 166.9 ms | 0 |
+| CK semantic | 38.0% | 69.6% | 79.6% | 0.515 | 392.8 ms | 539.9 ms | 0 |
+| CK BM25 | 22.0% | 41.8% | 52.8% | 0.309 | 100.2 ms | 139.4 ms | 6 |
+| ripgrep (literal OR) | 0.0% | 0.6% | 1.0% | 0.002 | 90.9 ms | 129.0 ms | 0 |
+
+Current sgrep improved Hit@10 from 60.4% to 61.6%, while CK semantic reached 79.6%. CK alone found the target in 120 queries; current sgrep alone did so in 30. sgrep had lower measured latency and required no corpus index.
+
+Hit@k counts the labeled snippet among the first k distinct returned files. Repeated chunks occupy one rank. MRR@10 is reciprocal rank truncated at ten, with zero for a miss or error; it is **not** the original paper's full-corpus MRR. Results identify snippets, not source coverage within a token budget, so they are not directly comparable with the older RepoQA numbers below.
+
+Every tool sees the same original code, including docstrings, in opaque hash-named files. Queries, labels, and logs remain outside the search directory. CK's empty `.ckignore` prevents generated comment text entering lexical retrieval. Native index inspection confirmed all 6,267 snippets: CK BM25 additionally stores that empty configuration document. Source hashes and returned paths are checked; malformed results and subprocess failures stay in the denominator.
+
+### Conditions and limitations
+
+- **sgrep:** starting `main` at `9594adc` and current `main` at `973b010`, both using Potion Code 16M v2 and `--model code --json -n 100`. The newer revision uses live hybrid score fusion. Retrieval implementation and dependencies are unchanged in this benchmark PR.
+- **CK 0.7.11:** semantic mode uses `bge-small`; lexical mode uses its native BM25 search. Both use `--jsonl --full-section --threshold 0 --topk 100` and receive the original query unchanged. Native query-parser errors, including apostrophes in English queries, count as failures.
+- **ripgrep:** case-insensitive literal OR of fixed sgrep-style query words, returning filenames in path order. This is a simple control, not an agent choosing targeted grep commands.
+- **Timing:** 500 sequential fresh native CLI calls per method. The original four methods rotate order per query; current sgrep is a separate sequential phase after that comparison, so its latency comparison is less controlled. CLI startup and model loading are included; harness parsing is excluded. A separate development query warms each method. Models were cached, filesystem caches were not flushed, and background host load was not controlled. Apple M5 Max, 48 GiB RAM.
+- **Setup:** CK's initial semantic index took 122.6s and 13.1 MB. Combined indexes after BM25 warmup/search used 15.6 MB. The first BM25 call took 0.337s, including lexical index construction; it is retained separately from query timings. sgrep and ripgrep need no corpus index.
+- **Scope:** Python snippets totaling 1.93 MB, not complete repositories or large monorepos. CoSQA labels one answer per query, so valid alternatives can be undercredited. Pretrained-model overlap with this public dataset is unaudited. Jevgrep was not rerun on CoSQA.
+
+### Evidence and reproduction
+
+[cosqa-results.json](cosqa-results.json) contains aggregate and per-query scores, dataset/binary provenance, and raw-record hashes. [cosqa-protocol.json](cosqa-protocol.json) freezes the methodology. The stdlib-only [runner](cosqa.py) preserves every CLI invocation, stdout, stderr, timing, and error, and can regenerate scores without rerunning search. It refuses changed corpora, leaked metadata, and overwritten runs.
+
+The code model/parser must already be cached for offline sgrep runs. Install ripgrep, then run from this repository:
+
+```bash
+COSQA_WORK="$(mktemp -d)"
+git clone https://github.com/Jun-jie-Huang/CoCLR.git "$COSQA_WORK/upstream"
+git -C "$COSQA_WORK/upstream" checkout 14ebcacf9e9bc3e7109102632bc63047876f27d2
+npm install --prefix "$COSQA_WORK/tools" @beaconbay/ck-search@0.7.11
+COSQA_CK="$COSQA_WORK/tools/node_modules/@beaconbay/ck-search/dist/bin/ck"
+git clone https://github.com/context-dot-dev/sgrep.git "$COSQA_WORK/sgrep"
+git -C "$COSQA_WORK/sgrep" checkout 9594adce03b5825bc9e8c617072a00878df45ed4
+cargo build --release --locked --manifest-path "$COSQA_WORK/sgrep/Cargo.toml"
+COSQA_SG="$COSQA_WORK/sgrep/target/release/sgrep"
+python3 benchmarks/cosqa.py prepare --upstream "$COSQA_WORK/upstream" --output "$COSQA_WORK/run"
+python3 benchmarks/cosqa.py index --output "$COSQA_WORK/run" --sgrep "$COSQA_SG" --ck "$COSQA_CK"
+python3 benchmarks/cosqa.py run --output "$COSQA_WORK/run" --sgrep "$COSQA_SG" --ck "$COSQA_CK"
+git -C "$COSQA_WORK/sgrep" checkout 973b01035968975ffaba7e6b428aaf636fffbaa6
+cargo build --release --locked --manifest-path "$COSQA_WORK/sgrep/Cargo.toml"
+python3 benchmarks/cosqa.py add-sgrep --output "$COSQA_WORK/run" --sgrep "$COSQA_SG" --ck "$COSQA_CK" --sgrep-commit 973b01035968975ffaba7e6b428aaf636fffbaa6
+python3 benchmarks/cosqa.py score --output "$COSQA_WORK/run"
+```
+
+Raw outputs and interrupted diagnostics are retained in the local evidence directory, not hosted in this repository. The commands above create an equivalent evidence directory on another machine. Regenerate the chart with `uv run --with matplotlib python benchmarks/plot_cosqa.py`.
 
 ## Live hybrid fusion: before and after
 

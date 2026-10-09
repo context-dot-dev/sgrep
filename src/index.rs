@@ -1,6 +1,9 @@
 //! Query-independent chunks, postings and vectors, published atomically.
 use crate::cache::{Cache, IndexCache};
-use crate::{Args, CODE, Chunk, ModelChoice, Result, TEXT, candidates, embed, rank, source_files};
+use crate::{
+    Args, CODE, Chunk, ModelChoice, Result, TEXT, candidates, embed, identifier_pattern, rank,
+    source_files,
+};
 use memmap2::Mmap;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -213,12 +216,28 @@ impl Index {
         if similarities.iter().any(|s| !s.is_finite()) {
             return Err("invalid index vector".into());
         }
+        let mut exact = HashSet::new();
+        if let Some((pattern, literals)) = identifier_pattern(&args.query)? {
+            for i in 0..self.header.count {
+                let row = record(self.data(), self.header.chunks, i)?;
+                if literals
+                    .iter()
+                    .any(|literal| memchr::memmem::find(row, literal.as_bytes()).is_some())
+                {
+                    let chunk: Chunk = serde_json::from_slice(row)?;
+                    if pattern.is_match(&chunk.content) {
+                        exact.insert(i);
+                    }
+                }
+            }
+        }
         rank(
             args,
             self.header.count,
             &lexical,
             &similarities,
             Vec::new(),
+            &exact,
             |i| {
                 Ok(serde_json::from_slice(record(
                     self.data(),

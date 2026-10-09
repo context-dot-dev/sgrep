@@ -1,5 +1,29 @@
 # Code-search benchmark
 
+## Live hybrid fusion: before and after
+
+On October 9, 2026, the new pipeline was compared with `origin/main` at `849a91c` on all **600 questions across 60 repositories and six languages** in the local RepoQA release2024-06-23 suite. Both versions use current code-aware chunking. This is a retrieval adaptation, not an official RepoQA model score.
+
+| Metric | Before | After |
+| --- | ---: | ---: |
+| File@1 | 384/600 (64.0%) | 398/600 (66.3%) |
+| File@10 | 564/600 (94.0%) | 566/600 (94.3%) |
+| Half function@2k | 431/600 (71.8%) | 455/600 (75.8%) |
+| Half function@8k | 507/600 (84.5%) | 533/600 (88.8%) |
+| Complete function@8k | 507/600 (84.5%) | 533/600 (88.8%) |
+| Median CLI latency | 80.7 ms | 68.9 ms |
+| p95 CLI latency | 124.0 ms | 123.4 ms |
+
+There were **32 complete-function gains and six losses**, and 31 file@1 gains versus 17 losses. All six lost function targets remain in the output but move beyond the 8k source-token budget. TypeScript complete-function coverage fell from 90% to 89%; the other language totals improved or stayed equal. No weights or thresholds were tuned against these questions.
+
+The change combines corpus-wide BM25, equal-weight relative score fusion, complete static embeddings without padding/truncation, and retention of unique overlapping source. This measures the combined change, not score fusion in isolation. Optional agent-supplied ripgrep matches are covered by real CLI checks and are not used in this natural-language-only benchmark.
+
+Both binaries use `--model code --json -n 50`. Returned source and corpus hashes are verified; source lines are deduplicated before applying the same 2,000/8,000 o200k token budgets. All 600 queries completed for both versions. Latency is measured separately with the existing 12-query panel, repeated three times per version in alternating order. Model and parser downloads are cached; filesystem caches are not cleared. Hardware: Apple M5 Max. These source snapshots do not establish cold-start or large-monorepo performance; the dataset was previously used and model training overlap is unaudited.
+
+On the same 60-query subset used below, the current before/after comparison is 34/60 → 39/60 file@1 and 52/60 → 58/60 complete-function@8k. [hybrid-results.json](hybrid-results.json) retains all 600 paired scores, per-language results, source/binary provenance, record hashes, and the six regressions. The local full-output receipt and replay runner are in `artifacts/sgrep-hybrid-fusion-20261009` in the Context workspace; those paths require adjustment on another machine.
+
+## Published v0.2.0 tool comparison
+
 ![Code-search accuracy and latency](benchmark.svg)
 
 This is a retrieval adaptation of [RepoQA](https://github.com/evalplus/repoqa), evaluated on October 6, 2026. A fixed sample contains 60 function-description queries across 12 repositories and six languages: C++, Go, Java, Python, Rust, and TypeScript. It represents 10% of the 600-query release dated June 23, 2024, rather than an official RepoQA leaderboard score.

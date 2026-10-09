@@ -42,6 +42,7 @@ pub fn read(input: &Path, scope: &Path) -> Result<Vec<Chunk>> {
         scope.parent().unwrap()
     };
     let mut source: HashMap<PathBuf, Vec<String>> = HashMap::new();
+    let mut paths: HashMap<Vec<u8>, PathBuf> = HashMap::new();
     let mut groups: Vec<Group> = Vec::new();
     for line in reader.lines() {
         let event: Event = serde_json::from_str(&line?)?;
@@ -50,7 +51,14 @@ pub fn read(input: &Path, scope: &Path) -> Result<Vec<Chunk>> {
             "match" | "context" => {}
             _ => return Err("unrecognized rg JSON event".into()),
         }
-        let path = filename(&bytes(&event.data["path"])?).canonicalize()?;
+        let raw_path = bytes(&event.data["path"])?;
+        let path = if let Some(path) = paths.get(&raw_path) {
+            path.clone()
+        } else {
+            let path = filename(&raw_path).canonicalize()?;
+            paths.insert(raw_path, path.clone());
+            path
+        };
         if !path.starts_with(root) || (scope.is_file() && path != scope) {
             return Err("rg JSON path is outside the search scope".into());
         }

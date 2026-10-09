@@ -1,0 +1,1218 @@
+{
+  "conditions": {
+    "target_main": "973b010",
+    "pre_optimization": "aba33ff",
+    "corpus_commit": "ca29c8421dbf843c7f11afb381755758f6b058f4",
+    "files": 2545,
+    "source_bytes": 85822230,
+    "index_bytes": 256627124,
+    "models": "cached offline",
+    "timing": "fresh processes, alternating arms, sequential runs, no concurrent test/build jobs; first pair per case reported separately",
+    "quality": "all 60 top-50 JSON results identical to pre-optimization; all 40 Context/pipeline pairs byte-identical including scores",
+    "limits": "local macOS ARM64 only; warm unchanged scopes; full rebuild after edits; previously used development questions"
+  },
+  "latency": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "binaries": {
+      "before": {
+        "sha256": "20b05d738d7cadb465284868a925e539f2343ad31092da09ae1f786cb6ee26bc"
+      },
+      "after": {
+        "sha256": "57ab53504f73b1c26c75649b3b49ab2ccca598293d2f6a85d1e63ea8f17b3af1"
+      }
+    },
+    "cache": "<empty dedicated SGREP_CACHE_DIR>",
+    "cases": [
+      {
+        "name": "cache",
+        "cwd": "<Context snapshot root>",
+        "args": [
+          "Where do scrape requests bypass cached pages and force a fresh fetch?",
+          ".",
+          "--json",
+          "--explain",
+          "-n",
+          "50"
+        ]
+      },
+      {
+        "name": "blocked",
+        "cwd": "<Context snapshot root>",
+        "args": [
+          "How do we detect blocked scrape pages and retry with another browser or proxy?",
+          ".",
+          "--json",
+          "--explain",
+          "-n",
+          "50"
+        ]
+      },
+      {
+        "name": "refund",
+        "cwd": "<Context snapshot root>",
+        "args": [
+          "When a web scrape fails how are charged credits refunded?",
+          ".",
+          "--json",
+          "--explain",
+          "-n",
+          "50"
+        ]
+      },
+      {
+        "name": "highlights",
+        "cwd": "<Context snapshot root>",
+        "args": [
+          "What happens when highlights extraction finds no relevant passages?",
+          ".",
+          "--json",
+          "--explain",
+          "-n",
+          "50"
+        ]
+      },
+      {
+        "name": "pipe",
+        "cwd": "<Context snapshot root>",
+        "args": [
+          "when does a failed scrape consume credits",
+          "--stdin",
+          "--json",
+          "--explain"
+        ],
+        "input_command": [
+          "rg",
+          "--json",
+          "-C",
+          "3",
+          "creditCost|shouldBill",
+          "gcp/functions/src"
+        ]
+      }
+    ],
+    "summary": {
+      "cache": {
+        "before": {
+          "first_ms": 2777.50158300114,
+          "warm_median_ms": 520.2619159972528,
+          "warm_p95_ms": 561.7792919983913,
+          "warm_max_ms": 561.7792919983913
+        },
+        "after": {
+          "first_ms": 3541.6841250007565,
+          "warm_median_ms": 60.80166600077064,
+          "warm_p95_ms": 62.44941600016318,
+          "warm_max_ms": 62.44941600016318
+        }
+      },
+      "blocked": {
+        "before": {
+          "first_ms": 522.3027499996533,
+          "warm_median_ms": 522.734500002116,
+          "warm_p95_ms": 612.7561249995779,
+          "warm_max_ms": 612.7561249995779
+        },
+        "after": {
+          "first_ms": 61.83079200127395,
+          "warm_median_ms": 61.84716699863202,
+          "warm_p95_ms": 64.05370799984667,
+          "warm_max_ms": 64.05370799984667
+        }
+      },
+      "refund": {
+        "before": {
+          "first_ms": 512.6213749972521,
+          "warm_median_ms": 516.1478339978203,
+          "warm_p95_ms": 538.2360000003246,
+          "warm_max_ms": 538.2360000003246
+        },
+        "after": {
+          "first_ms": 63.586749998648884,
+          "warm_median_ms": 61.897875002614455,
+          "warm_p95_ms": 62.67358400145895,
+          "warm_max_ms": 62.67358400145895
+        }
+      },
+      "highlights": {
+        "before": {
+          "first_ms": 520.8386249978503,
+          "warm_median_ms": 525.6245840027987,
+          "warm_p95_ms": 538.3071670003119,
+          "warm_max_ms": 538.3071670003119
+        },
+        "after": {
+          "first_ms": 61.41812500209198,
+          "warm_median_ms": 61.15337500159512,
+          "warm_p95_ms": 61.5173340011097,
+          "warm_max_ms": 61.5173340011097
+        }
+      },
+      "pipe": {
+        "before": {
+          "first_ms": 98.84316700117779,
+          "warm_median_ms": 96.54862499883166,
+          "warm_p95_ms": 98.1977920018835,
+          "warm_max_ms": 98.1977920018835
+        },
+        "after": {
+          "first_ms": 43.246375000308035,
+          "warm_median_ms": 42.64520899960189,
+          "warm_p95_ms": 44.69345799952862,
+          "warm_max_ms": 44.69345799952862
+        }
+      }
+    },
+    "rows": [
+      {
+        "case": "cache",
+        "repeat": 0,
+        "arms": {
+          "before": {
+            "ms": 2777.50158300114,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          },
+          "after": {
+            "ms": 3541.6841250007565,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "cache",
+        "repeat": 1,
+        "arms": {
+          "after": {
+            "ms": 62.44941600016318,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          },
+          "before": {
+            "ms": 561.7792919983913,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "cache",
+        "repeat": 2,
+        "arms": {
+          "before": {
+            "ms": 509.1984169994248,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          },
+          "after": {
+            "ms": 59.616708000248764,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "cache",
+        "repeat": 3,
+        "arms": {
+          "after": {
+            "ms": 61.60737499885727,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          },
+          "before": {
+            "ms": 520.2619159972528,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "cache",
+        "repeat": 4,
+        "arms": {
+          "before": {
+            "ms": 493.9356670001871,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          },
+          "after": {
+            "ms": 60.0173340026231,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "cache",
+        "repeat": 5,
+        "arms": {
+          "after": {
+            "ms": 60.80166600077064,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          },
+          "before": {
+            "ms": 534.6257500023057,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "cache",
+        "repeat": 6,
+        "arms": {
+          "before": {
+            "ms": 521.2532080004166,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          },
+          "after": {
+            "ms": 61.23275000209105,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "cache",
+        "repeat": 7,
+        "arms": {
+          "after": {
+            "ms": 59.84129200078314,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          },
+          "before": {
+            "ms": 502.8925000005984,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "3351373a3c9197b1190c3216db9bb1701eed908d1ef3f3dc38ca25935437a17c"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "blocked",
+        "repeat": 0,
+        "arms": {
+          "before": {
+            "ms": 522.3027499996533,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          },
+          "after": {
+            "ms": 61.83079200127395,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "blocked",
+        "repeat": 1,
+        "arms": {
+          "after": {
+            "ms": 61.772832999849925,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          },
+          "before": {
+            "ms": 524.7053339990089,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "blocked",
+        "repeat": 2,
+        "arms": {
+          "before": {
+            "ms": 522.734500002116,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          },
+          "after": {
+            "ms": 60.91224999909173,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "blocked",
+        "repeat": 3,
+        "arms": {
+          "after": {
+            "ms": 59.715708001021994,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          },
+          "before": {
+            "ms": 506.6857909987448,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "blocked",
+        "repeat": 4,
+        "arms": {
+          "before": {
+            "ms": 513.6379579998902,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          },
+          "after": {
+            "ms": 61.89670800085878,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "blocked",
+        "repeat": 5,
+        "arms": {
+          "after": {
+            "ms": 62.831082999764476,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          },
+          "before": {
+            "ms": 508.99604100050055,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "blocked",
+        "repeat": 6,
+        "arms": {
+          "before": {
+            "ms": 542.6696250033274,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          },
+          "after": {
+            "ms": 61.84716699863202,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "blocked",
+        "repeat": 7,
+        "arms": {
+          "after": {
+            "ms": 64.05370799984667,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          },
+          "before": {
+            "ms": 612.7561249995779,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "2870479ad6ca4b450be7a08e81d5a32460bf4c5d5d49f7331a6a83d4334bd822"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "refund",
+        "repeat": 0,
+        "arms": {
+          "before": {
+            "ms": 512.6213749972521,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          },
+          "after": {
+            "ms": 63.586749998648884,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "refund",
+        "repeat": 1,
+        "arms": {
+          "after": {
+            "ms": 62.67358400145895,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          },
+          "before": {
+            "ms": 503.8021669970476,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "refund",
+        "repeat": 2,
+        "arms": {
+          "before": {
+            "ms": 538.2360000003246,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          },
+          "after": {
+            "ms": 62.49162499807426,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "refund",
+        "repeat": 3,
+        "arms": {
+          "after": {
+            "ms": 61.88783399920794,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          },
+          "before": {
+            "ms": 530.1826670001901,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "refund",
+        "repeat": 4,
+        "arms": {
+          "before": {
+            "ms": 516.0802499995043,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          },
+          "after": {
+            "ms": 60.366249999788124,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "refund",
+        "repeat": 5,
+        "arms": {
+          "after": {
+            "ms": 61.222416999953566,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          },
+          "before": {
+            "ms": 516.1478339978203,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "refund",
+        "repeat": 6,
+        "arms": {
+          "before": {
+            "ms": 513.1191669970576,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          },
+          "after": {
+            "ms": 62.46070899942424,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "refund",
+        "repeat": 7,
+        "arms": {
+          "after": {
+            "ms": 61.897875002614455,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          },
+          "before": {
+            "ms": 524.7212080030295,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "806bde012917d9717a64f3f4912207486e18c0d4a93575e21156ee52154f01df"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "highlights",
+        "repeat": 0,
+        "arms": {
+          "before": {
+            "ms": 520.8386249978503,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          },
+          "after": {
+            "ms": 61.41812500209198,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "highlights",
+        "repeat": 1,
+        "arms": {
+          "after": {
+            "ms": 60.351459000230534,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          },
+          "before": {
+            "ms": 525.6245840027987,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "highlights",
+        "repeat": 2,
+        "arms": {
+          "before": {
+            "ms": 533.1336659983208,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          },
+          "after": {
+            "ms": 61.5173340011097,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "highlights",
+        "repeat": 3,
+        "arms": {
+          "after": {
+            "ms": 61.35566699958872,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          },
+          "before": {
+            "ms": 529.923541998869,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "highlights",
+        "repeat": 4,
+        "arms": {
+          "before": {
+            "ms": 538.3071670003119,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          },
+          "after": {
+            "ms": 60.19695899885846,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "highlights",
+        "repeat": 5,
+        "arms": {
+          "after": {
+            "ms": 61.19191700054216,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          },
+          "before": {
+            "ms": 524.2616249997809,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "highlights",
+        "repeat": 6,
+        "arms": {
+          "before": {
+            "ms": 510.44429099783883,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          },
+          "after": {
+            "ms": 61.02412499967613,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "highlights",
+        "repeat": 7,
+        "arms": {
+          "after": {
+            "ms": 61.15337500159512,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          },
+          "before": {
+            "ms": 514.5159170024272,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "9f32a23249b57fdb7ccae8f455263d847ba16742ab7201c101f4feab76d58b85"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "pipe",
+        "repeat": 0,
+        "arms": {
+          "before": {
+            "ms": 98.84316700117779,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          },
+          "after": {
+            "ms": 43.246375000308035,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "pipe",
+        "repeat": 1,
+        "arms": {
+          "after": {
+            "ms": 42.61100000076112,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          },
+          "before": {
+            "ms": 98.15666699796566,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "pipe",
+        "repeat": 2,
+        "arms": {
+          "before": {
+            "ms": 95.5371659983939,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          },
+          "after": {
+            "ms": 43.379541999456706,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "pipe",
+        "repeat": 3,
+        "arms": {
+          "after": {
+            "ms": 42.53087500183028,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          },
+          "before": {
+            "ms": 96.54862499883166,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "pipe",
+        "repeat": 4,
+        "arms": {
+          "before": {
+            "ms": 97.45720800128765,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          },
+          "after": {
+            "ms": 44.69345799952862,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "pipe",
+        "repeat": 5,
+        "arms": {
+          "after": {
+            "ms": 41.87900000033551,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          },
+          "before": {
+            "ms": 98.1977920018835,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "pipe",
+        "repeat": 6,
+        "arms": {
+          "before": {
+            "ms": 94.72962499785353,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          },
+          "after": {
+            "ms": 44.146249998448184,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          }
+        },
+        "exact_parity": true
+      },
+      {
+        "case": "pipe",
+        "repeat": 7,
+        "arms": {
+          "after": {
+            "ms": 42.64520899960189,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          },
+          "before": {
+            "ms": 95.37733299657702,
+            "exit_code": 0,
+            "stderr": "",
+            "stdout_sha256": "5f1922b5af90c5087032c9d5f11d509ca568b1f8ab746d7ffac00d7d0aae4104"
+          }
+        },
+        "exact_parity": true
+      }
+    ]
+  },
+  "target_main_latency": {
+    "summary": {
+      "main": {
+        "median_ms": 456.8627505013865,
+        "max_ms": 476.2622090020159
+      },
+      "candidate": {
+        "median_ms": 62.50502100010635,
+        "max_ms": 67.47808399813948
+      }
+    },
+    "rows": [
+      {
+        "case": "cache",
+        "repeat": 0,
+        "arms": {
+          "main": {
+            "ms": 467.0247499998368
+          },
+          "candidate": {
+            "ms": 64.9861250021786
+          }
+        }
+      },
+      {
+        "case": "blocked",
+        "repeat": 0,
+        "arms": {
+          "main": {
+            "ms": 445.4500829997414
+          },
+          "candidate": {
+            "ms": 61.24624999938533
+          }
+        }
+      },
+      {
+        "case": "refund",
+        "repeat": 0,
+        "arms": {
+          "main": {
+            "ms": 471.08612499869196
+          },
+          "candidate": {
+            "ms": 61.42270900090807
+          }
+        }
+      },
+      {
+        "case": "highlights",
+        "repeat": 0,
+        "arms": {
+          "main": {
+            "ms": 449.85466599973734
+          },
+          "candidate": {
+            "ms": 61.497291000705445
+          }
+        }
+      },
+      {
+        "case": "cache",
+        "repeat": 1,
+        "arms": {
+          "candidate": {
+            "ms": 61.502624997956445
+          },
+          "main": {
+            "ms": 433.97620799805736
+          }
+        }
+      },
+      {
+        "case": "blocked",
+        "repeat": 1,
+        "arms": {
+          "candidate": {
+            "ms": 62.377709000429604
+          },
+          "main": {
+            "ms": 465.82091600066633
+          }
+        }
+      },
+      {
+        "case": "refund",
+        "repeat": 1,
+        "arms": {
+          "candidate": {
+            "ms": 61.48216699875775
+          },
+          "main": {
+            "ms": 453.9261659992917
+          }
+        }
+      },
+      {
+        "case": "highlights",
+        "repeat": 1,
+        "arms": {
+          "candidate": {
+            "ms": 67.47808399813948
+          },
+          "main": {
+            "ms": 457.95008299683104
+          }
+        }
+      },
+      {
+        "case": "cache",
+        "repeat": 2,
+        "arms": {
+          "main": {
+            "ms": 476.2622090020159
+          },
+          "candidate": {
+            "ms": 62.9138750009588
+          }
+        }
+      },
+      {
+        "case": "blocked",
+        "repeat": 2,
+        "arms": {
+          "main": {
+            "ms": 455.8364580007037
+          },
+          "candidate": {
+            "ms": 61.91733299783664
+          }
+        }
+      },
+      {
+        "case": "refund",
+        "repeat": 2,
+        "arms": {
+          "main": {
+            "ms": 457.58933300021454
+          },
+          "candidate": {
+            "ms": 65.94587500148918
+          }
+        }
+      },
+      {
+        "case": "highlights",
+        "repeat": 2,
+        "arms": {
+          "main": {
+            "ms": 454.5407500008878
+          },
+          "candidate": {
+            "ms": 62.755667000601534
+          }
+        }
+      },
+      {
+        "case": "cache",
+        "repeat": 3,
+        "arms": {
+          "candidate": {
+            "ms": 61.12954199852538
+          },
+          "main": {
+            "ms": 456.4162090027821
+          }
+        }
+      },
+      {
+        "case": "blocked",
+        "repeat": 3,
+        "arms": {
+          "candidate": {
+            "ms": 61.550500002340414
+          },
+          "main": {
+            "ms": 423.23737499827985
+          }
+        }
+      },
+      {
+        "case": "refund",
+        "repeat": 3,
+        "arms": {
+          "candidate": {
+            "ms": 62.94516699927044
+          },
+          "main": {
+            "ms": 457.3092919999908
+          }
+        }
+      },
+      {
+        "case": "highlights",
+        "repeat": 3,
+        "arms": {
+          "candidate": {
+            "ms": 62.6323329997831
+          },
+          "main": {
+            "ms": 433.5670000000391
+          }
+        }
+      },
+      {
+        "case": "cache",
+        "repeat": 4,
+        "arms": {
+          "main": {
+            "ms": 453.65054099966073
+          },
+          "candidate": {
+            "ms": 63.23679200068
+          }
+        }
+      },
+      {
+        "case": "blocked",
+        "repeat": 4,
+        "arms": {
+          "main": {
+            "ms": 475.5919579984038
+          },
+          "candidate": {
+            "ms": 63.907416002621176
+          }
+        }
+      },
+      {
+        "case": "refund",
+        "repeat": 4,
+        "arms": {
+          "main": {
+            "ms": 463.982749999559
+          },
+          "candidate": {
+            "ms": 62.13424999805284
+          }
+        }
+      },
+      {
+        "case": "highlights",
+        "repeat": 4,
+        "arms": {
+          "main": {
+            "ms": 461.0936249991937
+          },
+          "candidate": {
+            "ms": 64.40275000204565
+          }
+        }
+      }
+    ]
+  },
+  "retrieval": {
+    "before": {
+      "n": 60,
+      "failures": 0,
+      "file_at_1": 0.65,
+      "file_at_5": 0.9666666666666667,
+      "file_at_10": 0.9666666666666667,
+      "half_function_8k_chars": 0.8833333333333333,
+      "full_function_8k_chars": 0.8666666666666667,
+      "median_ms": 54.81612499897892,
+      "median_first_corpus_ms": 98.18854149852996,
+      "median_reuse_ms": 53.49395850134897
+    },
+    "after": {
+      "n": 60,
+      "failures": 0,
+      "file_at_1": 0.65,
+      "file_at_5": 0.9666666666666667,
+      "file_at_10": 0.9666666666666667,
+      "half_function_8k_chars": 0.8833333333333333,
+      "full_function_8k_chars": 0.8666666666666667,
+      "median_ms": 30.253146000177367,
+      "median_first_corpus_ms": 99.34581299967249,
+      "median_reuse_ms": 30.137916501189466
+    },
+    "conditions": {
+      "queries": 60,
+      "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+      "source": "frozen RepoQA 60-query panel, see discovery-results.json",
+      "models": "cached offline",
+      "budget": "8000 Unicode source/header characters, whole lines only; not tokens",
+      "before_sha256": "20b05d738d7cadb465284868a925e539f2343ad31092da09ae1f786cb6ee26bc",
+      "after_sha256": "57ab53504f73b1c26c75649b3b49ab2ccca598293d2f6a85d1e63ea8f17b3af1",
+      "cache_bytes": 54161356
+    }
+  }
+}

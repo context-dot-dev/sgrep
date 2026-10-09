@@ -1,5 +1,5 @@
 mod codechunker;
-mod embedding_cache;
+mod index;
 mod rg_input;
 mod splitter;
 
@@ -7,7 +7,7 @@ use clap::{Parser, ValueEnum};
 use half::f16;
 use rayon::prelude::*;
 use regex::Regex;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
@@ -76,7 +76,7 @@ struct Args {
     explain: bool,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 struct Chunk {
     path: String,
     start: usize,
@@ -88,7 +88,7 @@ struct Chunk {
     scores: Option<Scores>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 struct Scores {
     bm25: f64,
     semantic: f64,
@@ -118,7 +118,7 @@ fn filename(bytes: &[u8]) -> PathBuf {
     }
 }
 
-fn candidates(path: &Path) -> Result<Vec<Chunk>> {
+fn source_files(path: &Path) -> Result<(&Path, Vec<PathBuf>)> {
     let root = if path.is_dir() {
         path
     } else {
@@ -144,14 +144,24 @@ fn candidates(path: &Path) -> Result<Vec<Chunk>> {
         .stdout
         .split(|b| *b == 0)
         .filter(|b| !b.is_empty())
+        .map(filename)
         .collect();
-    files.sort_unstable();
+    files.sort_unstable_by(|a, b| {
+        a.as_os_str()
+            .as_encoded_bytes()
+            .cmp(b.as_os_str().as_encoded_bytes())
+    });
+    Ok((root, files))
+}
+
+fn candidates(path: &Path) -> Result<Vec<Chunk>> {
+    let (root, files) = source_files(path)?;
     let chunks: Result<Vec<Vec<Chunk>>> = files
         .par_iter()
         .map(|name| {
             let mut chunks = Vec::new();
-            let relative = filename(name);
-            let relative = relative.strip_prefix(".").unwrap_or(&relative);
+            let relative = name;
+            let relative = relative.strip_prefix(".").unwrap_or(relative);
             let file = root.join(relative);
             let bytes = std::fs::read(&file)?;
             if bytes.contains(&0) {
@@ -280,27 +290,48 @@ fn embed(texts: Vec<String>, model: &Model) -> Result<Vec<Vec<f32>>> {
     let mut tokenizer = tokenizers::Tokenizer::from_file(model_file(model, "tokenizer.json")?)?;
     tokenizer.with_truncation(None)?;
     tokenizer.with_padding(None);
-    let file = std::fs::read(model_file(model, "model.safetensors")?)?;
+    let model_handle = std::fs::File::open(model_file(model, "model.safetensors")?)?;
+    let file = unsafe { memmap2::Mmap::map(&model_handle)? };
     let tensors = safetensors::SafeTensors::deserialize(&file)?;
     let tensor = tensors.tensor("embeddings")?;
     if tensor.dtype() != model.dtype || tensor.shape() != [model.rows, 256] {
         return Err("unexpected model tensor".into());
     }
-    let weights: Vec<f32> = match model.dtype {
-        safetensors::Dtype::F16 => tensor
-            .data()
-            .chunks_exact(2)
-            .map(|b| f16::from_le_bytes([b[0], b[1]]).to_f32())
-            .collect(),
-        safetensors::Dtype::F32 => tensor
-            .data()
-            .chunks_exact(4)
-            .map(|b| f32::from_le_bytes([b[0], b[1], b[2], b[3]]))
-            .collect(),
-        _ => return Err("unsupported model dtype".into()),
-    };
     let unknown = tokenizer.token_to_id("[UNK]");
-    let encoded = tokenizer.encode_batch_fast(texts, false)?;
+    let encoded = if texts.len() == 1 {
+        vec![tokenizer.encode_fast(texts.into_iter().next().unwrap(), false)?]
+    } else {
+        tokenizer.encode_batch_fast(texts, false)?
+    };
+    let width = if model.dtype == safetensors::Dtype::F16 {
+        2
+    } else {
+        4
+    };
+    let mut offsets = vec![usize::MAX; model.rows];
+    let mut weights = Vec::new();
+    for encoding in &encoded {
+        for &id in encoding.get_ids() {
+            if Some(id) == unknown {
+                continue;
+            }
+            let slot = offsets
+                .get_mut(id as usize)
+                .ok_or("token outside model vocabulary")?;
+            if *slot != usize::MAX {
+                continue;
+            }
+            *slot = weights.len();
+            let offset = id as usize * 256 * width;
+            for bytes in tensor.data()[offset..offset + 256 * width].chunks_exact(width) {
+                weights.push(if width == 2 {
+                    f16::from_le_bytes(bytes.try_into().unwrap()).to_f32()
+                } else {
+                    f32::from_le_bytes(bytes.try_into().unwrap())
+                });
+            }
+        }
+    }
     encoded
         .par_iter()
         .map(|encoding| {
@@ -311,7 +342,7 @@ fn embed(texts: Vec<String>, model: &Model) -> Result<Vec<Vec<f32>>> {
                 .filter(|&&id| Some(id) != unknown)
                 .collect();
             for &&id in &ids {
-                let offset = id as usize * 256;
+                let offset = offsets[id as usize];
                 for (x, weight) in vector.iter_mut().zip(&weights[offset..offset + 256]) {
                     *x += weight;
                 }
@@ -333,6 +364,18 @@ fn embed(texts: Vec<String>, model: &Model) -> Result<Vec<Vec<f32>>> {
         .collect()
 }
 
+fn is_prose(path: &str) -> bool {
+    let extension = Path::new(path)
+        .extension()
+        .unwrap_or_default()
+        .to_string_lossy()
+        .to_ascii_lowercase();
+    matches!(
+        extension.as_str(),
+        "md" | "mdx" | "txt" | "rst" | "adoc" | "org" | "text"
+    )
+}
+
 fn search(args: &Args) -> Result<Vec<Chunk>> {
     let mut terms = words(&args.query);
     terms.sort();
@@ -343,6 +386,13 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
     let path = args.path.canonicalize()?;
     if !path.is_file() && !path.is_dir() {
         return Err("not a file or directory".into());
+    }
+    if !args.no_cache
+        && !args.stdin
+        && args.rg_json.is_none()
+        && let Some(results) = index::search(args, &path, &terms)?
+    {
+        return Ok(results);
     }
     let mut chunks = if args.stdin {
         rg_input::read(Path::new("-"), &path)?
@@ -373,40 +423,40 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
         return Ok(Vec::new());
     }
     let lexical = bm25(&chunks, &terms, corpus_len);
-    let prose_only = chunks.iter().all(|chunk| {
-        let extension = Path::new(&chunk.path)
-            .extension()
-            .unwrap_or_default()
-            .to_string_lossy()
-            .to_ascii_lowercase();
-        matches!(
-            extension.as_str(),
-            "md" | "mdx" | "txt" | "rst" | "adoc" | "org" | "text"
-        )
-    });
+    let prose_only = chunks.iter().all(|chunk| is_prose(&chunk.path));
     let model =
         if args.model == ModelChoice::Text || (args.model == ModelChoice::Auto && prose_only) {
             &TEXT
         } else {
             &CODE
         };
-    let query_vector = embed(vec![args.query.clone()], model)?.remove(0);
-    let texts = chunks
+    let mut texts: Vec<String> = chunks
         .iter()
         .map(|c| format!("{}\n{}", c.path, c.content))
         .collect();
-    let vectors = embedding_cache::corpus(
-        texts,
-        model,
-        &path,
-        args.no_cache || args.stdin || args.rg_json.is_some(),
-    )?;
+    texts.insert(0, args.query.clone());
+    let mut vectors = embed(texts, model)?;
+    let query_vector = vectors.remove(0);
     let similarities: Vec<f64> = vectors
         .iter()
         .map(|v| v.iter().zip(&query_vector).map(|(a, b)| a * b).sum::<f32>() as f64)
         .collect();
+    let mut chunks: Vec<_> = chunks.into_iter().map(Some).collect();
+    rank(args, corpus_len, &lexical, &similarities, supplied, |i| {
+        Ok(chunks[i].take().unwrap())
+    })
+}
+
+fn rank(
+    args: &Args,
+    corpus_len: usize,
+    lexical: &[f64],
+    similarities: &[f64],
+    supplied: Vec<usize>,
+    mut get_chunk: impl FnMut(usize) -> Result<Chunk>,
+) -> Result<Vec<Chunk>> {
     let mut order: Vec<_> = if args.stdin {
-        (0..chunks.len()).collect()
+        (0..lexical.len()).collect()
     } else {
         let mut lexical_order: Vec<_> = (0..corpus_len).filter(|&i| lexical[i] > 0.0).collect();
         lexical_order.sort_by(|&a, &b| lexical[b].total_cmp(&lexical[a]));
@@ -431,10 +481,9 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
             .total_cmp(&score(a))
             .then_with(|| bm25_scores[b].total_cmp(&bm25_scores[a]))
     });
-    let mut chunks: Vec<_> = chunks.into_iter().map(Some).collect();
     let mut results: Vec<Chunk> = Vec::new();
     for i in fused {
-        let mut chunk = chunks[order[i]].take().unwrap();
+        let mut chunk = get_chunk(order[i])?;
         if args.explain {
             chunk.scores = Some(Scores {
                 bm25: bm25_scores[i],

@@ -17,9 +17,11 @@
   <a href="https://context.dev">Context.dev</a>
 </p>
 
-sgrep searches fresh source with independent lexical and semantic retrieval, including passages that share none of your question's words. It can also rank the output of your own ripgrep command. Everything runs locally; corpus embeddings are cached automatically and checked against current content on each search.
+sgrep searches fresh source with independent lexical and semantic retrieval, including passages that share none of your question's words. It can also rank the output of your own ripgrep command. Everything runs locally; a persistent index reuses chunks, lexical statistics, and embeddings after checking the current file list and metadata.
 
 ## Benchmarks
+
+Indexed discovery measured **62 ms** on a 2,545-file Context snapshot; piped reranking measured **43 ms**, including ripgrep. These are warm local measurements; [cold costs, exact output parity, and before/after results](benchmarks/README.md#indexed-discovery-latency-october-9) are reported separately.
 
 ![Code-search benchmark comparing function retrieval and median latency for sgrep, CK, Jevgrep, and ripgrep.](benchmarks/benchmark.svg)
 
@@ -75,7 +77,9 @@ Each model downloads about 32–34 MB on first use and works offline afterward. 
 
 Directory searches follow ripgrep's ignore rules and skip hidden and binary files. Results include relative paths, one-based line ranges, and source. Exit codes are `0` for results, `1` for no matches, and `2` for errors.
 
-The embedding cache lives in `$SGREP_CACHE_DIR`, `$XDG_CACHE_HOME/sgrep`, or `~/.cache/sgrep`, in that order. It contains vectors and checksums, not source text. Source is still read and chunked on every search; a changed corpus or model invalidates its cached vectors. First searches and searches after edits encode the entire corpus and can be slower. `--no-cache` disables reads and writes. Corrupt caches are rebuilt; deleting the cache is safe. No daemon or manual indexing command is required. Piped reranking does not use this cache.
+The search index lives in `$SGREP_CACHE_DIR`, `$XDG_CACHE_HOME/sgrep`, or `~/.cache/sgrep`, in that order. It contains **source passages**, lexical postings, and vectors. Files are written atomically with private permissions on Unix; source copies remain there until you delete the cache. `--no-cache` disables index reads and writes. Corrupt indexes are rebuilt, and deleting them is safe. No daemon or manual indexing command is required. Piped reranking does not use this index.
+
+Warm discovery enumerates files with ripgrep, checks file size, modification time, inode and change time on Unix, then memory-maps the index. Other platforms also hash source content. Additions, deletions, ignore changes, edits, and model changes invalidate the index. First searches and searches after edits rebuild the entire scope; they are not covered by warm-search latency measurements. Use `--no-cache` on filesystems that do not reliably update metadata.
 
 ## How it works
 
@@ -83,7 +87,7 @@ Ripgrep enumerates eligible files, and Rust reads and chunks them in parallel. B
 
 [Relative score fusion](https://docs.weaviate.io/weaviate/concepts/search/hybrid-search) scales each candidate's BM25 and semantic scores to 0–1 within that candidate pool and averages them equally. This preserves score gaps that rank-only fusion loses: a standout BM25 result can outrank a semantically stronger but lexically weak passage. A flat score distribution contributes zero; ties favor the higher raw BM25 score. This is not a hard pin or a global confidence threshold, and changing the candidate pool can change the normalization. Results wholly contained in an earlier result are omitted; partial overlaps retain their unique source.
 
-The first discovery search computes corpus embeddings. Subsequent searches reuse them only when the model revision and the complete passage content match. This favors correctness over incremental indexing: any corpus edit rebuilds that scope's vectors.
+The index preserves the same chunks and scores as uncached search. A warm query scores matching lexical postings and materializes selected source passages; semantic retrieval still scans every vector. Embedding loads decode only token rows used by the current batch. Piped reranking embeds the query and supplied passages in one batch.
 
 The embeddings come from **[Minish Lab](https://github.com/MinishLab)**, the team behind [Model2Vec](https://github.com/MinishLab/model2vec): [Potion Code 16M v2](https://huggingface.co/minishlab/potion-code-16M-v2) for code and [Potion Base 8M](https://huggingface.co/minishlab/potion-base-8M) for general English text. Both models are MIT-licensed and pinned to specific revisions.
 
@@ -103,6 +107,7 @@ PATH="$PWD/target/release:$PATH" python3 tests/e2e.py > e2e-results.json
 PATH="$PWD/target/release:$PATH" python3 tests/codechunker.py > chunker-results.json
 PATH="$PWD/target/release:$PATH" python3 tests/hybrid.py > hybrid-results.json
 PATH="$PWD/target/release:$PATH" python3 tests/discovery.py > discovery-results.json
+SGREP_BASELINE=/path/to/before SGREP_CANDIDATE="$PWD/target/release/sgrep" python3 tests/index.py > index-results.json
 ```
 
 The end-to-end checks use the real models and write a JSON receipt. To compare two executables on your own queries, run `python3 tests/benchmark.py BEFORE AFTER queries.json results`. Each query is an object with `id`, `query`, and an absolute `root` path.

@@ -1,5 +1,29 @@
 # Code-search benchmark
 
+## Indexed discovery latency (October 9)
+
+Warm Context searches now reuse chunks, lexical postings, and vectors without changing ranking. The final release was measured on the same 2,545-file, 85.8 MB snapshot, with cached models, fresh CLI processes, alternating arms, and no concurrent build/test jobs. Times include process startup and JSON serialization. The piped row includes ripgrep execution.
+
+| Workload | Before | Indexed candidate |
+| --- | ---: | ---: |
+| Context discovery, target `main` (`973b010`), paired median | 456.9 ms | 62.5 ms |
+| Context discovery, previous PR implementation (`aba33ff`), four per-query warm medians | 516–526 ms | 60.8–61.9 ms |
+| Ripgrep → stdin reranking, previous PR implementation, warm median | 96.5 ms | 42.6 ms |
+| First Context search with empty corpus cache, models cached | 2.78 s | 3.54 s |
+
+The target-main comparison uses 20 paired calls across four questions; main does not support `--stdin`. The optimization comparison uses eight pairs per case, with the first pair reported separately: the slowest warm discovery call was 64.1 ms, and the slowest piped call was 44.7 ms. All 40 optimization pairs matched byte for byte, including scores. All 60 frozen RepoQA queries returned exactly the same top-50 results before and after optimization (39/60 correct-file@1, 52/60 complete-function within 8,000 characters). This preserves existing retrieval quality; it does not fix the four Context deciding-line misses described below.
+
+The Context index is 257 MB (245 MiB) and contains source passages. Changed files trigger a full scope rebuild; cold and post-edit searches are not under 80 ms. Unix validation relies on file size, inode, modification time and change time, with a fresh ripgrep file listing; other platforms hash source too. These are local measurements, not a latency guarantee across repositories, filesystems, or machines. Raw timings, binary hashes, and conditions are in [index-results.json](index-results.json).
+
+Reproduce paired timing and exact-output checks with:
+
+```sh
+HF_HUB_OFFLINE=1 SGREP_CACHE_DIR=/tmp/sgrep-index-bench \
+  python3 tests/latency.py BEFORE AFTER cases.json results.json --repeats 8
+```
+
+Each case contains `name`, `cwd`, and `args`; add `input_command` for a producer such as `rg --json -C 3 ...`. Case definitions are retained in the result file; replace the snapshot-root placeholder with your local checkout. Use `aba33ff` for the exact-parity baseline, since independent discovery intentionally differs from target main. The earlier discovery measurements below predate this index optimization.
+
 ## Discovery and piped reranking (October 9)
 
 The immediate target is now `973b010`, after the hybrid-fusion prerequisite merged as PR #3. Its executable sources are identical to the measured parent `6579a74`. The independent discovery/stdin change has this result on the same fixed 60 cases:

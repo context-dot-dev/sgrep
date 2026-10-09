@@ -1,10 +1,23 @@
-# sgrep
+<p align="center">
+  <a href="https://context.dev">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/context-logo-white.svg">
+      <img src="assets/context-logo.svg" alt="Context.dev" width="240">
+    </picture>
+  </a>
+</p>
 
-**Search code and documents with ripgrep and local static embeddings.**
+<h1 align="center">sgrep</h1>
+
+<p align="center"><strong>Search code and documents with ripgrep and local static embeddings.</strong></p>
+
+<p align="center">
+  <a href="#benchmarks">Benchmarks</a> ·
+  <a href="https://github.com/mrmps/sgrep/releases">Releases</a> ·
+  <a href="https://context.dev">Context.dev</a>
+</p>
 
 sgrep finds files that match your query, then ranks relevant passages by meaning. It runs on your machine and reads fresh source on every search, so there is no index to build or keep in sync.
-
-[Benchmarks](#benchmarks) · [Releases](https://github.com/mrmps/sgrep/releases) · [Context.dev](https://context.dev)
 
 ## Benchmarks
 

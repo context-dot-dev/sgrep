@@ -8,6 +8,10 @@ description = "Search code and text with ripgrep and local static embeddings."
 repository = "https://github.com/mrmps/sgrep"
 
 [dependencies]
+memmap2 = "0.9"
+crc32fast = "1"
+sha2 = "0.11"
+tempfile = "3"
 base64 = "0.22"
 clap = { version = "4", features = ["derive"] }
 half = "2"

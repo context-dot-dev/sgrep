@@ -53,8 +53,9 @@ def main():
         run("invalid count", ["read", "-n", "0"], 2)
         run("missing path", ["read", "missing-dir"], 2)
         run("missing ripgrep", ["read"], 2, {"PATH":str(Path(os.sys.executable).parent)})
-        for name, query in [("no matches", "absentuniquezz"), ("gitignore", "ignoredneedle"), ("hidden files", "hiddenneedle"), ("binary files", "binaryneedle")]:
-            assert json.loads(run(name, [query, "--json"], 1, {"HF_HUB_OFFLINE":"1"})) == []
+        for name, query in [("approximate matches", "absentuniquezz"), ("gitignore", "ignoredneedle"), ("hidden files", "hiddenneedle"), ("binary files", "binaryneedle")]:
+            rows = json.loads(run(name, [query, "--json"], env={"HF_HUB_OFFLINE":"1"}))
+            assert all(r["path"] not in ("ignored.py", ".hidden.py", "binary") for r in rows)
         results = json.loads(run("semantic search", ["read a file from disk", "--json", "-n", "1"]))
         assert len(results)==1 and results[0]['path']=='file utils.py' and 'def read_file' in results[0]['content']
         for b in results:

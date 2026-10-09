@@ -23,7 +23,7 @@ sgrep searches fresh source with independent lexical and semantic retrieval, inc
 
 ![Code-search benchmark comparing function retrieval and median latency for sgrep, CK, Jevgrep, and ripgrep.](benchmarks/benchmark.svg)
 
-The new live hybrid pipeline improved complete-function retrieval from **507/600 to 533/600** on the full local RepoQA retrieval suite, compared with current main. Median CLI latency on the separate replay panel was **81 → 69 ms**. There were 32 function-retrieval gains and six losses; see the [before/after results and limitations](benchmarks/README.md#live-hybrid-fusion-before-and-after).
+The hybrid-fusion baseline, before independent semantic discovery, improved complete-function retrieval from **507/600 to 533/600** on the full local RepoQA retrieval suite, compared with current main. Median CLI latency on the separate replay panel was **81 → 69 ms**. There were 32 function-retrieval gains and six losses; see the [before/after results and limitations](benchmarks/README.md#live-hybrid-fusion-before-and-after). The discovery and stdin changes have a separate [60-query comparison](benchmarks/README.md#discovery-and-piped-reranking-october-9).
 
 The chart above is the earlier published v0.2.0 comparison: sgrep matched CK's 76.7% function-retrieval rate at 71 ms median latency on 60 queries. Jevgrep was best at ranking the correct file first, while CK returned complete functions more often. These source-snapshot results do not establish large-monorepo or general-document performance.
 

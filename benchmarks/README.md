@@ -1,5 +1,44 @@
 # Code-search benchmark
 
+## Discovery and piped reranking (October 9)
+
+The immediate target is now `973b010`, after the hybrid-fusion prerequisite merged as PR #3. Its executable sources are identical to the measured parent `6579a74`. The independent discovery/stdin change has this result on the same fixed 60 cases:
+
+| Metric | Current main | Discovery/stdin |
+| --- | ---: | ---: |
+| Correct file in first passage | 39/60 | 39/60 |
+| Correct file within five passages | 57/60 | 58/60 |
+| At least half the target function within 8,000 characters | 51/60 | 53/60 |
+| Complete target function within 8,000 characters | 51/60 | 52/60 |
+| Cached median, isolated ABBA panel | 67.7 ms | 56.7 ms |
+| First query per corpus median, model already cached | 69.1 ms | 103.8 ms |
+
+The table below retains the cumulative comparison with the main version at the start of this task; its gains include the prerequisite and should not all be attributed to semantic discovery. Both comparisons and paired regressions are in [discovery-results.json](discovery-results.json).
+
+This paired comparison uses the same 60 frozen queries and source snapshots, with `849a91c` as the baseline. The subsequent `9594adc` main commit changes only README/logo assets. No query-specific tuning was applied to this panel. Both executables return up to 50 source passages; every returned range was checked against the snapshot.
+
+| Metric | Before | After |
+| --- | ---: | ---: |
+| Correct file in first passage | 34/60 (56.7%) | 39/60 (65.0%) |
+| Correct file within five passages | 57/60 (95.0%) | 58/60 (96.7%) |
+| At least half the target function within 8,000 characters | 48/60 (80.0%) | 53/60 (88.3%) |
+| Complete target function within 8,000 characters | 48/60 (80.0%) | 52/60 (86.7%) |
+| Cached query median, isolated ABBA panel | 76.6 ms | 56.8 ms |
+| First query per corpus median, model already cached | 72.3 ms | 98.7 ms |
+
+The coverage budget includes paths and complete source lines, measured in Unicode characters, **not the token budget in the older comparison below**. File ranks count passages, not distinct files. The latency panel runs one fixed query per repository twice per executable, in ABBA order, with fresh processes and cached models/corpus vectors. First-corpus timings are retained from the quality run and are less controlled; compilation overlapped part of that run. The candidate uses 12.5 MB of corpus-vector caches across the 12 snapshots. These caches are additional to model weights.
+
+On the four previously investigated Context questions, whole-repository discovery still returned none of the four deciding lines in its top five, before or after. Targeted `rg --json -C 3 ... | sgrep ... --stdin` returned three of four. Those regexes came from prior source inspection, so this is an assisted workflow example, not a blind discovery score. On the 85.8 MB Context snapshot, the first candidate search took 3.3 seconds; subsequent searches took roughly 0.5–0.7 seconds, versus 0.35–0.44 seconds before. Piped reranking took roughly 90–115 ms including ripgrep.
+
+The change enables retrieval without lexical overlap and useful piped reranking; it does not establish reliable reasoning about code conditions. The sample is small, previously published, and not newly held out. [Measurements and conditions](discovery-results.json) retain paired regressions as well as gains. The CLI runner retains every output and validates its source ranges:
+
+```sh
+python3 tests/retrieval_benchmark.py BEFORE AFTER queries.json /tmp/sgrep-comparison
+```
+
+Use the frozen query file from the evidence archive below (update its corpus paths for your host). Each query includes `id`, `query`, `root`, and `target: {path, start, end}`. The runner reports first-corpus and reuse timings separately; use an empty output directory for first-encoding measurements.
+
+
 ## Live hybrid fusion: before and after
 
 On October 9, 2026, the new pipeline was compared with `origin/main` at `849a91c` on all **600 questions across 60 repositories and six languages** in the local RepoQA release2024-06-23 suite. Both versions use current code-aware chunking. This is a retrieval adaptation, not an official RepoQA model score.

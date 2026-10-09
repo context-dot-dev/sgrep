@@ -1,4 +1,5 @@
 mod codechunker;
+mod embedding_cache;
 mod rg_input;
 mod splitter;
 
@@ -64,6 +65,12 @@ struct Args {
     /// Add ripgrep --json matches and context from a file, or - for stdin.
     #[arg(long, value_name = "FILE")]
     rg_json: Option<PathBuf>,
+    /// Rank only ripgrep --json passages read from standard input.
+    #[arg(long, conflicts_with = "rg_json")]
+    stdin: bool,
+    /// Compute fresh corpus embeddings without reading or writing the cache.
+    #[arg(long)]
+    no_cache: bool,
     /// Include lexical, semantic and fused scores in JSON output.
     #[arg(long, requires = "json")]
     explain: bool,
@@ -294,35 +301,36 @@ fn embed(texts: Vec<String>, model: &Model) -> Result<Vec<Vec<f32>>> {
     };
     let unknown = tokenizer.token_to_id("[UNK]");
     let encoded = tokenizer.encode_batch_fast(texts, false)?;
-    let mut vectors = Vec::new();
-    for encoding in encoded {
-        let mut vector = vec![0.0f32; 256];
-        let ids: Vec<_> = encoding
-            .get_ids()
-            .iter()
-            .filter(|&&id| Some(id) != unknown)
-            .collect();
-        for &&id in &ids {
-            let offset = id as usize * 256;
-            for (x, weight) in vector.iter_mut().zip(&weights[offset..offset + 256]) {
-                *x += weight;
+    encoded
+        .par_iter()
+        .map(|encoding| {
+            let mut vector = vec![0.0f32; 256];
+            let ids: Vec<_> = encoding
+                .get_ids()
+                .iter()
+                .filter(|&&id| Some(id) != unknown)
+                .collect();
+            for &&id in &ids {
+                let offset = id as usize * 256;
+                for (x, weight) in vector.iter_mut().zip(&weights[offset..offset + 256]) {
+                    *x += weight;
+                }
             }
-        }
-        if !ids.is_empty() {
+            if !ids.is_empty() {
+                for x in &mut vector {
+                    *x /= ids.len() as f32;
+                }
+            }
+            let norm = vector.iter().map(|x| x * x).sum::<f32>().sqrt() + 1e-32;
             for x in &mut vector {
-                *x /= ids.len() as f32;
+                *x /= norm;
             }
-        }
-        let norm = vector.iter().map(|x| x * x).sum::<f32>().sqrt() + 1e-32;
-        for x in &mut vector {
-            *x /= norm;
-        }
-        if !vector.iter().all(|x| x.is_finite()) {
-            return Err("non-finite embedding".into());
-        }
-        vectors.push(vector);
-    }
-    Ok(vectors)
+            if !vector.iter().all(|x| x.is_finite()) {
+                return Err("non-finite embedding".into());
+            }
+            Ok(vector)
+        })
+        .collect()
 }
 
 fn search(args: &Args) -> Result<Vec<Chunk>> {
@@ -336,7 +344,13 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
     if !path.is_file() && !path.is_dir() {
         return Err("not a file or directory".into());
     }
-    let mut chunks = candidates(&path)?;
+    let mut chunks = if args.stdin {
+        rg_input::read(Path::new("-"), &path)?
+    } else {
+        candidates(&path)?
+    };
+    let mut seen = HashSet::new();
+    chunks.retain(|c| seen.insert((c.path.clone(), c.start, c.end)));
     let corpus_len = chunks.len();
     let mut supplied = Vec::new();
     if let Some(input) = &args.rg_json {
@@ -359,27 +373,8 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
         return Ok(Vec::new());
     }
     let lexical = bm25(&chunks, &terms, corpus_len);
-    let mut order: Vec<_> = (0..corpus_len).filter(|&i| lexical[i] > 0.0).collect();
-    order.sort_by(|&a, &b| lexical[b].total_cmp(&lexical[a]));
-    order.truncate(200);
-    let mut selected: HashSet<_> = order.iter().copied().collect();
-    order.extend(supplied.into_iter().filter(|&i| selected.insert(i)));
-    if order.is_empty() {
-        return Ok(Vec::new());
-    }
-    let mut texts = vec![args.query.clone()];
-    texts.extend(order.iter().map(|&i| {
-        format!(
-            "{}\n{}",
-            Path::new(&chunks[i].path)
-                .file_name()
-                .unwrap()
-                .to_string_lossy(),
-            chunks[i].content
-        )
-    }));
-    let prose_only = order.iter().all(|&i| {
-        let extension = Path::new(&chunks[i].path)
+    let prose_only = chunks.iter().all(|chunk| {
+        let extension = Path::new(&chunk.path)
             .extension()
             .unwrap_or_default()
             .to_string_lossy()
@@ -395,12 +390,37 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
         } else {
             &CODE
         };
-    let vectors = embed(texts, model)?;
-    let scores: Vec<f32> = vectors[1..]
+    let query_vector = embed(vec![args.query.clone()], model)?.remove(0);
+    let texts = chunks
         .iter()
-        .map(|v| v.iter().zip(&vectors[0]).map(|(a, b)| a * b).sum())
+        .map(|c| format!("{}\n{}", c.path, c.content))
         .collect();
-    let semantic: Vec<f64> = scores.iter().map(|&s| s as f64).collect();
+    let vectors = embedding_cache::corpus(
+        texts,
+        model,
+        &path,
+        args.no_cache || args.stdin || args.rg_json.is_some(),
+    )?;
+    let similarities: Vec<f64> = vectors
+        .iter()
+        .map(|v| v.iter().zip(&query_vector).map(|(a, b)| a * b).sum::<f32>() as f64)
+        .collect();
+    let mut order: Vec<_> = if args.stdin {
+        (0..chunks.len()).collect()
+    } else {
+        let mut lexical_order: Vec<_> = (0..corpus_len).filter(|&i| lexical[i] > 0.0).collect();
+        lexical_order.sort_by(|&a, &b| lexical[b].total_cmp(&lexical[a]));
+        lexical_order.truncate(200);
+        let mut semantic_order: Vec<_> = (0..corpus_len).collect();
+        semantic_order.sort_by(|&a, &b| similarities[b].total_cmp(&similarities[a]));
+        semantic_order.truncate(200);
+        lexical_order.extend(semantic_order);
+        lexical_order.extend(supplied);
+        lexical_order
+    };
+    let mut selected = HashSet::new();
+    order.retain(|&i| selected.insert(i));
+    let semantic: Vec<_> = order.iter().map(|&i| similarities[i]).collect();
     let bm25_scores: Vec<_> = order.iter().map(|&i| lexical[i]).collect();
     let bm25_relative = relative_scores(&bm25_scores);
     let semantic_relative = relative_scores(&semantic);

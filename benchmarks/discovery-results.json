@@ -1,0 +1,1030 @@
+{
+  "before": {
+    "n": 60,
+    "failures": 0,
+    "file_at_1": 0.5666666666666667,
+    "file_at_5": 0.95,
+    "file_at_10": 0.9666666666666667,
+    "half_function_8k_chars": 0.8,
+    "full_function_8k_chars": 0.8,
+    "median_ms": 71.10083350016794,
+    "median_first_corpus_ms": 72.3477500014269,
+    "median_reuse_ms": 70.52227100029995
+  },
+  "after": {
+    "n": 60,
+    "failures": 0,
+    "file_at_1": 0.65,
+    "file_at_5": 0.9666666666666667,
+    "file_at_10": 0.9666666666666667,
+    "half_function_8k_chars": 0.8833333333333333,
+    "full_function_8k_chars": 0.8666666666666667,
+    "median_ms": 54.84277049981756,
+    "median_first_corpus_ms": 98.68537500005914,
+    "median_reuse_ms": 53.687395999077125
+  },
+  "conditions": {
+    "queries": 60,
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "source": "previously frozen RepoQA 60-query sample; no tuning in this run",
+    "models": "cached offline",
+    "budget": "8000 Unicode source/header characters, whole lines only; not tokens",
+    "before_sha256": "006383aa6022855a74969639c535b06cb7005b6f3cac55f1cf6224df96099f6e",
+    "after_sha256": "20b05d738d7cadb465284868a925e539f2343ad31092da09ae1f786cb6ee26bc",
+    "cache_bytes": 12459776
+  },
+  "isolated_timing": {
+    "conditions": "12 fixed first-per-repository queries, two invocations per tool in ABBA order, cached models/corpus, fresh processes, compilation finished before this panel",
+    "median_ms": {
+      "before": 76.55812500161119,
+      "after": 56.75831249936891
+    },
+    "rows": [
+      {
+        "id": "cpp-apache__logging-log4cxx-02",
+        "arm": "before",
+        "ms": 89.03358299721731
+      },
+      {
+        "id": "cpp-apache__logging-log4cxx-02",
+        "arm": "after",
+        "ms": 66.42891699812026
+      },
+      {
+        "id": "cpp-apache__logging-log4cxx-02",
+        "arm": "after",
+        "ms": 54.46437499995227
+      },
+      {
+        "id": "cpp-apache__logging-log4cxx-02",
+        "arm": "before",
+        "ms": 71.04762499875505
+      },
+      {
+        "id": "cpp-ClickHouse__clickhouse-cpp-08",
+        "arm": "before",
+        "ms": 69.58758399923681
+      },
+      {
+        "id": "cpp-ClickHouse__clickhouse-cpp-08",
+        "arm": "after",
+        "ms": 48.46841600010521
+      },
+      {
+        "id": "cpp-ClickHouse__clickhouse-cpp-08",
+        "arm": "after",
+        "ms": 48.251459000312025
+      },
+      {
+        "id": "cpp-ClickHouse__clickhouse-cpp-08",
+        "arm": "before",
+        "ms": 63.01154099855921
+      },
+      {
+        "id": "go-projectdiscovery__nuclei-07",
+        "arm": "before",
+        "ms": 91.21466600117856
+      },
+      {
+        "id": "go-projectdiscovery__nuclei-07",
+        "arm": "after",
+        "ms": 75.45766700059175
+      },
+      {
+        "id": "go-projectdiscovery__nuclei-07",
+        "arm": "after",
+        "ms": 71.19470799807459
+      },
+      {
+        "id": "go-projectdiscovery__nuclei-07",
+        "arm": "before",
+        "ms": 90.24054099791101
+      },
+      {
+        "id": "go-caddyserver__caddy-02",
+        "arm": "before",
+        "ms": 84.82066699798452
+      },
+      {
+        "id": "go-caddyserver__caddy-02",
+        "arm": "after",
+        "ms": 65.87791600031778
+      },
+      {
+        "id": "go-caddyserver__caddy-02",
+        "arm": "after",
+        "ms": 60.73229200046626
+      },
+      {
+        "id": "go-caddyserver__caddy-02",
+        "arm": "before",
+        "ms": 81.85433399921749
+      },
+      {
+        "id": "java-GoogleContainerTools__jib-00",
+        "arm": "before",
+        "ms": 74.53083300060825
+      },
+      {
+        "id": "java-GoogleContainerTools__jib-00",
+        "arm": "after",
+        "ms": 53.49616599778528
+      },
+      {
+        "id": "java-GoogleContainerTools__jib-00",
+        "arm": "after",
+        "ms": 55.438208000850864
+      },
+      {
+        "id": "java-GoogleContainerTools__jib-00",
+        "arm": "before",
+        "ms": 77.8972080006497
+      },
+      {
+        "id": "java-Password4j__password4j-08",
+        "arm": "before",
+        "ms": 77.3817080007575
+      },
+      {
+        "id": "java-Password4j__password4j-08",
+        "arm": "after",
+        "ms": 56.922959000075934
+      },
+      {
+        "id": "java-Password4j__password4j-08",
+        "arm": "after",
+        "ms": 49.28112500056159
+      },
+      {
+        "id": "java-Password4j__password4j-08",
+        "arm": "before",
+        "ms": 64.28712500201073
+      },
+      {
+        "id": "python-python-poetry__poetry-01",
+        "arm": "before",
+        "ms": 76.61400000142748
+      },
+      {
+        "id": "python-python-poetry__poetry-01",
+        "arm": "after",
+        "ms": 56.01783399833948
+      },
+      {
+        "id": "python-python-poetry__poetry-01",
+        "arm": "after",
+        "ms": 56.63266700139502
+      },
+      {
+        "id": "python-python-poetry__poetry-01",
+        "arm": "before",
+        "ms": 72.19283299855306
+      },
+      {
+        "id": "python-openai__openai-python-06",
+        "arm": "before",
+        "ms": 79.24979199742666
+      },
+      {
+        "id": "python-openai__openai-python-06",
+        "arm": "after",
+        "ms": 56.883957997342804
+      },
+      {
+        "id": "python-openai__openai-python-06",
+        "arm": "after",
+        "ms": 54.443249999167165
+      },
+      {
+        "id": "python-openai__openai-python-06",
+        "arm": "before",
+        "ms": 76.48108300054446
+      },
+      {
+        "id": "rust-cloudflare__pingora-03",
+        "arm": "before",
+        "ms": 76.50225000179489
+      },
+      {
+        "id": "rust-cloudflare__pingora-03",
+        "arm": "after",
+        "ms": 61.66062500051339
+      },
+      {
+        "id": "rust-cloudflare__pingora-03",
+        "arm": "after",
+        "ms": 54.46400000073481
+      },
+      {
+        "id": "rust-cloudflare__pingora-03",
+        "arm": "before",
+        "ms": 68.84512499891571
+      },
+      {
+        "id": "rust-rust-lang__cargo-01",
+        "arm": "before",
+        "ms": 112.03191700042225
+      },
+      {
+        "id": "rust-rust-lang__cargo-01",
+        "arm": "after",
+        "ms": 85.30799999789451
+      },
+      {
+        "id": "rust-rust-lang__cargo-01",
+        "arm": "after",
+        "ms": 86.16379200248048
+      },
+      {
+        "id": "rust-rust-lang__cargo-01",
+        "arm": "before",
+        "ms": 110.13566700057709
+      },
+      {
+        "id": "typescript-expressjs__express-04",
+        "arm": "before",
+        "ms": 57.93874999653781
+      },
+      {
+        "id": "typescript-expressjs__express-04",
+        "arm": "after",
+        "ms": 48.61937500027125
+      },
+      {
+        "id": "typescript-expressjs__express-04",
+        "arm": "after",
+        "ms": 46.697334000782575
+      },
+      {
+        "id": "typescript-expressjs__express-04",
+        "arm": "before",
+        "ms": 57.57574999734061
+      },
+      {
+        "id": "typescript-firebase__firebase-admin-node-05",
+        "arm": "before",
+        "ms": 84.18233300108113
+      },
+      {
+        "id": "typescript-firebase__firebase-admin-node-05",
+        "arm": "after",
+        "ms": 60.83299999954761
+      },
+      {
+        "id": "typescript-firebase__firebase-admin-node-05",
+        "arm": "after",
+        "ms": 61.00966600206448
+      },
+      {
+        "id": "typescript-firebase__firebase-admin-node-05",
+        "arm": "before",
+        "ms": 75.9705419986858
+      }
+    ]
+  },
+  "paired_changes": {
+    "rank": {
+      "improved": 13,
+      "regressed": 4,
+      "unchanged": 43
+    },
+    "coverage_8k_chars": {
+      "improved": 7,
+      "regressed": 1,
+      "unchanged": 52
+    }
+  },
+  "context_cases": [
+    {
+      "id": "cache",
+      "question": "Where do scrape requests bypass cached pages and force a fresh fetch?",
+      "target": [
+        "gcp/functions/src/implementation/scraping/scrapeHtmlCache.ts",
+        329
+      ],
+      "arms": {
+        "before": {
+          "first_ms": 745.2720830006001,
+          "warm_median_ms": 346.7707089985197,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/src/types/generated-api-types.ts",
+              "start": 895,
+              "end": 906
+            },
+            {
+              "path": "gcp/functions/src/implementation/scraping/scrapeHtmlCache.ts",
+              "start": 277,
+              "end": 308
+            },
+            {
+              "path": "gcp/openapispec.json",
+              "start": 19154,
+              "end": 19183
+            },
+            {
+              "path": "gcp/functions/src/implementation/scrapeHtmlCached.ts",
+              "start": 590,
+              "end": 606
+            },
+            {
+              "path": "gcp/functions/tests/unit/implementation/scrapeHtmlCached.test.ts",
+              "start": 653,
+              "end": 718
+            }
+          ]
+        },
+        "after": {
+          "first_ms": 3303.373750000901,
+          "warm_median_ms": 530.2455419987382,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/src/types/generated-api-types.ts",
+              "start": 895,
+              "end": 906
+            },
+            {
+              "path": "gcp/functions/src/implementation/scraping/scrapeHtmlCache.ts",
+              "start": 277,
+              "end": 308
+            },
+            {
+              "path": "gcp/openapispec.json",
+              "start": 19154,
+              "end": 19183
+            },
+            {
+              "path": "gcp/functions/tests/unit/implementation/scrapeHtmlCached.test.ts",
+              "start": 653,
+              "end": 718
+            },
+            {
+              "path": "gcp/functions/tests/unit/implementation/scrapeHtmlCached.test.ts",
+              "start": 2280,
+              "end": 2329
+            }
+          ]
+        },
+        "stdin": {
+          "regex": "maxAgeMs.*>|cache bypassed",
+          "pipeline_median_ms": 89.54231250027078,
+          "target_line_at_5": true,
+          "hits": [
+            {
+              "path": "gcp/functions/src/implementation/scrape-images/scrapeImagesCached.ts",
+              "start": 77,
+              "end": 83
+            },
+            {
+              "path": "gcp/functions/tests/unit/implementation/web/scrape/performScrapeBytes.test.ts",
+              "start": 208,
+              "end": 214
+            },
+            {
+              "path": "gcp/functions/src/implementation/scrape.ts",
+              "start": 42,
+              "end": 48
+            },
+            {
+              "path": "gcp/functions/src/implementation/scraping/scrapeHtmlCache.ts",
+              "start": 326,
+              "end": 333
+            },
+            {
+              "path": "gcp/functions/src/implementation/web/scrape/performScrapeBytes.ts",
+              "start": 97,
+              "end": 103
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "blocked",
+      "question": "How do we detect blocked scrape pages and retry with another browser or proxy?",
+      "target": [
+        "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+        822
+      ],
+      "arms": {
+        "after": {
+          "first_ms": 532.957790997898,
+          "warm_median_ms": 514.0254580001056,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 111,
+              "end": 153
+            },
+            {
+              "path": "gcp/functions/src/implementation/scrapeHtmlCached.ts",
+              "start": 515,
+              "end": 590
+            },
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 906,
+              "end": 930
+            },
+            {
+              "path": "gcp/functions/tests/unit/controller/api/BrowserServiceAPIController.test.ts",
+              "start": 536,
+              "end": 584
+            },
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 619,
+              "end": 676
+            }
+          ]
+        },
+        "before": {
+          "first_ms": 408.36058299828437,
+          "warm_median_ms": 424.79591600204003,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 111,
+              "end": 153
+            },
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 906,
+              "end": 930
+            },
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 619,
+              "end": 676
+            },
+            {
+              "path": "gcp/functions/tests/unit/controller/api/BrowserServiceAPIController.test.ts",
+              "start": 536,
+              "end": 584
+            },
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 1524,
+              "end": 1570
+            }
+          ]
+        },
+        "stdin": {
+          "regex": "isConfirmedBlock|blockedAutoProxyAttempt",
+          "pipeline_median_ms": 104.06291649815103,
+          "target_line_at_5": true,
+          "hits": [
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 122,
+              "end": 128
+            },
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 819,
+              "end": 825
+            },
+            {
+              "path": "gcp/functions/src/controller/api/BrowserServiceAPIController.ts",
+              "start": 901,
+              "end": 907
+            },
+            {
+              "path": "gcp/functions/src/implementation/scraping/blockedDocumentDetection.ts",
+              "start": 1,
+              "end": 7
+            },
+            {
+              "path": "gcp/functions/src/implementation/scraping/blockedDocumentDetection.ts",
+              "start": 37,
+              "end": 43
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "refund",
+      "question": "When a web scrape fails how are charged credits refunded?",
+      "target": [
+        "gcp/functions/src/api/routers/web/scrape/handlers/unified.ts",
+        76
+      ],
+      "arms": {
+        "before": {
+          "first_ms": 380.2417909973883,
+          "warm_median_ms": 356.9928750002873,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/tests/unit/api/routers/batches/serialize.test.ts",
+              "start": 199,
+              "end": 250
+            },
+            {
+              "path": "gcp/functions/src/controller/db/DBBatchController.ts",
+              "start": 504,
+              "end": 564
+            },
+            {
+              "path": "gcp/functions/src/controller/db/DBOrganizationCreditsController.ts",
+              "start": 875,
+              "end": 920
+            },
+            {
+              "path": "gcp/functions/src/controller/db/DBOrganizationCreditsController.ts",
+              "start": 949,
+              "end": 992
+            },
+            {
+              "path": "gcp/functions/src/types/generated-api-types.ts",
+              "start": 13234,
+              "end": 13268
+            }
+          ]
+        },
+        "after": {
+          "first_ms": 579.7973749977245,
+          "warm_median_ms": 683.1464589995448,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/tests/unit/api/routers/batches/serialize.test.ts",
+              "start": 199,
+              "end": 250
+            },
+            {
+              "path": "gcp/functions/src/controller/db/DBBatchController.ts",
+              "start": 504,
+              "end": 564
+            },
+            {
+              "path": "gcp/functions/src/controller/db/DBOrganizationCreditsController.ts",
+              "start": 875,
+              "end": 920
+            },
+            {
+              "path": "gcp/functions/src/types/generated-api-types.ts",
+              "start": 13234,
+              "end": 13268
+            },
+            {
+              "path": "gcp/functions/src/types/generated-api-types.ts",
+              "start": 13732,
+              "end": 13757
+            }
+          ]
+        },
+        "stdin": {
+          "regex": "shouldBill|creditCost",
+          "pipeline_median_ms": 115.04231250000885,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/src/api/routers/web/scrape/handlers/images/external.ts",
+              "start": 36,
+              "end": 42
+            },
+            {
+              "path": "gcp/functions/src/api/routers/web/scrape/handlers/html/external.ts",
+              "start": 32,
+              "end": 38
+            },
+            {
+              "path": "gcp/functions/src/api/routers/web/scrape/handlers/markdown/external.ts",
+              "start": 31,
+              "end": 37
+            },
+            {
+              "path": "gcp/functions/src/api/routers/web/scrape/handlers/bytes/external.ts",
+              "start": 21,
+              "end": 27
+            },
+            {
+              "path": "gcp/functions/src/api/routers/web/scrape/handlers/screenshot/external.ts",
+              "start": 35,
+              "end": 41
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "highlights",
+      "question": "What happens when highlights extraction finds no relevant passages?",
+      "target": [
+        "gcp/functions/src/implementation/highlights/extractHighlights.ts",
+        273
+      ],
+      "arms": {
+        "after": {
+          "first_ms": 553.9007080005831,
+          "warm_median_ms": 571.1754170006316,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/src/implementation/highlights/tests/extractHighlights.test.ts",
+              "start": 129,
+              "end": 175
+            },
+            {
+              "path": "gcp/functions/src/types/generated-api-types.ts",
+              "start": 3233,
+              "end": 3242
+            },
+            {
+              "path": "gcp/openapispec.json",
+              "start": 24435,
+              "end": 24497
+            },
+            {
+              "path": "gcp/functions/src/implementation/highlights/extractHighlights.ts",
+              "start": 51,
+              "end": 103
+            },
+            {
+              "path": "gcp/functions/src/api/validations.ts",
+              "start": 2802,
+              "end": 2840
+            }
+          ]
+        },
+        "before": {
+          "first_ms": 420.54341600305634,
+          "warm_median_ms": 438.1605420021515,
+          "target_line_at_5": false,
+          "hits": [
+            {
+              "path": "gcp/functions/src/types/generated-api-types.ts",
+              "start": 3233,
+              "end": 3242
+            },
+            {
+              "path": "gcp/openapispec.json",
+              "start": 24435,
+              "end": 24497
+            },
+            {
+              "path": "gcp/functions/src/implementation/highlights/tests/extractHighlights.test.ts",
+              "start": 129,
+              "end": 175
+            },
+            {
+              "path": "gcp/functions/src/implementation/highlights/extractHighlights.ts",
+              "start": 51,
+              "end": 103
+            },
+            {
+              "path": "gcp/functions/src/implementation/highlights/tests/extractHighlights.test.ts",
+              "start": 1,
+              "end": 71
+            }
+          ]
+        },
+        "stdin": {
+          "regex": "FALLBACK_TOP_K|passing.length",
+          "pipeline_median_ms": 99.22431249833608,
+          "target_line_at_5": true,
+          "hits": [
+            {
+              "path": "gcp/functions/src/implementation/highlights/extractHighlights.ts",
+              "start": 237,
+              "end": 243
+            },
+            {
+              "path": "gcp/functions/src/implementation/highlights/extractHighlights.ts",
+              "start": 269,
+              "end": 276
+            },
+            {
+              "path": "gcp/functions/src/scripts/jev_highlights/strategies.ts",
+              "start": 245,
+              "end": 251
+            },
+            {
+              "path": "gcp/functions/src/scripts/jev_highlights/strategies.ts",
+              "start": 506,
+              "end": 512
+            },
+            {
+              "path": "gcp/functions/src/scripts/jev_highlights/strategies.ts",
+              "start": 663,
+              "end": 671
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "source_baseline": "849a91c9563144efa67ddfd74f37c69e41522df3; current main 9594adc only changes README/logo assets",
+  "limits": [
+    "This reuses the published 60-query sample; it is not a new blind evaluation.",
+    "8k here means Unicode characters, not the old report's 8k tokens.",
+    "Target-file ranks count passages, not distinct files.",
+    "All failed CLI invocations would count against quality; none failed.",
+    "Context pipeline regexes were selected during the prior source investigation.",
+    "Corpus cache is rebuilt after any source edit; cold model downloads are excluded."
+  ],
+  "current_main_comparison": {
+    "before": {
+      "n": 60,
+      "failures": 0,
+      "file_at_1": 0.65,
+      "file_at_5": 0.95,
+      "file_at_10": 0.9666666666666667,
+      "half_function_8k_chars": 0.85,
+      "full_function_8k_chars": 0.85,
+      "median_ms": 68.79029149968119,
+      "median_first_corpus_ms": 69.06743750187161,
+      "median_reuse_ms": 68.72970849872218
+    },
+    "after": {
+      "n": 60,
+      "failures": 0,
+      "file_at_1": 0.65,
+      "file_at_5": 0.9666666666666667,
+      "file_at_10": 0.9666666666666667,
+      "half_function_8k_chars": 0.8833333333333333,
+      "full_function_8k_chars": 0.8666666666666667,
+      "median_ms": 59.49616649922973,
+      "median_first_corpus_ms": 103.7789165002323,
+      "median_reuse_ms": 57.968437498857384
+    },
+    "conditions": {
+      "queries": 60,
+      "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+      "source": "same previously frozen 60-query RepoQA subset",
+      "models": "cached offline",
+      "budget": "8000 Unicode source/header characters, whole lines only; not tokens",
+      "before_sha256": "b0af587ca8949d9473c8579c411f6e750c55a85232c6574ee7e36cdf93729948",
+      "after_sha256": "20b05d738d7cadb465284868a925e539f2343ad31092da09ae1f786cb6ee26bc",
+      "cache_bytes": 12459776
+    },
+    "baseline_commit": "973b010 (same executable sources as parent 6579a74)",
+    "isolated_timing": {
+      "conditions": "12 fixed first-per-repository queries, two invocations per tool in ABBA order, cached models/corpus, fresh processes, compilation finished before this panel",
+      "median_ms": {
+        "parent": 67.67927100008819,
+        "after": 56.743458000710234
+      },
+      "rows": [
+        {
+          "id": "cpp-apache__logging-log4cxx-02",
+          "arm": "parent",
+          "ms": 63.808625000092434
+        },
+        {
+          "id": "cpp-apache__logging-log4cxx-02",
+          "arm": "after",
+          "ms": 53.54337499738904
+        },
+        {
+          "id": "cpp-apache__logging-log4cxx-02",
+          "arm": "after",
+          "ms": 53.3804170008807
+        },
+        {
+          "id": "cpp-apache__logging-log4cxx-02",
+          "arm": "parent",
+          "ms": 63.63054100074805
+        },
+        {
+          "id": "cpp-ClickHouse__clickhouse-cpp-08",
+          "arm": "parent",
+          "ms": 58.6254169975291
+        },
+        {
+          "id": "cpp-ClickHouse__clickhouse-cpp-08",
+          "arm": "after",
+          "ms": 56.926207998913014
+        },
+        {
+          "id": "cpp-ClickHouse__clickhouse-cpp-08",
+          "arm": "after",
+          "ms": 51.215125000453554
+        },
+        {
+          "id": "cpp-ClickHouse__clickhouse-cpp-08",
+          "arm": "parent",
+          "ms": 59.55395799901453
+        },
+        {
+          "id": "go-projectdiscovery__nuclei-07",
+          "arm": "parent",
+          "ms": 83.3283339998161
+        },
+        {
+          "id": "go-projectdiscovery__nuclei-07",
+          "arm": "after",
+          "ms": 78.04224999927101
+        },
+        {
+          "id": "go-projectdiscovery__nuclei-07",
+          "arm": "after",
+          "ms": 72.86949999979697
+        },
+        {
+          "id": "go-projectdiscovery__nuclei-07",
+          "arm": "parent",
+          "ms": 82.36725000097067
+        },
+        {
+          "id": "go-caddyserver__caddy-02",
+          "arm": "parent",
+          "ms": 72.76633299989044
+        },
+        {
+          "id": "go-caddyserver__caddy-02",
+          "arm": "after",
+          "ms": 63.934958998288494
+        },
+        {
+          "id": "go-caddyserver__caddy-02",
+          "arm": "after",
+          "ms": 72.26058400192414
+        },
+        {
+          "id": "go-caddyserver__caddy-02",
+          "arm": "parent",
+          "ms": 73.4140419990581
+        },
+        {
+          "id": "java-GoogleContainerTools__jib-00",
+          "arm": "parent",
+          "ms": 61.31870799799799
+        },
+        {
+          "id": "java-GoogleContainerTools__jib-00",
+          "arm": "after",
+          "ms": 53.97512499985169
+        },
+        {
+          "id": "java-GoogleContainerTools__jib-00",
+          "arm": "after",
+          "ms": 50.30654100119136
+        },
+        {
+          "id": "java-GoogleContainerTools__jib-00",
+          "arm": "parent",
+          "ms": 68.69095900037792
+        },
+        {
+          "id": "java-Password4j__password4j-08",
+          "arm": "parent",
+          "ms": 65.818125000078
+        },
+        {
+          "id": "java-Password4j__password4j-08",
+          "arm": "after",
+          "ms": 48.76083400085918
+        },
+        {
+          "id": "java-Password4j__password4j-08",
+          "arm": "after",
+          "ms": 51.33495900008711
+        },
+        {
+          "id": "java-Password4j__password4j-08",
+          "arm": "parent",
+          "ms": 60.56070799968438
+        },
+        {
+          "id": "python-python-poetry__poetry-01",
+          "arm": "parent",
+          "ms": 64.64675000097486
+        },
+        {
+          "id": "python-python-poetry__poetry-01",
+          "arm": "after",
+          "ms": 57.72866699771839
+        },
+        {
+          "id": "python-python-poetry__poetry-01",
+          "arm": "after",
+          "ms": 54.58737499793642
+        },
+        {
+          "id": "python-python-poetry__poetry-01",
+          "arm": "parent",
+          "ms": 65.12033300168696
+        },
+        {
+          "id": "python-openai__openai-python-06",
+          "arm": "parent",
+          "ms": 69.64095900184475
+        },
+        {
+          "id": "python-openai__openai-python-06",
+          "arm": "after",
+          "ms": 60.04083300285856
+        },
+        {
+          "id": "python-openai__openai-python-06",
+          "arm": "after",
+          "ms": 56.37370800104691
+        },
+        {
+          "id": "python-openai__openai-python-06",
+          "arm": "parent",
+          "ms": 83.73770899925148
+        },
+        {
+          "id": "rust-cloudflare__pingora-03",
+          "arm": "parent",
+          "ms": 67.70954199964763
+        },
+        {
+          "id": "rust-cloudflare__pingora-03",
+          "arm": "after",
+          "ms": 54.59350000091945
+        },
+        {
+          "id": "rust-cloudflare__pingora-03",
+          "arm": "after",
+          "ms": 57.76925000100164
+        },
+        {
+          "id": "rust-cloudflare__pingora-03",
+          "arm": "parent",
+          "ms": 68.59341599920299
+        },
+        {
+          "id": "rust-rust-lang__cargo-01",
+          "arm": "parent",
+          "ms": 87.9006670002127
+        },
+        {
+          "id": "rust-rust-lang__cargo-01",
+          "arm": "after",
+          "ms": 86.35495799899218
+        },
+        {
+          "id": "rust-rust-lang__cargo-01",
+          "arm": "after",
+          "ms": 88.07591699951445
+        },
+        {
+          "id": "rust-rust-lang__cargo-01",
+          "arm": "parent",
+          "ms": 88.13862500028335
+        },
+        {
+          "id": "typescript-expressjs__express-04",
+          "arm": "parent",
+          "ms": 54.022708001866704
+        },
+        {
+          "id": "typescript-expressjs__express-04",
+          "arm": "after",
+          "ms": 60.34795899904566
+        },
+        {
+          "id": "typescript-expressjs__express-04",
+          "arm": "after",
+          "ms": 48.49504199955845
+        },
+        {
+          "id": "typescript-expressjs__express-04",
+          "arm": "parent",
+          "ms": 52.26870899787173
+        },
+        {
+          "id": "typescript-firebase__firebase-admin-node-05",
+          "arm": "parent",
+          "ms": 67.64900000052876
+        },
+        {
+          "id": "typescript-firebase__firebase-admin-node-05",
+          "arm": "after",
+          "ms": 60.17687500207103
+        },
+        {
+          "id": "typescript-firebase__firebase-admin-node-05",
+          "arm": "after",
+          "ms": 56.560708002507454
+        },
+        {
+          "id": "typescript-firebase__firebase-admin-node-05",
+          "arm": "parent",
+          "ms": 67.88204199983738
+        }
+      ]
+    },
+    "paired_changes": {
+      "rank": {
+        "improved": 4,
+        "regressed": 1,
+        "unchanged": 55
+      },
+      "coverage_8k_chars": {
+        "improved": 3,
+        "regressed": 0,
+        "unchanged": 57
+      }
+    }
+  }
+}

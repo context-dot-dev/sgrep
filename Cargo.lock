@@ -1548,6 +1548,7 @@ dependencies = [
 name = "sgrep"
 version = "0.3.0"
 dependencies = [
+ "base64 0.22.1",
  "chonkie",
  "clap",
  "half",

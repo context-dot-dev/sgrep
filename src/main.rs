@@ -1,4 +1,5 @@
 mod codechunker;
+mod rg_input;
 mod splitter;
 
 use clap::{Parser, ValueEnum};
@@ -60,6 +61,12 @@ struct Args {
     /// Auto uses text embeddings for prose-only candidates, code embeddings otherwise.
     #[arg(long, value_enum, default_value_t = ModelChoice::Auto)]
     model: ModelChoice,
+    /// Add ripgrep --json matches and context from a file, or - for stdin.
+    #[arg(long, value_name = "FILE")]
+    rg_json: Option<PathBuf>,
+    /// Include lexical, semantic and fused scores in JSON output.
+    #[arg(long, requires = "json")]
+    explain: bool,
 }
 
 #[derive(Serialize)]
@@ -70,6 +77,17 @@ struct Chunk {
     content: String,
     #[serde(skip)]
     counts: HashMap<String, usize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    scores: Option<Scores>,
+}
+
+#[derive(Serialize)]
+struct Scores {
+    bm25: f64,
+    semantic: f64,
+    bm25_relative: f64,
+    semantic_relative: f64,
+    fused: f64,
 }
 
 fn words(text: &str) -> Vec<String> {
@@ -93,17 +111,14 @@ fn filename(bytes: &[u8]) -> PathBuf {
     }
 }
 
-fn candidates(path: &Path, terms: &[String]) -> Result<Vec<Chunk>> {
+fn candidates(path: &Path) -> Result<Vec<Chunk>> {
     let root = if path.is_dir() {
         path
     } else {
         path.parent().unwrap()
     };
     let mut command = Command::new("rg");
-    command.args(["--no-config", "-l", "-0", "-i", "-F"]);
-    for term in terms {
-        command.args(["-e", term]);
-    }
+    command.args(["--no-config", "--files", "-0"]);
     let target = if path.is_dir() {
         Path::new(".")
     } else {
@@ -118,7 +133,6 @@ fn candidates(path: &Path, terms: &[String]) -> Result<Vec<Chunk>> {
     if !matches!(result.status.code(), Some(0 | 1)) {
         return Err(String::from_utf8_lossy(&result.stderr).into_owned().into());
     }
-    let terms: HashSet<&str> = terms.iter().map(String::as_str).collect();
     let mut files: Vec<_> = result
         .stdout
         .split(|b| *b == 0)
@@ -133,29 +147,20 @@ fn candidates(path: &Path, terms: &[String]) -> Result<Vec<Chunk>> {
             let relative = relative.strip_prefix(".").unwrap_or(&relative);
             let file = root.join(relative);
             let bytes = std::fs::read(&file)?;
+            if bytes.contains(&0) {
+                return Ok(chunks);
+            }
             let source = String::from_utf8_lossy(&bytes)
                 .replace("\r\n", "\n")
                 .replace('\r', "\n");
             let lines: Vec<&str> = source.split_inclusive('\n').collect();
-            let path_words = words(&relative.to_string_lossy());
             for (first, last) in splitter::ranges(&source, relative)? {
-                let content = lines[first - 1..last].concat();
-                let mut counts = HashMap::new();
-                for word in words(&content) {
-                    *counts.entry(word).or_insert(0) += 1;
-                }
-                if terms.iter().any(|t| counts.contains_key(*t)) {
-                    for word in &path_words {
-                        *counts.entry(word.clone()).or_insert(0) += 1;
-                    }
-                    chunks.push(Chunk {
-                        path: relative.to_string_lossy().into_owned(),
-                        start: first,
-                        end: last,
-                        content,
-                        counts,
-                    });
-                }
+                chunks.push(make_chunk(
+                    relative.to_string_lossy().into_owned(),
+                    first,
+                    last,
+                    lines[first - 1..last].concat(),
+                ));
             }
             Ok(chunks)
         })
@@ -163,17 +168,36 @@ fn candidates(path: &Path, terms: &[String]) -> Result<Vec<Chunk>> {
     Ok(chunks?.into_iter().flatten().collect())
 }
 
-fn bm25(chunks: &[Chunk], terms: &[String]) -> Vec<usize> {
+fn make_chunk(path: String, start: usize, end: usize, content: String) -> Chunk {
+    let mut counts = HashMap::new();
+    for word in words(&content).into_iter().chain(words(&path)) {
+        *counts.entry(word).or_insert(0) += 1;
+    }
+    Chunk {
+        path,
+        start,
+        end,
+        content,
+        counts,
+        scores: None,
+    }
+}
+
+fn bm25(chunks: &[Chunk], terms: &[String], corpus_len: usize) -> Vec<f64> {
     let lengths: Vec<usize> = chunks.iter().map(|c| c.counts.values().sum()).collect();
-    let average = lengths.iter().sum::<usize>() as f64 / chunks.len() as f64;
+    let average =
+        (lengths[..corpus_len].iter().sum::<usize>() as f64 / corpus_len.max(1) as f64).max(1.0);
     let idfs: Vec<_> = terms
         .iter()
         .map(|t| {
-            let df = chunks.iter().filter(|c| c.counts.contains_key(t)).count() as f64;
-            (1.0 + (chunks.len() as f64 - df + 0.5) / (df + 0.5)).ln()
+            let df = chunks[..corpus_len]
+                .iter()
+                .filter(|c| c.counts.contains_key(t))
+                .count() as f64;
+            (1.0 + (corpus_len as f64 - df + 0.5) / (df + 0.5)).ln()
         })
         .collect();
-    let scores: Vec<f64> = chunks
+    chunks
         .iter()
         .zip(lengths)
         .map(|(c, length)| {
@@ -188,11 +212,22 @@ fn bm25(chunks: &[Chunk], terms: &[String]) -> Vec<usize> {
                 })
                 .sum()
         })
-        .collect();
-    let mut order: Vec<_> = (0..chunks.len()).collect();
-    order.sort_by(|&a, &b| scores[b].total_cmp(&scores[a]));
-    order.truncate(200);
-    order
+        .collect()
+}
+
+fn relative_scores(scores: &[f64]) -> Vec<f64> {
+    let min = scores.iter().copied().fold(f64::INFINITY, f64::min);
+    let max = scores.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    scores
+        .iter()
+        .map(|s| {
+            if max > min {
+                (s - min) / (max - min)
+            } else {
+                0.0
+            }
+        })
+        .collect()
 }
 
 fn model_file(model: &Model, name: &str) -> Result<PathBuf> {
@@ -235,7 +270,9 @@ fn model_file(model: &Model, name: &str) -> Result<PathBuf> {
 }
 
 fn embed(texts: Vec<String>, model: &Model) -> Result<Vec<Vec<f32>>> {
-    let tokenizer = tokenizers::Tokenizer::from_file(model_file(model, "tokenizer.json")?)?;
+    let mut tokenizer = tokenizers::Tokenizer::from_file(model_file(model, "tokenizer.json")?)?;
+    tokenizer.with_truncation(None)?;
+    tokenizer.with_padding(None);
     let file = std::fs::read(model_file(model, "model.safetensors")?)?;
     let tensors = safetensors::SafeTensors::deserialize(&file)?;
     let tensor = tensors.tensor("embeddings")?;
@@ -299,11 +336,37 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
     if !path.is_file() && !path.is_dir() {
         return Err("not a file or directory".into());
     }
-    let chunks = candidates(&path, &terms)?;
+    let mut chunks = candidates(&path)?;
+    let corpus_len = chunks.len();
+    let mut supplied = Vec::new();
+    if let Some(input) = &args.rg_json {
+        let mut locations: HashMap<_, _> = chunks
+            .iter()
+            .enumerate()
+            .map(|(i, c)| ((c.path.clone(), c.start, c.end), i))
+            .collect();
+        for chunk in rg_input::read(input, &path)? {
+            let key = (chunk.path.clone(), chunk.start, chunk.end);
+            let i = *locations.entry(key).or_insert_with(|| {
+                let i = chunks.len();
+                chunks.push(chunk);
+                i
+            });
+            supplied.push(i);
+        }
+    }
     if chunks.is_empty() {
         return Ok(Vec::new());
     }
-    let order = bm25(&chunks, &terms);
+    let lexical = bm25(&chunks, &terms, corpus_len);
+    let mut order: Vec<_> = (0..corpus_len).filter(|&i| lexical[i] > 0.0).collect();
+    order.sort_by(|&a, &b| lexical[b].total_cmp(&lexical[a]));
+    order.truncate(200);
+    let mut selected: HashSet<_> = order.iter().copied().collect();
+    order.extend(supplied.into_iter().filter(|&i| selected.insert(i)));
+    if order.is_empty() {
+        return Ok(Vec::new());
+    }
     let mut texts = vec![args.query.clone()];
     texts.extend(order.iter().map(|&i| {
         format!(
@@ -337,22 +400,33 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
         .iter()
         .map(|v| v.iter().zip(&vectors[0]).map(|(a, b)| a * b).sum())
         .collect();
-    let mut semantic: Vec<_> = (0..order.len()).collect();
-    semantic.sort_by(|&a, &b| scores[b].total_cmp(&scores[a]));
-    let mut ranks = vec![0; order.len()];
-    for (rank, &i) in semantic.iter().enumerate() {
-        ranks[i] = rank;
-    }
+    let semantic: Vec<f64> = scores.iter().map(|&s| s as f64).collect();
+    let bm25_scores: Vec<_> = order.iter().map(|&i| lexical[i]).collect();
+    let bm25_relative = relative_scores(&bm25_scores);
+    let semantic_relative = relative_scores(&semantic);
+    let score = |i: usize| (bm25_relative[i] + semantic_relative[i]) / 2.0;
     let mut fused: Vec<_> = (0..order.len()).collect();
-    let score = |i: usize| 1.0 / (61 + i) as f64 + 1.0 / (61 + ranks[i]) as f64;
-    fused.sort_by(|&a, &b| score(b).total_cmp(&score(a)));
+    fused.sort_by(|&a, &b| {
+        score(b)
+            .total_cmp(&score(a))
+            .then_with(|| bm25_scores[b].total_cmp(&bm25_scores[a]))
+    });
     let mut chunks: Vec<_> = chunks.into_iter().map(Some).collect();
     let mut results: Vec<Chunk> = Vec::new();
     for i in fused {
-        let chunk = chunks[order[i]].take().unwrap();
+        let mut chunk = chunks[order[i]].take().unwrap();
+        if args.explain {
+            chunk.scores = Some(Scores {
+                bm25: bm25_scores[i],
+                semantic: semantic[i],
+                bm25_relative: bm25_relative[i],
+                semantic_relative: semantic_relative[i],
+                fused: score(i),
+            });
+        }
         if results
             .iter()
-            .any(|c| c.path == chunk.path && c.start <= chunk.end && chunk.start <= c.end)
+            .any(|c| c.path == chunk.path && c.start <= chunk.start && chunk.end <= c.end)
         {
             continue;
         }

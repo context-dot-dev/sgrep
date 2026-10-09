@@ -77,9 +77,31 @@ Each model downloads about 32–34 MB on first use and works offline afterward. 
 
 Directory searches follow ripgrep's ignore rules and skip hidden and binary files. Results include relative paths, one-based line ranges, and source. Exit codes are `0` for results, `1` for no matches, and `2` for errors.
 
-The search index lives in `$SGREP_CACHE_DIR`, `$XDG_CACHE_HOME/sgrep`, or `~/.cache/sgrep`, in that order. It contains **source passages**, lexical postings, and vectors. Files are written atomically with private permissions on Unix; source copies remain there until you delete the cache. `--no-cache` disables index reads and writes. Corrupt indexes are rebuilt, and deleting them is safe. No daemon or manual indexing command is required. Piped reranking does not use this index.
+### Cache controls
 
-Warm discovery enumerates files with ripgrep, checks file size, modification time, inode and change time on Unix, then memory-maps the index. Other platforms also hash source content. Additions, deletions, ignore changes, edits, and model changes invalidate the index. First searches and searches after edits rebuild the entire scope; they are not covered by warm-search latency measurements. Use `--no-cache` on filesystems that do not reliably update metadata.
+The search index holds **source passages**, lexical postings, and vectors. Each search discovers eligible files with ripgrep and hashes their content on every platform. Changes to content, paths, ignore rules, model identity, or index format invalidate it; timestamps alone are never trusted. Source is checked again before publishing or returning indexed results. Concurrent edits are not an atomic repository snapshot, so freeze inputs for reproducible evals.
+
+```sh
+# Rebuild and replace this scope's index, including offline.
+sgrep "retry with exponential backoff" . --refresh-cache
+
+# Search without reading or writing the index.
+sgrep "retry with exponential backoff" . --no-cache
+
+# Store indexes, models and parsers in one isolated directory.
+sgrep "retry with exponential backoff" . --cache-dir /path/to/sgrep-cache
+
+# Rebuild separate disposable indexes before timing each executable.
+python3 tests/benchmark.py BEFORE AFTER queries.json results --refresh-cache
+```
+
+The index cache keeps at most **256 MiB and 128 entries**, evicts the least recently used entries, and removes entries unused for 30 days on the next cache-enabled search. Abandoned sgrep temporary writes and legacy embedding caches count toward cleanup. Entries larger than the budget are computed without being saved. `SGREP_CACHE_MAX_BYTES` changes the byte limit; `0` disables index caching. Atomic replacement can temporarily require one extra entry's disk space. Cleanup preserves unrelated files and symlink targets. Cache I/O failures fall back to uncached search. Piped reranking bypasses the index.
+
+Index directory precedence is `SGREP_CACHE_DIR`, `XDG_CACHE_HOME/sgrep`, then `~/.cache/sgrep`. Models use `HF_HUB_CACHE`, `HUGGINGFACE_HUB_CACHE`, then `HF_HOME/hub` (default `~/.cache/huggingface/hub`). Parsers use `TREE_SITTER_LANGUAGE_PACK_CACHE_DIR` or the platform cache directory, under `tree-sitter-language-pack/v<version>`. `--cache-dir` overrides these with `index/`, `hub/`, and the versioned parser directory. Index files have private permissions on Unix. Source copies persist until eviction or manual deletion.
+
+Pinned model weights and tokenizers are checked against expected sizes and SHA-256 digests before use, repaired online, or rejected offline. `HF_HUB_OFFLINE=1`, `true`, `yes`, and `on` (case-insensitive) prevent model and parser downloads. Shared models (about 64 MB together), parser libraries, and parser bundles are outside the index budget and are not automatically deleted. Parser downloads verify archive checksums; installed libraries are not rehashed on each search.
+
+Use `--fresh-assets` to download models/parsers into disposable caches and bypass the persistent index. This requires network access, preserves pinned revisions, and cleans up on normal success or error. Forced termination can leave temporary directories. Neither refresh option clears operating-system filesystem caches. Benchmarks record preparation separately from timed queries and clean up disposable caches; the output directory intentionally retains result evidence.
 
 ## How it works
 
@@ -108,6 +130,8 @@ PATH="$PWD/target/release:$PATH" python3 tests/codechunker.py > chunker-results.
 PATH="$PWD/target/release:$PATH" python3 tests/hybrid.py > hybrid-results.json
 PATH="$PWD/target/release:$PATH" python3 tests/discovery.py > discovery-results.json
 SGREP_BASELINE=/path/to/before SGREP_CANDIDATE="$PWD/target/release/sgrep" python3 tests/index.py > index-results.json
+python3 tests/cache_lifecycle.py target/release/sgrep target/cache-lifecycle-results.json
+python3 tests/cache.py target/release/sgrep target/asset-cache-results.json --online
 ```
 
 The end-to-end checks use the real models and write a JSON receipt. To compare two executables on your own queries, run `python3 tests/benchmark.py BEFORE AFTER queries.json results`. Each query is an object with `id`, `query`, and an absolute `root` path.

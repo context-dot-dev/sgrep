@@ -42,9 +42,7 @@ pub fn byte_ranges(source: &str, path: &Path) -> super::Result<Vec<(usize, usize
         if source.len() <= max_bytes {
             return Ok(vec![(0, source.len())]);
         }
-        if std::env::var("HF_HUB_OFFLINE").is_ok_and(|s| s == "1")
-            && !tree_sitter_language_pack::has_parser(language)
-        {
+        if super::cache::offline() && !tree_sitter_language_pack::has_parser(language) {
             return Err(format!("The {language} parser is not cached; run once without HF_HUB_OFFLINE to download it").into());
         }
         PARSERS.with(|parsers| {

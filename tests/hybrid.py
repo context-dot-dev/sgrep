@@ -100,7 +100,7 @@ with tempfile.TemporaryDirectory(prefix='sgrep-hybrid-') as temp:
     scores=[r['scores'] for r in rows]
     for score in scores:
         assert all(math.isfinite(v) for v in score.values())
-        assert abs(score['fused']-(score['bm25_relative']+score['semantic_relative'])/2)<1e-6
+        assert abs(score['fused']-(.25*score['bm25_relative']+.75*score['semantic_relative']))<1e-6
     lexical=next(r for r in rows if r['path']=='needle.txt')
     assert lexical['scores']['bm25_relative']==1.0
     assert any(r['scores']['semantic']>lexical['scores']['semantic'] for r in rows), rows

@@ -95,6 +95,35 @@ struct Scores {
     bm25_relative: f64,
     semantic_relative: f64,
     fused: f64,
+    exact_identifier: bool,
+}
+
+fn identifier_pattern(query: &str) -> Result<Option<(Regex, Vec<&str>)>> {
+    static IDENTIFIER: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"[\p{L}_$][\p{L}\p{M}\p{N}_$]*").unwrap());
+    let query = query.trim();
+    let literals: Vec<_> = IDENTIFIER
+        .find_iter(query)
+        .map(|m| m.as_str())
+        .filter(|word| {
+            *word == query
+                || word.contains(['_', '$'])
+                || CAMEL.is_match(word)
+                || word.chars().any(char::is_numeric)
+        })
+        .collect();
+    if literals.is_empty() {
+        return Ok(None);
+    }
+    let alternatives = literals
+        .iter()
+        .map(|s| regex::escape(s))
+        .collect::<Vec<_>>()
+        .join("|");
+    let pattern = Regex::new(&format!(
+        r"(?:^|[^\p{{L}}\p{{M}}\p{{N}}_$])(?:{alternatives})(?:$|[^\p{{L}}\p{{M}}\p{{N}}_$])"
+    ))?;
+    Ok(Some((pattern, literals)))
 }
 
 fn words(text: &str) -> Vec<String> {
@@ -441,10 +470,25 @@ fn search(args: &Args) -> Result<Vec<Chunk>> {
         .iter()
         .map(|v| v.iter().zip(&query_vector).map(|(a, b)| a * b).sum::<f32>() as f64)
         .collect();
+    let exact: HashSet<_> = identifier_pattern(&args.query)?
+        .into_iter()
+        .flat_map(|(pattern, _)| {
+            chunks
+                .iter()
+                .enumerate()
+                .filter_map(move |(i, chunk)| pattern.is_match(&chunk.content).then_some(i))
+        })
+        .collect();
     let mut chunks: Vec<_> = chunks.into_iter().map(Some).collect();
-    rank(args, corpus_len, &lexical, &similarities, supplied, |i| {
-        Ok(chunks[i].take().unwrap())
-    })
+    rank(
+        args,
+        corpus_len,
+        &lexical,
+        &similarities,
+        supplied,
+        &exact,
+        |i| Ok(chunks[i].take().unwrap()),
+    )
 }
 
 fn rank(
@@ -453,6 +497,7 @@ fn rank(
     lexical: &[f64],
     similarities: &[f64],
     supplied: Vec<usize>,
+    exact: &HashSet<usize>,
     mut get_chunk: impl FnMut(usize) -> Result<Chunk>,
 ) -> Result<Vec<Chunk>> {
     let mut order: Vec<_> = if args.stdin {
@@ -466,6 +511,9 @@ fn rank(
         semantic_order.truncate(200);
         lexical_order.extend(semantic_order);
         lexical_order.extend(supplied);
+        let mut exact_order: Vec<_> = exact.iter().copied().collect();
+        exact_order.sort_unstable();
+        lexical_order.extend(exact_order);
         lexical_order
     };
     let mut selected = HashSet::new();
@@ -474,11 +522,13 @@ fn rank(
     let bm25_scores: Vec<_> = order.iter().map(|&i| lexical[i]).collect();
     let bm25_relative = relative_scores(&bm25_scores);
     let semantic_relative = relative_scores(&semantic);
-    let score = |i: usize| (bm25_relative[i] + semantic_relative[i]) / 2.0;
+    let score = |i: usize| 0.25 * bm25_relative[i] + 0.75 * semantic_relative[i];
     let mut fused: Vec<_> = (0..order.len()).collect();
     fused.sort_by(|&a, &b| {
-        score(b)
-            .total_cmp(&score(a))
+        exact
+            .contains(&order[b])
+            .cmp(&exact.contains(&order[a]))
+            .then_with(|| score(b).total_cmp(&score(a)))
             .then_with(|| bm25_scores[b].total_cmp(&bm25_scores[a]))
     });
     let mut results: Vec<Chunk> = Vec::new();
@@ -491,6 +541,7 @@ fn rank(
                 bm25_relative: bm25_relative[i],
                 semantic_relative: semantic_relative[i],
                 fused: score(i),
+                exact_identifier: exact.contains(&order[i]),
             });
         }
         if results

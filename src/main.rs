@@ -1,3 +1,6 @@
+mod codechunker;
+mod splitter;
+
 use clap::{Parser, ValueEnum};
 use half::f16;
 use rayon::prelude::*;
@@ -78,75 +81,6 @@ fn words(text: &str) -> Vec<String> {
         .collect()
 }
 
-fn last_code_end(node: tree_sitter::Node) -> usize {
-    for i in (0..node.child_count()).rev() {
-        let child = node.child(i).unwrap();
-        if child.kind() != "comment" {
-            return last_code_end(child);
-        }
-    }
-    node.end_position().row + 1
-}
-
-fn ranges(source: &str, python: bool, lines: usize) -> Result<Vec<(usize, usize)>> {
-    let mut ranges = Vec::new();
-    if python {
-        let mut parser = tree_sitter::Parser::new();
-        parser.set_language(&tree_sitter_python::LANGUAGE.into())?;
-        let tree = parser.parse(source, None).ok_or("Python parse cancelled")?;
-        if !tree.root_node().has_error() {
-            let mut pending = vec![tree.root_node()];
-            while let Some(node) = pending.pop() {
-                if node.kind() == "function_definition" {
-                    let start = node
-                        .parent()
-                        .filter(|n| n.kind() == "decorated_definition")
-                        .unwrap_or(node);
-                    ranges.push((start.start_position().row + 1, last_code_end(node)));
-                }
-                if matches!(
-                    node.kind(),
-                    "module"
-                        | "block"
-                        | "function_definition"
-                        | "class_definition"
-                        | "decorated_definition"
-                        | "if_statement"
-                        | "elif_clause"
-                        | "else_clause"
-                        | "for_statement"
-                        | "while_statement"
-                        | "try_statement"
-                        | "except_clause"
-                        | "finally_clause"
-                        | "with_statement"
-                        | "match_statement"
-                        | "case_clause"
-                ) {
-                    let mut cursor = node.walk();
-                    pending.extend(node.named_children(&mut cursor));
-                }
-            }
-        }
-    }
-    ranges.sort_unstable();
-    let mut cursor = 1;
-    let mut gaps = Vec::new();
-    for &(start, end) in &ranges {
-        if start > cursor {
-            gaps.push((cursor, start - 1));
-        }
-        cursor = cursor.max(end + 1);
-    }
-    if cursor <= lines {
-        gaps.push((cursor, lines));
-    }
-    ranges.extend(gaps);
-    ranges.sort_unstable();
-    ranges.dedup();
-    Ok(ranges)
-}
-
 fn filename(bytes: &[u8]) -> PathBuf {
     #[cfg(unix)]
     {
@@ -204,33 +138,23 @@ fn candidates(path: &Path, terms: &[String]) -> Result<Vec<Chunk>> {
                 .replace('\r', "\n");
             let lines: Vec<&str> = source.split_inclusive('\n').collect();
             let path_words = words(&relative.to_string_lossy());
-            for (start, end) in ranges(
-                &source,
-                file.extension().is_some_and(|s| s == "py"),
-                lines.len(),
-            )? {
-                for first in (start..=end).step_by(100) {
-                    let last = (first + 119).min(end);
-                    let content = lines[first - 1..last].concat();
-                    let mut counts = HashMap::new();
-                    for word in words(&content) {
-                        *counts.entry(word).or_insert(0) += 1;
+            for (first, last) in splitter::ranges(&source, relative)? {
+                let content = lines[first - 1..last].concat();
+                let mut counts = HashMap::new();
+                for word in words(&content) {
+                    *counts.entry(word).or_insert(0) += 1;
+                }
+                if terms.iter().any(|t| counts.contains_key(*t)) {
+                    for word in &path_words {
+                        *counts.entry(word.clone()).or_insert(0) += 1;
                     }
-                    if terms.iter().any(|t| counts.contains_key(*t)) {
-                        for word in &path_words {
-                            *counts.entry(word.clone()).or_insert(0) += 1;
-                        }
-                        chunks.push(Chunk {
-                            path: relative.to_string_lossy().into_owned(),
-                            start: first,
-                            end: last,
-                            content,
-                            counts,
-                        });
-                    }
-                    if last == end {
-                        break;
-                    }
+                    chunks.push(Chunk {
+                        path: relative.to_string_lossy().into_owned(),
+                        start: first,
+                        end: last,
+                        content,
+                        counts,
+                    });
                 }
             }
             Ok(chunks)

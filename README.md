@@ -40,13 +40,13 @@ sgrep "how do refunds work" . --model text
 sgrep "retry with exponential backoff" . --model code
 ```
 
-Each model downloads about 32–34 MB on first use and works offline afterward. Only the model files are cached; your source and queries stay local. Existing Hugging Face caches are reused, and `HF_HUB_OFFLINE=1` prevents downloads.
+Each model downloads about 32–34 MB on first use and works offline afterward. Code search also downloads and caches the required Tree-sitter grammars on first use. Your source and queries stay local. Existing Hugging Face caches are reused, and `HF_HUB_OFFLINE=1` prevents downloads.
 
 Directory searches follow ripgrep's ignore rules and skip hidden and binary files. Results include relative paths, one-based line ranges, and source. Exit codes are `0` for results, `1` for no matches, and `2` for errors.
 
 ## How it works
 
-Ripgrep finds files containing query words, and Rust processes those files in parallel. Python functions form chunks; other text uses windows of up to 120 lines. BM25 selects 200 candidates, static embeddings rank their meaning, and reciprocal rank fusion combines the two rankings before removing overlapping results. Files without query-word matches cannot be recovered by the semantic step.
+Ripgrep finds files containing query words, and Rust processes those files in parallel. Code uses a Rust port of Chonkie 1.7.0 CodeChunker with the exact boundary algorithm from Tree-sitter language-pack 1.21.0, the same pinned grammars, character tokenizer, and 2,048-character size estimate. It skips metadata that CodeChunker discards and avoids parsing files that already fit in one chunk. Supported extensions cover Python, C/C++, Go, Java, Rust, JavaScript/JSX, and TypeScript/TSX. Other files use Rust Chonkie RecursiveChunker with a 2,048-character target. Chunk boundaries expand to whole source lines, so a long line can exceed that target. BM25 selects 200 candidates, static embeddings rank their meaning, and reciprocal rank fusion combines the two rankings before removing overlapping results. Files without query-word matches cannot be recovered by the semantic step.
 
 The embeddings come from **[Minish Lab](https://github.com/MinishLab)**, the team behind [Model2Vec](https://github.com/MinishLab/model2vec): [Potion Code 16M v2](https://huggingface.co/minishlab/potion-code-16M-v2) for code and [Potion Base 8M](https://huggingface.co/minishlab/potion-base-8M) for general English text. Both models are MIT-licensed and pinned to specific revisions.
 
@@ -63,6 +63,7 @@ The embeddings come from **[Minish Lab](https://github.com/MinishLab)**, the tea
 ```sh
 cargo build --release --locked
 PATH="$PWD/target/release:$PATH" python3 tests/e2e.py > e2e-results.json
+PATH="$PWD/target/release:$PATH" python3 tests/codechunker.py > chunker-results.json
 ```
 
 The end-to-end checks use the real models and write a JSON receipt. To compare two executables on your own queries, run `python3 tests/benchmark.py BEFORE AFTER queries.json results`. Each query is an object with `id`, `query`, and an absolute `root` path.

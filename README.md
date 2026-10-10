@@ -9,117 +9,117 @@
 
 <h1 align="center">sgrep</h1>
 
-<p align="center"><strong>Search code and documents with ripgrep and local static embeddings.</strong></p>
-
-<p align="center">
-  <a href="#benchmarks">Benchmarks</a> ·
-  <a href="https://github.com/mrmps/sgrep/releases">Releases</a> ·
-  <a href="https://context.dev">Context.dev</a>
-</p>
-
-sgrep searches fresh source with independent lexical and semantic retrieval, including passages that share none of your question's words. It can also rank the output of your own ripgrep command. Everything runs locally; a persistent index reuses chunks, lexical statistics, and embeddings after checking the current file list and metadata.
-
-## Benchmarks
-
-[![sgrep compared with CK, Jevgrep and ripgrep on 600 RepoQA and 500 CoSQA queries.](benchmarks/full-suite/overview.png)](benchmarks/README.md#full-retrieval-benchmark-october-9-2026)
-
-On **600 RepoQA questions**, sgrep returned complete target functions within 8,000 tokens on **89.8%** of queries, versus **79.5%** for CK semantic. On **500 CoSQA questions**, sgrep found the labeled snippet in its top ten on **67.6%**, versus **79.6%** for CK semantic. There is no universal winner.
-
-Warm median CLI latency was **52.8 ms** on RepoQA and **239.3 ms** on CoSQA on an M5 Max. These are shared-host measurements with cached assets and indexes; setup costs and timing limitations are reported separately. The measured sgrep snapshot is **`0fbe8e5`**, not a claim about every future build.
-
-See the **[full benchmark, tables, language breakdowns and methodology](benchmarks/README.md#full-retrieval-benchmark-october-9-2026)**, [CSV](benchmarks/full-suite/summary.csv), and [all 5,000 scored runs](benchmarks/full-suite/results.json). RepoQA is a source-retrieval adaptation; CoSQA uses one labeled snippet per question. Both datasets were previously inspected during development.
+<p align="center">Search code and documents in plain English. Runs locally.</p>
 
 ## Install
 
+Requires Rust 1.90 or later and ripgrep.
+
 ```sh
-brew install ripgrep # or use your package manager
-cargo install --git https://github.com/mrmps/sgrep --locked
+brew install ripgrep
+cargo install --git https://github.com/context-dot-dev/sgrep --locked
 ```
 
-Building requires Rust 1.90 or later. You can also download a [macOS Apple Silicon binary](https://github.com/mrmps/sgrep/releases/latest). The executable needs ripgrep on your PATH, but no Python runtime or API key.
+Or download a [macOS Apple Silicon binary](https://github.com/context-dot-dev/sgrep/releases/latest).
+Remove any older Python install with `uv tool uninstall sgrep` or `pip uninstall sgrep` first.
 
-If you installed the earlier Python package, remove it with `uv tool uninstall sgrep` or `pip uninstall sgrep` first.
-
-## Usage
+## Search
 
 ```sh
 sgrep "when does a failed scrape consume credits" ./src
+```
 
+Results show the file, line range, and source. Use `-n 10` for ten results or `--json` for JSON output.
+
+To rank only the results from ripgrep:
+
+```sh
 rg --json -C 3 'creditCost|shouldBill' ./src \
   | sgrep "when does a failed scrape consume credits" --stdin
 ```
 
-`--stdin` ranks **only** the supplied match/context blocks. It does not scan the repository or add discovery results. Run both commands from the same directory; an optional path limits which input files are accepted. Empty input returns `[]` with `--json` and exit code 1. Use `-n` to choose the number of passages and `--json` for structured output.
+Run both commands from the same directory. Use ripgrep for exact matches; sgrep can return approximate matches.
 
-Discovery returns approximate matches even when no query words occur. A result is not proof that the code implements the requested behavior; inspect the source. Use ripgrep when you need exact-match absence checks.
+The first search downloads a model (32–34 MB) and any required code parsers. Later searches can run offline.
+Source and queries stay on your machine. The local index stores copies of source passages.
 
-You can add matches from an independently chosen ripgrep command. Run both commands from the same directory; emitted paths must fall within the sgrep search scope. Ripgrep still controls its regexes, globs, case handling and context:
+## Benchmarks
 
-```sh
-rg --json -i -C 12 -e 'single.?flight|in.?flight|coalesc' ./src \
-  | sgrep "where do identical concurrent requests share work" ./src --rg-json -
-```
+[![Bar charts comparing sgrep, CK, Jevgrep and ripgrep on RepoQA and CoSQA.](benchmarks/full-suite/overview.svg)](benchmarks/README.md#full-retrieval-benchmark-october-9-2026)
 
-`--rg-json FILE` also accepts saved output. These context blocks join the independently retrieved lexical and semantic candidates, even if they contain none of the question's words. Duplicate locations are scored once. Supplemental matches can explicitly include ignored or hidden files; the default BM25 scan still respects ignore rules. Stale source or paths outside the requested scope produce an error. Ripgrep JSON paths are resolved from the current working directory, including when reading saved output.
+600 RepoQA questions and 500 CoSQA questions. sgrep leads on complete-function retrieval; CK semantic leads on snippet retrieval.
+[Results and method](benchmarks/README.md#full-retrieval-benchmark-october-9-2026).
 
-Use `--json --explain` to inspect raw BM25 and semantic scores, their normalized values, and the final fused score. Existing JSON output is unchanged without `--explain`.
+## Reference
 
-The default `--model auto` uses general-text embeddings when every eligible passage is a prose file (`.md`, `.mdx`, `.txt`, `.rst`, `.adoc`, `.org`, or `.text`, case-insensitive). Code, mixed candidates, and other file types use code embeddings. You can choose explicitly when a file extension does not reflect its contents:
+<details>
+<summary>Search options</summary>
 
-```sh
-sgrep "how do refunds work" . --model text
-sgrep "retry with exponential backoff" . --model code
-```
+- `--stdin`: rank only the supplied ripgrep match and context blocks.
+- `--rg-json FILE`: add saved ripgrep results to a search. Use `-` to read from stdin.
+- `--model code` or `--model text`: select a model. Auto mode selects text when all candidate passages are prose, and code otherwise.
+- `--json --explain`: include lexical, semantic, and combined scores.
 
-Each model downloads about 32–34 MB on first use and works offline afterward. Code search also downloads and caches the required Tree-sitter grammars on first use. Your source and queries stay local. Existing Hugging Face caches are reused, and `HF_HUB_OFFLINE=1` prevents downloads.
+Ripgrep paths are relative to the current directory. Files must be within the search path and match the current source.
+Added ripgrep results can include hidden or ignored files. Normal searches follow ripgrep's ignore rules and skip hidden and binary files.
 
-Directory searches follow ripgrep's ignore rules and skip hidden and binary files. Results include relative paths, one-based line ranges, and source. Exit codes are `0` for results, `1` for no matches, and `2` for errors.
+Auto mode treats `.md`, `.mdx`, `.txt`, `.rst`, `.adoc`, `.org`, and `.text` as prose. Extension matching ignores case.
 
-### Cache controls
+Exit codes: 0 for results, 1 for no results, 2 for errors. Empty piped input returns `[]` with `--json`.
 
-The search index holds **source passages**, lexical postings, and vectors. Each search discovers eligible files with ripgrep and hashes their content on every platform. Changes to content, paths, ignore rules, model identity, or index format invalidate it; timestamps alone are never trusted. Source is checked again before publishing or returning indexed results. Concurrent edits are not an atomic repository snapshot, so freeze inputs for reproducible evals.
+</details>
 
-```sh
-# Rebuild and replace this scope's index, including offline.
-sgrep "retry with exponential backoff" . --refresh-cache
+<details>
+<summary>Cache controls</summary>
 
-# Search without reading or writing the index.
-sgrep "retry with exponential backoff" . --no-cache
+- `--refresh-cache`: rebuild the search index. Cached models allow offline use.
+- `--no-cache`: search without reading or writing the index.
+- `--cache-dir DIR`: store indexes, models, and parsers in one directory.
+- `--fresh-assets`: use temporary model and parser downloads. Requires network access.
+- `HF_HUB_OFFLINE=1`: prevent model and parser downloads.
 
-# Store indexes, models and parsers in one isolated directory.
-sgrep "retry with exponential backoff" . --cache-dir /path/to/sgrep-cache
+Each search checks file content. Changes to files, ignore rules, or models invalidate the index.
+Source is checked again before results are returned. Freeze files when you need repeatable measurements.
+Piped ranking does not use the index.
 
-# Rebuild separate disposable indexes before timing each executable.
-python3 tests/benchmark.py BEFORE AFTER queries.json results --refresh-cache
-```
+The index cache has limits of 256 MiB and 128 entries. Cleanup removes the least recently used entries and entries unused for 30 days.
+Set `SGREP_CACHE_MAX_BYTES` to change the size limit; use 0 to disable the index cache.
+Large entries are not saved. Cache failures fall back to a search without the index.
+Source copies remain until cleanup or manual deletion. Models and parsers are outside these limits.
 
-The index cache keeps at most **256 MiB and 128 entries**, evicts the least recently used entries, and removes entries unused for 30 days on the next cache-enabled search. Abandoned sgrep temporary writes and legacy embedding caches count toward cleanup. Entries larger than the budget are computed without being saved. `SGREP_CACHE_MAX_BYTES` changes the byte limit; `0` disables index caching. Atomic replacement can temporarily require one extra entry's disk space. Cleanup preserves unrelated files and symlink targets. Cache I/O failures fall back to uncached search. Piped reranking bypasses the index.
+Cache locations, in priority order:
 
-Index directory precedence is `SGREP_CACHE_DIR`, `XDG_CACHE_HOME/sgrep`, then `~/.cache/sgrep`. Models use `HF_HUB_CACHE`, `HUGGINGFACE_HUB_CACHE`, then `HF_HOME/hub` (default `~/.cache/huggingface/hub`). Parsers use `TREE_SITTER_LANGUAGE_PACK_CACHE_DIR` or the platform cache directory, under `tree-sitter-language-pack/v<version>`. `--cache-dir` overrides these with `index/`, `hub/`, and the versioned parser directory. Index files have private permissions on Unix. Source copies persist until eviction or manual deletion.
+- Index: `SGREP_CACHE_DIR`, `XDG_CACHE_HOME/sgrep`, `~/.cache/sgrep`.
+- Models: `HF_HUB_CACHE`, `HUGGINGFACE_HUB_CACHE`, `HF_HOME/hub` (default `~/.cache/huggingface/hub`).
+- Parsers: `TREE_SITTER_LANGUAGE_PACK_CACHE_DIR`, then the platform cache under `tree-sitter-language-pack/v<version>`.
 
-Pinned model weights and tokenizers are checked against expected sizes and SHA-256 digests before use, repaired online, or rejected offline. `HF_HUB_OFFLINE=1`, `true`, `yes`, and `on` (case-insensitive) prevent model and parser downloads. Shared models (about 64 MB together), parser libraries, and parser bundles are outside the index budget and are not automatically deleted. Parser downloads verify archive checksums; installed libraries are not rehashed on each search.
+`--cache-dir` overrides these paths. Index files have private permissions on Unix.
+Model files are checked against pinned hashes. Parser downloads use archive checksums.
+Temporary downloads are removed on normal exit; forced termination can leave files behind.
+Refresh options do not clear the operating system's file cache.
 
-Use `--fresh-assets` to download models/parsers into disposable caches and bypass the persistent index. This requires network access, preserves pinned revisions, and cleans up on normal success or error. Forced termination can leave temporary directories. Neither refresh option clears operating-system filesystem caches. Benchmarks record preparation separately from timed queries and clean up disposable caches; the output directory intentionally retains result evidence.
+</details>
 
-## How it works
+<details>
+<summary>How search works</summary>
 
-Ripgrep enumerates eligible files, and Rust reads and chunks them in parallel. BM25 uses statistics from the whole live corpus rather than files selected by natural-language words. Code uses a Rust port of Chonkie 1.7.0 CodeChunker with the exact boundary algorithm from Tree-sitter language-pack 1.21.0, the same pinned grammars, character tokenizer, and 2,048-character size estimate. It skips metadata that CodeChunker discards and avoids parsing files that already fit in one chunk. Supported extensions cover Python, C/C++, Go, Java, Rust, JavaScript/JSX, and TypeScript/TSX. Other files use Rust Chonkie RecursiveChunker with a 2,048-character target. Chunk boundaries expand to whole source lines, so a long line can exceed that target. Discovery takes the union of the top 200 BM25 passages and top 200 semantic passages, then adds any `--rg-json` blocks. Semantic retrieval considers every eligible passage independently of lexical scores. Each embedding includes the relative path and complete chunk text; tokenizer padding and truncation are disabled. `--stdin` skips discovery and scores only supplied blocks.
+Ripgrep lists files. Rust splits them into passages with Chonkie and Tree-sitter.
+Code parsers support Python, C/C++, Go, Java, Rust, JavaScript/JSX, and TypeScript/TSX.
+Other files use text splitting. Passages target 2,048 characters and keep whole lines.
 
-[Relative score fusion](https://docs.weaviate.io/weaviate/concepts/search/hybrid-search) scales each candidate's BM25 and semantic scores to 0–1 within that candidate pool, then combines 75% semantic and 25% BM25. Single identifiers, and code-like identifiers within longer questions (camelCase, underscores, dollar signs, or digits), also retrieve exact, case-sensitive whole-token occurrences from source and rank them before approximate matches, even outside the two retrieval shortlists. `--explain` reports this priority as `exact_identifier`; `fused` remains the numeric hybrid score. Piped mode applies the same priority only to supplied passages. A flat score distribution contributes zero; ties favor the higher raw BM25 score. Scores are not global confidence values, and changing the candidate pool can change normalization. Results wholly contained in an earlier result are omitted; partial overlaps retain their unique source.
+Search combines the top 200 lexical matches with the top 200 semantic matches.
+Each embedding uses the file path and passage text. Scores combine 75% semantic and 25% BM25 after scaling each to 0–1.
+Exact, case-sensitive identifier matches rank first. In longer queries, this applies to names with camelCase, underscores, dollar signs, or digits.
+Scores are relative to the candidates, not confidence values.
+Piped mode ranks only the supplied passages. Results fully contained in earlier results are removed.
 
-The index preserves the same chunks and scores as uncached search. A warm query scores matching lexical postings and materializes selected source passages; semantic retrieval still scans every vector. Queries containing identifiers also scan cached source records for exact matches. Embedding loads decode only token rows used by the current batch. Piped reranking embeds the query and supplied passages in one batch.
+The models are [Minish Lab's](https://github.com/MinishLab) [Potion Code 16M v2](https://huggingface.co/minishlab/potion-code-16M-v2)
+and [Potion Base 8M](https://huggingface.co/minishlab/potion-base-8M). Both use fixed revisions and an MIT license.
 
-The embeddings come from **[Minish Lab](https://github.com/MinishLab)**, the team behind [Model2Vec](https://github.com/MinishLab/model2vec): [Potion Code 16M v2](https://huggingface.co/minishlab/potion-code-16M-v2) for code and [Potion Base 8M](https://huggingface.co/minishlab/potion-base-8M) for general English text. Both models are MIT-licensed and pinned to specific revisions.
+</details>
 
-## Alternatives
-
-| Project | Approach |
-| --- | --- |
-| [ripgrep](https://github.com/BurntSushi/ripgrep) | Fast literal and regular-expression search when you know what to match. |
-| [CK](https://github.com/BeaconBay/ck) | Local semantic and hybrid code search with a persistent index. |
-| [Jevgrep](https://github.com/dzhng/jevgrep) | Model-guided repository search using Jev through TypeSafe. |
-
-## Development
+<details>
+<summary>Development</summary>
 
 ```sh
 cargo build --release --locked
@@ -132,6 +132,10 @@ python3 tests/cache_lifecycle.py target/release/sgrep target/cache-lifecycle-res
 python3 tests/cache.py target/release/sgrep target/asset-cache-results.json --online
 ```
 
-The end-to-end checks use the real models and write a JSON receipt. To compare two executables on your own queries, run `python3 tests/benchmark.py BEFORE AFTER queries.json results`. Each query is an object with `id`, `query`, and an absolute `root` path.
+These E2E checks use real models and save JSON receipts.
+To compare builds, run `python3 tests/benchmark.py BEFORE AFTER queries.json results`.
+Each query needs `id`, `query`, and an absolute `root` path. Add `--refresh-cache` to rebuild indexes before timing.
 
-[MIT](LICENSE) · A [Context.dev](https://context.dev) project, built on Minish Lab's static embeddings.
+</details>
+
+[MIT](LICENSE) · [Context.dev](https://context.dev)

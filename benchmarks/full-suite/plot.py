@@ -32,6 +32,24 @@ def finish(fig, name, title, footnote):
     plt.close(fig)
 
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+fig.subplots_adjust(left=.16, right=.94, bottom=.23, top=.73, wspace=.85)
+for ax, dataset, metric in zip(axes, ["repoqa", "cosqa"], ["full8000", "hit10"]):
+    methods = ["sgrep-main", "ck-sem", "jevgrep", "ripgrep"] if dataset == "repoqa" else ["sgrep-main", "ck-sem", "ck-lex", "ripgrep"]
+    values = [100 * DATA["summary"][dataset][m][metric] for m in methods]
+    bars = ax.barh(range(len(methods)), values, color=[COLORS[m] for m in methods], height=.55)
+    ax.set_yticks(range(len(methods)), [LABELS[m] for m in methods])
+    ax.invert_yaxis()
+    ax.set_xlim(0, 110)
+    ax.set_xticks([0, 25, 50, 75, 100], ["0", "25", "50", "75", "100%"])
+    ax.bar_label(bars, labels=[f"{v:.1f}%" for v in values], padding=5, fontsize=11)
+    ax.set_title("RepoQA\nComplete function within 8k tokens" if dataset == "repoqa" else "CoSQA\nLabeled snippet in top 10", loc="left", pad=18)
+    ax.grid(axis="x", alpha=.14)
+    ax.set_axisbelow(True)
+    ax.tick_params(length=0)
+finish(fig, "overview", "sgrep benchmarks",
+       "600 RepoQA / 500 CoSQA questions · sgrep 0fbe8e5 · October 2026\nCK lexical rejected RepoQA queries. Jevgrep ran on RepoQA only. Higher is better.")
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 fig.subplots_adjust(left=.09, right=.95, bottom=.25, top=.73, wspace=.3)
 for ax, dataset in zip(axes, ["repoqa", "cosqa"]):
     cutoffs = [1, 5, 10] if dataset == "repoqa" else [1, 5, 10, 100]
@@ -78,15 +96,20 @@ finish(fig, "latency", "Warm local CLI latency",
 
 languages = list(DATA["by_language"])
 methods = ["sgrep-main", "ck-sem", "jevgrep", "ripgrep"]
-values = [[100 * DATA["by_language"][lang][m]["full8000"] for m in methods] for lang in languages]
-fig, ax = plt.subplots(figsize=(12, 6))
-fig.subplots_adjust(left=.15, right=.94, bottom=.23, top=.75)
-ax.imshow(values, cmap="Blues", vmin=0, vmax=100, aspect="auto")
-ax.set_xticks(range(len(methods)), [LABELS[m] for m in methods])
+fig, ax = plt.subplots(figsize=(12, 9))
+fig.subplots_adjust(left=.15, right=.91, bottom=.21, top=.82)
+for offset, method in enumerate(methods):
+    positions = [i + (offset - 1.5) * .18 for i in range(len(languages))]
+    values = [100 * DATA["by_language"][lang][method]["full8000"] for lang in languages]
+    bars = ax.barh(positions, values, height=.16, color=COLORS[method], label=LABELS[method])
+    ax.bar_label(bars, labels=[f"{v:.0f}%" for v in values], padding=4, fontsize=9)
 ax.set_yticks(range(len(languages)), [{"cpp": "C++", "go": "Go", "java": "Java", "python": "Python", "rust": "Rust", "typescript": "TypeScript"}[l] for l in languages])
+ax.invert_yaxis()
+ax.set_xlim(0, 110)
+ax.set_xticks([0, 25, 50, 75, 100], ["0", "25", "50", "75", "100%"])
 ax.tick_params(length=0, pad=10)
-for y, row in enumerate(values):
-    for x, value in enumerate(row):
-        ax.text(x, y, f"{value:.0f}%", ha="center", va="center", color="white" if value > 65 else "#11162b", fontsize=14)
+ax.grid(axis="x", alpha=.14)
+ax.set_axisbelow(True)
+ax.legend(loc="upper center", bbox_to_anchor=(.5, -.09), ncol=4, frameon=False, fontsize=10)
 finish(fig, "languages", "Complete-function retrieval by language",
-       "100 RepoQA questions per language · All target-function lines within 8,000 source tokens.\nsgrep 0fbe8e5 · Failed and partial searches retained · CK lexical rejects all 600 formatted queries.")
+       "100 RepoQA questions per language · All target-function lines within 8,000 source tokens.\nsgrep 0fbe8e5 · CK lexical rejected all RepoQA queries. Higher is better.")

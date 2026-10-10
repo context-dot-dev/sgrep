@@ -1,0 +1,50 @@
+{
+  "repoqa": {
+    "sgrep-main": {
+      "scopes": 60,
+      "median_ms": 128.16549950048284,
+      "p95_ms": 218.65162500034785,
+      "total_seconds": 8.369069950998892,
+      "meaning": "First search with empty dedicated index; assets cached"
+    },
+    "ck-sem": {
+      "scopes": 60,
+      "median_ms": 145.83747899996524,
+      "p95_ms": 216.56804200029,
+      "total_seconds": 9.414359375003187,
+      "meaning": "Warmup only; not fresh index construction"
+    }
+  },
+  "cosqa": {
+    "sgrep-main": {
+      "scopes": 1,
+      "median_ms": 467.36191699983465,
+      "p95_ms": 467.36191699983465,
+      "total_seconds": 0.46736191699983465,
+      "meaning": "First search with empty dedicated index; assets cached"
+    },
+    "ck-sem": {
+      "scopes": 1,
+      "median_ms": 640.7185840007514,
+      "p95_ms": 640.7185840007514,
+      "total_seconds": 0.6407185840007514,
+      "meaning": "Warmup only; not fresh index construction"
+    }
+  },
+  "storage_bytes": {
+    "sgrep_main_both_datasets": 201129226,
+    "ck_by_dataset": {
+      "repoqa": 290062312,
+      "cosqa": 15637456
+    }
+  },
+  "limits": "CK indexes reused or incrementally built, so no full fresh-build timing is claimed. Model/parser caches excluded from index storage.",
+  "jevgrep_usage": {
+    "queries": 600,
+    "requests": 21141,
+    "input_tokens": 163796885,
+    "output_tokens": 8234471,
+    "dollar_cost": "Not returned by provider; no estimate claimed",
+    "scope": "Scored attempts only; initial sleep-affected attempts also consumed requests and are retained in raw evidence."
+  }
+}

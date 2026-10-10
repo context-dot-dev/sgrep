@@ -21,15 +21,13 @@ sgrep searches fresh source with independent lexical and semantic retrieval, inc
 
 ## Benchmarks
 
-Indexed discovery measured **62 ms** on a 2,545-file Context snapshot; piped reranking measured **43 ms**, including ripgrep. These are warm local measurements; [cold costs, exact output parity, and before/after results](benchmarks/README.md#indexed-discovery-latency-october-9) are reported separately.
+[![sgrep compared with CK, Jevgrep and ripgrep on 600 RepoQA and 500 CoSQA queries.](benchmarks/full-suite/overview.png)](benchmarks/README.md#full-retrieval-benchmark-october-9-2026)
 
-![Code-search benchmark comparing function retrieval and median latency for sgrep, CK, Jevgrep, and ripgrep.](benchmarks/benchmark.svg)
+On **600 RepoQA questions**, sgrep returned complete target functions within 8,000 tokens on **89.8%** of queries, versus **79.5%** for CK semantic. On **500 CoSQA questions**, sgrep found the labeled snippet in its top ten on **67.6%**, versus **79.6%** for CK semantic. There is no universal winner.
 
-The hybrid-fusion baseline, before independent semantic discovery, improved complete-function retrieval from **507/600 to 533/600** on the full local RepoQA retrieval suite, compared with current main. Median CLI latency on the separate replay panel was **81 → 69 ms**. There were 32 function-retrieval gains and six losses; see the [before/after results and limitations](benchmarks/README.md#live-hybrid-fusion-before-and-after). The discovery and stdin changes have a separate [60-query comparison](benchmarks/README.md#discovery-and-piped-reranking-october-9).
+Warm median CLI latency was **52.8 ms** on RepoQA and **239.3 ms** on CoSQA on an M5 Max. These are shared-host measurements with cached assets and indexes; setup costs and timing limitations are reported separately. The measured sgrep snapshot is **`0fbe8e5`**, not a claim about every future build.
 
-The chart above is the earlier published v0.2.0 comparison: sgrep matched CK's 76.7% function-retrieval rate at 71 ms median latency on 60 queries. Jevgrep was best at ranking the correct file first, while CK returned complete functions more often. These source-snapshot results do not establish large-monorepo or general-document performance.
-
-See the [full results and methodology](benchmarks/README.md), including the exact metric, per-query scores, setup costs, and limitations. The earlier Rust rewrite reduced median latency from 397 ms to 74 ms while preserving all 100 Python-query rankings.
+See the **[full benchmark, tables, language breakdowns and methodology](benchmarks/README.md#full-retrieval-benchmark-october-9-2026)**, [CSV](benchmarks/full-suite/summary.csv), and [all 5,000 scored runs](benchmarks/full-suite/results.json). RepoQA is a source-retrieval adaptation; CoSQA uses one labeled snippet per question. Both datasets were previously inspected during development.
 
 ## Install
 

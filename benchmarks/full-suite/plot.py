@@ -1,5 +1,6 @@
 """Render the measured benchmark charts. Run verify.py before regenerating."""
 import json
+import statistics
 from pathlib import Path
 
 import matplotlib
@@ -9,6 +10,7 @@ from matplotlib.patches import Rectangle
 
 ROOT = Path(__file__).resolve().parent
 DATA = json.loads((ROOT / "results.json").read_text())
+TIMING = json.loads((ROOT / "latency-replay.json").read_text())
 LABELS = {"sgrep-main": "sgrep", "ck-sem": "CK semantic", "ck-lex": "CK lexical",
           "ripgrep": "ripgrep · literal OR", "jevgrep": "Jevgrep"}
 COLORS = {"sgrep-main": "#2563eb", "ck-sem": "#344054", "ck-lex": "#8793a6",
@@ -77,22 +79,62 @@ finish(fig, "ranking", "How far down is the right result?",
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 fig.subplots_adjust(left=.17, right=.95, bottom=.26, top=.73, wspace=.8)
 for ax, dataset in zip(axes, ["repoqa", "cosqa"]):
-    methods = [m for m in DATA["summary"][dataset] if m != "jevgrep" and not (dataset == "repoqa" and m == "ck-lex")]
-    scores = DATA["summary"][dataset]
+    scores = TIMING["summary"][dataset]
+    methods = list(scores)
     ax.barh(range(len(methods)), [scores[m]["p50_ms"] for m in methods], color=[COLORS[m] for m in methods], height=.5)
     ax.set_yticks(range(len(methods)), [LABELS[m] for m in methods])
     ax.invert_yaxis()
-    ax.set_xlim(0, max(scores[m]["p95_ms"] for m in methods) * 1.25)
+    ax.set_xlim(0, max(scores[m]["p95_ms"] for m in methods) * 1.7)
     for y, method in enumerate(methods):
         median, p95 = scores[method]["p50_ms"], scores[method]["p95_ms"]
         ax.scatter([p95], [y], marker="|", s=120, color="#11162b")
-        ax.annotate(f"{median:.0f} ms", (median, y), xytext=(5, -14), textcoords="offset points", fontsize=10)
+        ax.annotate(f"{median:.0f} / {p95:.0f} ms", (p95, y), xytext=(8, 0),
+                    textcoords="offset points", fontsize=10, va="center")
     ax.set_title("RepoQA" if dataset == "repoqa" else "CoSQA", loc="left")
     ax.set_xlabel("Milliseconds · bar = median, tick = p95")
     ax.grid(axis="x", alpha=.14)
     ax.set_axisbelow(True)
-finish(fig, "latency", "Warm local CLI latency",
-       "M5 Max · Fresh CLI processes, cached assets/indexes · Shared-host load varied; observational timing.\nCK lexical used a separate repair pass. Jevgrep: 9.51 s median / 35.59 s p95, network-backed concurrent queries.")
+finish(fig, "latency", "Repeated CLI latency · median / p95",
+       "60 queries per dataset × 6 repeats = 360 calls per tool per dataset · sgrep 0fbe8e5 · October 10, 2026\nM5 Max · Fresh processes, warm models/indexes · Sequential, rotated tool order · Shared host; no outlier removal.")
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+fig.subplots_adjust(left=.10, right=.95, bottom=.24, top=.73, wspace=.3)
+for ax, dataset in zip(axes, ["repoqa", "cosqa"]):
+    ids = {c["id"] for c in TIMING["cases"] if c["dataset"] == dataset}
+    for method, scores in TIMING["summary"][dataset].items():
+        rows = [r for r in DATA["rows"] if r["dataset"] == dataset and r["method"] == method and r["id"] in ids]
+        assert len(rows) == len(ids) == 60
+        hits = [r["hits"]["8000"]["full"] if dataset == "repoqa" else r["rank"] is not None and r["rank"] <= 10 for r in rows]
+        accuracy = 100 * sum(hits) / len(hits)
+        ax.scatter(scores["median_query_ms"], accuracy, color=COLORS[method], s=75)
+        ax.annotate(LABELS[method], (scores["median_query_ms"], accuracy), xytext=(7, 8), textcoords="offset points", fontsize=10)
+    ax.set_xscale("log")
+    ax.set_xlim(5, 2000)
+    ax.set_ylim(0, 105)
+    ax.set_xlabel("Median query time (ms, log scale) · lower is better")
+    ax.set_ylabel("Queries with the target (%)")
+    ax.set_title("RepoQA · complete function within 8k tokens" if dataset == "repoqa" else "CoSQA · labeled snippet in top 10", loc="left", fontsize=11)
+    ax.grid(alpha=.14)
+finish(fig, "tradeoff", "Quality and time on the same queries",
+       "60 fixed queries per dataset · Each query time is its median over 6 runs · Output source matches original scoring.\nThis is retrieval quality, not agent task success. Fixed-word ripgrep is not an agent choosing regexes.")
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5.5))
+fig.subplots_adjust(left=.19, right=.95, bottom=.28, top=.70, wspace=.9)
+for ax, dataset in zip(axes, ["repoqa", "cosqa"]):
+    initial = [r for r in TIMING["rows"] if r["method"] == "sgrep-main" and r["dataset"] == dataset and r["first_scope"]]
+    warm = TIMING["summary"][dataset]["sgrep-main"]["query_medians"]
+    values = [statistics.median(r["ms"] for r in initial), statistics.median(warm[r["id"]] for r in initial)]
+    bars = ax.barh([0, 1], values, height=.5, color=["#344054", "#2563eb"])
+    ax.set_yticks([0, 1], ["Empty index", "Warm index"])
+    ax.invert_yaxis()
+    ax.set_xlim(0, max(values) * 1.45)
+    ax.bar_label(bars, labels=[f"{v:.0f} ms" for v in values], padding=6, fontsize=11)
+    ax.set_title(f"{'RepoQA' if dataset == 'repoqa' else 'CoSQA'} · {len(initial)} scope" + ("s" if len(initial) != 1 else ""), loc="left")
+    ax.set_xlabel("Median time (ms)")
+    ax.grid(axis="x", alpha=.14)
+    ax.set_axisbelow(True)
+finish(fig, "setup", "sgrep: first search vs warm repeat",
+       "Same query per scope · Model/parser assets cached · OS caches not cleared · sgrep 0fbe8e5\nCoSQA setup is one observation. CK fresh index construction and model downloads are not measured here.")
 
 languages = list(DATA["by_language"])
 methods = ["sgrep-main", "ck-sem", "jevgrep", "ripgrep"]

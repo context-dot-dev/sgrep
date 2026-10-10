@@ -1,0 +1,48 @@
+{
+  "repeats_collapsed_first": true,
+  "bootstrap_draws": 10000,
+  "seed": 20261010,
+  "limitation": "Query-level panel uncertainty on one shared host; not a general speedup estimate.",
+  "paired": {
+    "repoqa": {
+      "ck-sem": {
+        "query_pairs": 60,
+        "median_ratio": 2.9424563340444316,
+        "bootstrap_95": [
+          2.919692881783427,
+          2.9676433234354627
+        ],
+        "meaning": "Comparator / sgrep time; >1 means the comparator took longer. Not quality-adjusted."
+      },
+      "ripgrep": {
+        "query_pairs": 60,
+        "median_ratio": 0.268338979156003,
+        "bootstrap_95": [
+          0.24681102740707708,
+          0.30144032011694377
+        ],
+        "meaning": "Comparator / sgrep time; >1 means the comparator took longer. Not quality-adjusted."
+      }
+    },
+    "cosqa": {
+      "ck-sem": {
+        "query_pairs": 60,
+        "median_ratio": 2.12989023519944,
+        "bootstrap_95": [
+          2.1176424580709976,
+          2.1406617292198615
+        ],
+        "meaning": "Comparator / sgrep time; >1 means the comparator took longer. Not quality-adjusted."
+      },
+      "ripgrep": {
+        "query_pairs": 60,
+        "median_ratio": 0.49725126055069024,
+        "bootstrap_95": [
+          0.4816175012231274,
+          0.5087019632545627
+        ],
+        "meaning": "Comparator / sgrep time; >1 means the comparator took longer. Not quality-adjusted."
+      }
+    }
+  }
+}

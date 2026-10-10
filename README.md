@@ -11,6 +11,24 @@
 
 <p align="center">Search code and documents in plain English. Runs locally.</p>
 
+## Why sgrep
+
+Agents often know what code should do before they know a name to search.
+sgrep finds local passages by words and meaning. It can also rank the results of a focused ripgrep command.
+No account, hosted index, or model server is needed.
+
+<details>
+<summary>When to use ripgrep, CK, or mgrep</summary>
+
+- [ripgrep](https://github.com/BurntSushi/ripgrep) is the right tool for known names, exact text, and regexes. For an intent query, an agent must first choose useful patterns. Broad patterns can return too much; narrow ones can miss relevant code.
+- [CK](https://github.com/BeaconBay/ck) offers local semantic and hybrid search, several embedding models, and an MCP server. Account for index construction and updates as well as query time. Its semantic mode beats sgrep on our CoSQA test. Our CK results use BGE Small, not every CK model or mode.
+- [mgrep](https://github.com/mixedbread-ai/mgrep) offers hosted semantic search, reranking, and agent integrations. It syncs files to Mixedbread and needs authentication. Agents must account for sync completion, network access, and upload limits. It is not measured in this benchmark.
+
+Use sgrep when local semantic discovery and a small CPU model suit the job.
+The [benchmark notes](benchmarks/README.md#method) also record CK query-parser failures and missing indexed files.
+
+</details>
+
 ## Install
 
 Requires Rust 1.90 or later and ripgrep.
@@ -43,12 +61,40 @@ Run both commands from the same directory. Use ripgrep for exact matches; sgrep 
 The first search downloads a model (32–34 MB) and any required code parsers. Later searches can run offline.
 Source and queries stay on your machine. The local index stores copies of source passages.
 
+## Code and documents
+
+Auto mode selects the text model only when all candidate passages have prose extensions, such as `.md` or `.txt`.
+Mixed code and prose use the code model. Text mode targets general English prose. To choose explicitly:
+
+```sh
+sgrep "retry with exponential backoff" ./src --model code
+sgrep "how do refunds work" ./docs --model text
+```
+
+Code uses syntax-aware chunks where supported. Other text uses text chunks. This does not parse PDFs or images.
+Both modes return source passages, not generated answers. The benchmarks below measure code retrieval, not document search.
+
+## Static embeddings
+
+A [static model](https://github.com/MinishLab/model2vec) stores one learned vector per token.
+The [code model](https://huggingface.co/minishlab/potion-code-16M-v2) distills CodeRankEmbed and trains on code/query pairs.
+sgrep looks up those vectors, averages them, and normalizes the result to 256 numbers.
+Related text can have similar vectors without sharing exact words.
+There is no transformer pass at search time. This supports local CPU search with a small model and no per-query API call.
+
+Averaging loses token order and can miss context. sgrep combines semantic scores with BM25 and gives exact identifiers priority.
+A high score is a ranking signal, not proof that code performs a task.
+
 ## Benchmarks
 
 [![Bar charts comparing sgrep, CK, Jevgrep and ripgrep on RepoQA and CoSQA.](benchmarks/full-suite/overview.svg)](benchmarks/README.md#full-retrieval-benchmark-october-9-2026)
 
 600 RepoQA questions and 500 CoSQA questions. sgrep leads on complete-function retrieval; CK semantic leads on snippet retrieval.
-[Results and method](benchmarks/README.md#full-retrieval-benchmark-october-9-2026).
+
+[![Repeated local CLI latency on RepoQA and CoSQA.](benchmarks/full-suite/latency.svg)](benchmarks/README.md#latency)
+
+Latency uses 120 fixed queries, six repeats, and fresh CLI processes. Models and indexes are warm.
+[Results, setup costs, and method](benchmarks/README.md#full-retrieval-benchmark-october-9-2026).
 
 ## Reference
 
@@ -80,6 +126,7 @@ Exit codes: 0 for results, 1 for no results, 2 for errors. Empty piped input ret
 
 Each search checks file content. Changes to files, ignore rules, or models invalidate the index.
 Source is checked again before results are returned. Freeze files when you need repeatable measurements.
+Warm search still checks files and scans stored vectors. Changed source rebuilds the scope's index.
 Piped ranking does not use the index.
 
 The index cache has limits of 256 MiB and 128 entries. Cleanup removes the least recently used entries and entries unused for 30 days.

@@ -1,0 +1,59 @@
+{
+  "sgrep_main": "0fbe8e5725f71667789be4a3abcea4e02f33afa4",
+  "datasets": {
+    "RepoQA": 600,
+    "CoSQA": 500
+  },
+  "methods": [
+    "sgrep-main",
+    "ck-sem",
+    "ck-lex",
+    "ripgrep"
+  ],
+  "jevgrep": "Additional all-600 RepoQA native adapter, 4 concurrent query workers with per-query default 32 API concurrency, 180s timeout and 1000 requests cap. Network-inclusive durations measured under this concurrency, not isolated CLI latency. CoSQA alternatives follow previous comparison; Jevgrep not evaluated on CoSQA.",
+  "selection": "All queries unchanged, all failures retained, no retrieval tuning. RepoQA file rank plus 2000/8000 o200k token source coverage; CoSQA unique snippet Hit@1/5/10 and MRR@10.",
+  "failure_contract": [
+    "Reject altered corpus and queries",
+    "Reject out-of-corpus results or fabricated source",
+    "Deduplicate file ranks and source lines",
+    "No labels or generated config prose in corpus",
+    "Retain failed searches in denominator",
+    "Pin binaries, scripts and inputs",
+    "Separate indexed setup from query latency",
+    "Do not present network concurrent timings as isolated local CLI timings"
+  ],
+  "local_timing": "Fresh CLI processes; sequential rotated method order in the original benchmark, warmed model/parser/OS caches. Dedicated sgrep index. CK lexical subsequently measured in its own complete repair pass. An additional baseline arm in the original timing rotation is omitted from this publication.",
+  "indexing": "Reuse existing validated CK indexes where present, incremental initialization for missing files; no fresh-build claims for this run. Measure sgrep-main empty scope index warmups separately.",
+  "ck_version": "0.7.11",
+  "ck_model": "bge-small",
+  "jevgrep_commit": "703aba1a36a3b854be405244ea748f607cd630c0",
+  "jevgrep_model": "jev-1.13.0",
+  "repoqa_release": "release2024-06-23",
+  "cosqa_commit": "14ebcacf9e9bc3e7109102632bc63047876f27d2",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "rg_version": "ripgrep 15.2.0 (rev e89fff89ac)",
+  "host_suspend_correction": "30 queries repeated using the same >5s wall/monotonic-gap rule, regardless of score or native status. All original records retained. Most retries before local timing; final two after local timing. Temporary keep-awake assertion protected the local pass.",
+  "binaries": {
+    "sgrep-main": {
+      "sha256": "0ba7996937bf1f5e158713fc72811956400e2a1ead1932e0febe8f0fc2f4a9d7"
+    },
+    "ck": {
+      "sha256": "2743355c464e9f41269b19a86f5eda547d4896d002066d87d742c21e65ea5a3f"
+    },
+    "rg": {
+      "sha256": "a73a7047e0df3e6d5a5d0848970fb170e330192513bb588a1f192b5818420e5c"
+    }
+  },
+  "runner_sha256": "120b72e2d04f853cb8c0cab462b79a340c0e91281559682d75504ded480c8be4",
+  "lexical_index_correction": "Rebuilt derived Tantivy indexes at copied corpus paths and reran all 1,100 lexical queries unchanged. Original path-stale attempts preserved; lexical timing is a separate pass.",
+  "hardware": {
+    "cpu": "Apple M5 Max",
+    "memory_gib": 48,
+    "logical_cpus": 18
+  },
+  "publication": {
+    "date": "2026-10-09",
+    "rows": 5000,
+    "source_verification": "60 RepoQA source-snapshot hashes and 6,267 CoSQA snippet hashes verified; zero independent rank disagreements."
+  }
+}

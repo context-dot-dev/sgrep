@@ -1,0 +1,40 @@
+{
+  "frozen_at": "2026-10-13T06:50:43.183489+00:00",
+  "attempts": 800,
+  "tasks": 50,
+  "repeats": 2,
+  "workers": 32,
+  "model": "gpt-6-luna",
+  "hashes": {
+    "run_benchmark.py": "cd8b5f42ef8573b357e908070d56483470792000b3c59d926b4fc721a16df2aa",
+    "preflight.py": "7a35cda760e4fdf9b8289a091c8d8ee06297e42d28175bedb64941e043605384",
+    "remote_search.py": "9d5148d7aa0035cba125520701869f85c94bfa25c34a58ce5edcea35d9130e30",
+    "collect_patch.py": "12f9e17913952d6f8698dfbd11143895322e03c89d7aa67434e6adf3c4def2ec",
+    "jev-meter.mjs": "d971d8eb1ae1ee554dfc908a509fc993aa8e482be34c5dd3f07bbf21e55dccc0",
+    "analyze.py": "63263d3df176d26f6204975736475b7fc3f7ab9d0c2d130693a4d578ec3360fa",
+    "tasks.json": "06c3f75882ccbd343a587928e0fa1e7c0c8845f713aee26fd813c48a0ad1b49f",
+    "selected-evaluator-only.json": "1cf192c9131005341a7a4815a052bc385913a64ab9f1e49bcb8642f9d85ce969",
+    "PROTOCOL.md": "8cfadba7a2a8aa168c05f79a1cef22ba4f1a67d79370b823e065b62d51ec0eb6",
+    "native-tool-hashes.json": "24b17a4151b99d28894d6e386de93f3e193aa9a4f380a5943f26cea4dd6194f9",
+    "shallow_submodules.py": "deac6435e69cd853b7640addcd5a2a0f3ec2e4797136b2c9af27e3a3f33ca7bf",
+    "prepared-agent-controls.json": "a00d55140887187282738330f877123df2c588db8023a91a982103e394138532",
+    "audit_prepared_images.py": "069e571e098236cb8212e8c197c51c5c35ad944fe6356a631be20b5be16dba92",
+    "native_adapter_matrix.py": "fa883c8f8932ebbd333ba910c3d5be580759d61709f8c535eec7428eae3c70d8"
+  },
+  "sources": [
+    "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "https://developers.openai.com/api/docs/pricing",
+    "https://developers.openai.com/api/docs/guides/prompt-caching",
+    "https://docs.typesafe.ai/models",
+    "https://modal.com/pricing",
+    "https://huggingface.co/datasets/SWE-bench/SWE-bench_Verified",
+    "https://github.com/BurntSushi/ripgrep/releases/tag/15.2.0"
+  ],
+  "revision": 4,
+  "controller": "Modal persistent sandbox",
+  "preflight": {
+    "prepared_images": 50,
+    "prepared_gold_tests": 50,
+    "native_modes_on_old_and_new_images": 8
+  }
+}

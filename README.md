@@ -87,6 +87,10 @@ A high score is a ranking signal, not proof that code performs a task.
 
 ## Benchmarks
 
+![SWE-bench Verified: LLM API cost per attempt versus solved attempts, using GPT-6 Luna on 50 tasks with two repeats.](benchmarks/swe-bench/benchmark.svg)
+
+Piped sgrep used **21.3% less LLM API spend** than ripgrep, with **70/100 vs. 68/100** solved attempts. Costs include prompt caching and retrieval LLM calls. [Code, results, methodology and chart exclusions](benchmarks/README.md#swe-bench-verified-october-13).
+
 [![Bar charts comparing sgrep, CK, Jevgrep and ripgrep on RepoQA and CoSQA.](benchmarks/full-suite/overview.svg)](benchmarks/README.md#full-retrieval-benchmark-october-9-2026)
 
 600 RepoQA questions and 500 CoSQA questions. sgrep leads on complete-function retrieval; CK semantic leads on snippet retrieval.

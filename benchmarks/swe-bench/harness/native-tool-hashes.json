@@ -1,0 +1,7 @@
+{
+  "bin/sgrep": "2bdea14ba4cd3bb6e7dd90b8881f2cc260536c31136897f6769af186d2809123",
+  "bin/rg": "e62198eb19b136b88c330af83647b5a962cb99b6b1f066758568f12de1974849",
+  "npm/node_modules/@beaconbay/ck-search/dist/bin/ck": "7f4273191e4c12b577860371ede50fcc443e8b60694db7a693f0a274efd75b01",
+  "colgrep/colgrep-x86_64-unknown-linux-gnu/colgrep": "57c19d4aaf98a6e3ced268319880d33d99e242f3a8b319e8ecffecccc5482229",
+  "npm/node_modules/@dzhng/jevgrep/package.json": "e2a18237774179fb1657392ac7521157a3eb1f1cb34e8f8c877c558ccd0d98fe"
+}

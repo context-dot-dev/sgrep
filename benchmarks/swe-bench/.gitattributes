@@ -1,0 +1,3 @@
+# Preserve recorded CSV bytes and the hashed historical harness.
+results/*.csv -text whitespace=cr-at-eol
+harness/run_benchmark.py whitespace=-blank-at-eol

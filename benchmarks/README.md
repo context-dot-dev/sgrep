@@ -1,5 +1,92 @@
 # Code-search benchmark
 
+## SWE-bench Verified (October 13)
+
+![LLM API cost versus solved attempts](swe-bench/benchmark.svg)
+
+The same GPT-6 Luna agent (medium reasoning) attempted **50 tasks across 12 repositories, twice per configuration**. Official SWE-bench patch/test grading scored every attempt. Piped sgrep reduced mean LLM API cost by **21.3%** versus ripgrep, solving **70/100 versus 68/100** attempts. The paired accuracy difference was +2 percentage points (95% task-bootstrap interval: −3 to +8). This supports the prespecified five-point loss margin on this sample; it does not establish improved or exactly equal accuracy.
+
+| Configuration | Solved / 100 | Mean LLM API cost | Chart |
+| --- | ---: | ---: | --- |
+| sgrep · pipe | 70 | $0.00475 | Included |
+| ripgrep | 68 | $0.00604 | Included |
+| ColGrep | 69 | $0.00654 | Included |
+| sgrep · discovery | 67 | $0.00637 | Included |
+| Jevgrep | 67 | ≥ $0.11347 | Included; lower-bound cost |
+| CK semantic | 25 | $0.00366 | Omitted: 57 index setup failures |
+| CK hybrid | 27 | $0.00348 | Omitted: 58 index setup failures |
+| ColGrep agent | 62 | $0.00392 | Omitted: 46 search timeouts |
+
+<details>
+<summary>Method, exclusions and limitations</summary>
+
+The chart omits whole configurations with setup failures or search timeouts, retaining all 100 attempts in every shown configuration. Cheap failed setup is not a cost-effectiveness win. Jevgrep had three retrieval network failures without usage receipts across two attempts, so its cost is a lower bound. All eight configurations remain in the recorded results.
+
+Cost includes coding and retrieval LLM calls, actual cache reads/writes, output and reasoning tokens. Machine and grading costs are excluded. Each attempt has a private prompt namespace, repository index and query cache; immutable model downloads are shared. Every agent-start's first model call reported zero cached input. ColGrep agent's local inference has no API charge; its machine cost is not represented.
+
+Pipe mode uses `rg --json -C 3` followed by `sgrep --stdin -n 20`. Discovery is the separate persistent-index mode. Agents choose their own queries: pairing is by task, not identical query replay. There is no matched-output-length ablation. The repository-diverse sample is not an unbiased full-leaderboard estimate; public training overlap is unaudited. Both repeats count. The graph shows point estimates; small vertical differences do not establish superiority.
+
+This is one agent policy on four-core, 8 GiB Linux CPU sandboxes. Latency remains in the results. The first 667 attempts used 32 workers; the last 133 previously unstarted attempts used 16 after an admission-reserve stop. No started attempt was repeated. Earlier infrastructure batches were excluded in full. Fifteen flagged passing patches still passed after removing test edits and temporary files in a separate grading check.
+
+</details>
+
+<details>
+<summary>Benchmark code, results and reproduction</summary>
+
+- [Historical agent harness](swe-bench/harness/run_benchmark.py), [native adapters](swe-bench/harness/remote_search.py), [retrieval metering](swe-bench/harness/jev-meter.mjs), [image controls](swe-bench/harness/audit_prepared_images.py), and [analysis](swe-bench/harness/analyze.py).
+- [All 800 attempts](swe-bench/results/attempts.csv), [search timings](swe-bench/results/searches.csv), [model usage](swe-bench/results/model-requests.csv), and [aggregates with paired intervals](swe-bench/results/analysis.json).
+- [Frozen protocol](swe-bench/harness/PROTOCOL.md), [source/configuration hashes](swe-bench/harness/frozen-manifest.json), [agent-safe tasks](swe-bench/harness/tasks.json), and [evaluator-only data](swe-bench/harness/selected-evaluator-only.json).
+
+Frozen files preserve the measured implementation byte for byte. Evaluator inputs come from [SWE-bench Verified](https://huggingface.co/datasets/SWE-bench/SWE-bench_Verified); never expose gold patches or hidden tests to the agent. Only the excluded smoke task is retained in `dataset-current-evaluator-only.json`. The repository contains derived ledgers, not raw model transcripts, patches or grader logs. CSV references to `runs/` point into the separately retained original evidence archive (SHA-256 `886f12e4d38050c5fc269c98711181771a71ba23debdc30215dd9b3612ccdc73`), not files in this checkout.
+
+**Rebuild the chart without paid calls**, from the repository root:
+
+```sh
+uv venv benchmarks/swe-bench/.venv --python 3.12
+uv pip install --python benchmarks/swe-bench/.venv/bin/python matplotlib==3.11.2
+benchmarks/swe-bench/.venv/bin/python benchmarks/swe-bench/plot.py
+```
+
+The renderer validates all 800 attempt records against the aggregates, then writes `benchmark.svg` and `benchmark.png`. It needs no keys or cloud access.
+
+**A new paid study** requires Modal authentication and OpenAI/TypeSafe credentials. This is a historical snapshot: verify model availability, API prices and downloaded asset versions before rerunning. The original cloud resources were deleted; publication did not rerun paid inference. Create an independent copy with unique resource and prompt-cache names:
+
+```sh
+python3 benchmarks/swe-bench/prepare_run.py /tmp/sgrep-swe-run --run-id my-unique-study
+cd /tmp/sgrep-swe-run
+uv venv .venv --python 3.12
+uv pip install --python .venv/bin/python -r requirements.txt
+.venv/bin/modal setup
+git clone https://github.com/context-dot-dev/sgrep.git vendor/sgrep
+git -C vendor/sgrep checkout b144e7b5711b2e8bc29125d6cf96c51170505d96
+```
+
+Place keys in `/tmp/sgrep-benchmark-secrets/openai-key` and `/tmp/sgrep-benchmark-secrets/typesafe_api_key`, with directory mode `0700` and file mode `0600`, outside the study and repository. The namespace helper verifies frozen hashes before copying; `rerun.json` records its changes. Never reuse an earlier run's outputs or control receipts.
+
+```sh
+.venv/bin/python build_tools.py
+.venv/bin/python prepare_assets.py
+.venv/bin/python update-ripgrep.py
+.venv/bin/python audit_prepared_images.py
+.venv/bin/python native_adapter_matrix.py
+.venv/bin/python preflight.py
+```
+
+Require successful build/asset receipts, all 50 prepared-image controls, both native adapter checks and all 50 preflight eligibility flags. Compare native versions/hashes with `native-tool-hashes.json`. Do not drop tasks whose controls fail. Keep the controller process alive throughout execution:
+
+```sh
+.venv/bin/python run_benchmark.py --smoke --workers 4
+.venv/bin/python run_benchmark.py --pilot --workers 4
+.venv/bin/python run_benchmark.py --workers 16
+.venv/bin/python analyze.py
+```
+
+Inspect smoke/pilot receipts before scoring. Defaults run all eight configurations twice. The $270 admission threshold includes estimated compute and reserves; it is not a provider billing limit. In-flight calls can overshoot. Completed attempts are skipped; interrupted attempts refuse automatic duplication. If the reservation guard leaves jobs unstarted, resume them after active attempts finish. Confirm 800 unique results before claiming completion. `analyze.py` reads raw `runs/` and writes new tables beside the harness; it does not read the historical `results/` directory. Keep new results separate from this chart. These commands run the controller on the caller's host; the original used a persistent cloud controller, so request and host-observed timings may differ.
+
+After preserving evidence, terminate remaining study sandboxes, delete its model-assets volume and remove temporary credential files. No paid calls are needed to reproduce the published graphic.
+
+</details>
+
 ## Full retrieval benchmark (October 9, 2026)
 
 600 RepoQA questions. 500 CoSQA questions. sgrep main at `0fbe8e5`, compared with CK, Jevgrep, and ripgrep.

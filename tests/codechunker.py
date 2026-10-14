@@ -13,7 +13,7 @@ assert cli
 receipts = []
 with tempfile.TemporaryDirectory(prefix='sgrep-chunks-') as tmp:
     root = Path(tmp)
-    for ext in ['py', 'c', 'cpp', 'go', 'java', 'rs', 'ts', 'tsx', 'js', 'MD', 'txt', 'unknown']:
+    for ext in ['py', 'c', 'cs', 'cpp', 'go', 'java', 'rs', 'ts', 'tsx', 'js', 'MD', 'txt', 'unknown']:
         for name, text in {
             'unicode': '// café 中文 🦛\n' * 250 + 'terminalneedle\n',
             'long': 'needle ' + '🦛abc ' * 3000 + 'terminalneedle\n',

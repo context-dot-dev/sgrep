@@ -14,6 +14,7 @@ fn language(path: &Path) -> Option<&'static str> {
         match path.extension()?.to_str()?.to_ascii_lowercase().as_str() {
             "py" | "pyi" => "python",
             "c" => "c",
+            "cs" => "csharp",
             "h" | "cc" | "cpp" | "cxx" | "hpp" | "hh" | "hxx" => "cpp",
             "go" => "go",
             "java" => "java",

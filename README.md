@@ -155,7 +155,7 @@ Refresh options do not clear the operating system's file cache.
 <summary>How search works</summary>
 
 Ripgrep lists files. Rust splits them into passages with Chonkie and Tree-sitter.
-Code parsers support Python, C/C++, Go, Java, Rust, JavaScript/JSX, and TypeScript/TSX.
+Code parsers support Python, C/C++, C#, Go, Java, Rust, JavaScript/JSX, and TypeScript/TSX.
 Other files use text splitting. Passages target 2,048 characters and keep whole lines.
 
 Search combines the top 200 lexical matches with the top 200 semantic matches.

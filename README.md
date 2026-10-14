@@ -31,7 +31,47 @@ The [benchmark notes](benchmarks/README.md#method) also record CK query-parser f
 
 ## Install
 
-Requires Rust 1.90 or later and ripgrep.
+Requires ripgrep at runtime. Source builds also require Rust 1.90 or later.
+
+### Linux (x86_64)
+
+On Ubuntu 22.04 or later / Debian 12 or later, install the build prerequisites:
+
+```sh
+sudo apt-get update
+sudo apt-get install -y build-essential pkg-config libssl-dev ca-certificates curl git ripgrep
+```
+
+Install Rust with [rustup](https://rustup.rs/) if needed, then build from source:
+
+```sh
+cargo install --git https://github.com/context-dot-dev/sgrep --locked
+```
+
+The executable is installed in `~/.cargo/bin`; make sure that directory is on `PATH`.
+Linux CI builds and tests x86_64 on Ubuntu 22.04 with Rust 1.90, including real-model
+search, piped ripgrep input, parser downloads, and offline reuse. Linux ARM64 and
+musl-based distributions are not covered by this workflow.
+
+For releases with Linux assets, download `sgrep-linux-x86_64.tar.gz` and
+`sgrep-linux-x86_64.tar.gz.sha256` from [Releases](https://github.com/context-dot-dev/sgrep/releases).
+The binary is built on Ubuntu 22.04 and requires glibc 2.35 or later and ripgrep.
+From the download directory:
+
+```sh
+sha256sum --check sgrep-linux-x86_64.tar.gz.sha256
+tar -xzf sgrep-linux-x86_64.tar.gz
+mkdir -p "$HOME/.local/bin"
+install -m 755 sgrep "$HOME/.local/bin/sgrep"
+export PATH="$HOME/.local/bin:$PATH"
+sgrep --version
+```
+
+Older releases may only contain macOS assets; use the source installation above
+if the Linux archive is absent. Model and parser downloads are still required on
+the first search, as described below.
+
+### macOS
 
 ```sh
 brew install ripgrep
@@ -184,6 +224,18 @@ python3 tests/cache.py target/release/sgrep target/asset-cache-results.json --on
 ```
 
 These E2E checks use real models and save JSON receipts.
+On Linux, run the same packaged-binary checks as CI with:
+
+```sh
+bash tests/linux.sh "$PWD/target/release/sgrep" .work/linux
+```
+
+This prepares both models and the supported code parsers, then runs the existing
+E2E, discovery, and chunking checks offline. Downloads, temporary files, and JSON
+receipts stay under the output directory. The Linux workflow also verifies the
+archive checksum and tests the extracted executable before attaching it and its
+checksum to a newly published GitHub release.
+
 To compare builds, run `python3 tests/benchmark.py BEFORE AFTER queries.json results`.
 Each query needs `id`, `query`, and an absolute `root` path. Add `--refresh-cache` to rebuild indexes before timing.
 

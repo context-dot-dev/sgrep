@@ -76,6 +76,11 @@ Both modes return source passages, not generated answers. The benchmarks below m
 
 ## Static embeddings
 
+sgrep is inspired in part by [Semble](https://github.com/MinishLab/semble) and relies heavily on
+[Minish Lab's](https://github.com/MinishLab) research on static embeddings, including
+[Model2Vec](https://github.com/MinishLab/model2vec) and the Potion models. Their research and
+open-source models make sgrep's local semantic search possible.
+
 A [static model](https://github.com/MinishLab/model2vec) stores one learned vector per token.
 The [code model](https://huggingface.co/minishlab/potion-code-16M-v2) distills CodeRankEmbed and trains on code/query pairs.
 sgrep looks up those vectors, averages them, and normalizes the result to 256 numbers.
@@ -86,6 +91,11 @@ Averaging loses token order and can miss context. sgrep combines semantic scores
 A high score is a ranking signal, not proof that code performs a task.
 
 ## Benchmarks
+
+The optional [model2vec-rs](https://github.com/MinishLab/model2vec-rs) backend is available with
+`cargo build --release --locked --features model2vec`. Version 0.3.0 was slower than sgrep's
+existing embedder in our fresh-process CLI comparison, so the default remains unchanged.
+[Before/after timings, compatibility and reproduction](benchmarks/README.md#model2vec-rs-october-15).
 
 ![SWE-bench Verified: LLM API cost per attempt versus solved attempts, using GPT-6 Luna on 50 tasks with two repeats.](benchmarks/swe-bench/benchmark.svg)
 

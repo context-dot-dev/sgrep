@@ -1,5 +1,73 @@
 # Code-search benchmark
 
+## model2vec-rs (October 15)
+
+![sgrep CLI latency before and after enabling model2vec-rs](model2vec/benchmark.svg)
+
+This compares `main` at `dde0c13` with this PR built using `--features model2vec`,
+which directly calls Minish Lab's `model2vec-rs` 0.3.0. The optional backend was
+slower in this fresh-process CLI workload; the existing embedder remains the default.
+This measures the released 0.3.0 implementation, not future releases or in-process library throughput.
+
+| Workload | main median / p95 | model2vec-rs median / p95 | Median change |
+| --- | ---: | ---: | ---: |
+| RepoQA · Cached query | 62.2 / 89.2 ms | 90.1 / 114.2 ms | +44.7% |
+| CoSQA · Cached query | 211.7 / 240.2 ms | 237.9 / 268.3 ms | +12.4% |
+| RepoQA · Uncached search | 72.0 / 126.2 ms | 103.5 / 162.0 ms | +43.8% |
+| CoSQA · Uncached search | 174.8 / 200.1 ms | 202.8 / 221.3 ms | +16.0% |
+| RepoQA · Piped reranking | 45.3 / 50.3 ms | 73.4 / 80.7 ms | +62.0% |
+| CoSQA · Piped reranking | 46.4 / 50.6 ms | 73.6 / 80.5 ms | +58.6% |
+
+All **600 RepoQA and 500 CoSQA queries returned identical top-20 ranked source**.
+The [36-check receipt](model2vec/compatibility.json) and separate [CLI compatibility checks](../tests/model2vec.py) exercise both models,
+long and Unicode input, unknown tokens, piped input, and indexes written by either backend.
+Code-model padding and tokenizer truncation are explicitly disabled to preserve existing behavior.
+The model files, pinned hashes, offline downloads policy, ranking and cache format are unchanged.
+
+Timing uses two queries per RepoQA language and twelve CoSQA queries, selected by
+SHA-256 of the query ID before measurement, with six balanced paired repeats per mode.
+The table reports median and p95 over 72 calls per dataset/mode/build. Both builds use
+Rust 1.97.1, the normal release profile with thin LTO, and the same Apple M5 Max.
+Assets and the operating-system file cache are warm. Cached queries use independent
+prepared indexes; uncached searches use `--no-cache`; piped reranking uses the same
+precomputed ripgrep input and excludes the producer. Every call starts a new CLI process. Timings use the code model; the text model is covered by compatibility checks only.
+No outliers were removed. Repeats are not independent queries; this is a small timing
+panel on a shared macOS host, not a universal speed claim or a new retrieval-quality score.
+
+The current native embedder decodes only token vectors needed for a call. The optional
+backend loads the full table as f32 on every process invocation and computes tokenizer
+metadata. Its encoding runs in parallel batches of 32, but that does not remove startup
+work. It also brings its own tokenizer and tensor-library versions as optional dependencies.
+
+[Measured results](model2vec/results.json) retain every elapsed time and output hash.
+[Build provenance](model2vec/build.json) pins the baseline, source hashes, compiler,
+flags and binary build commands. The runner saves full stdout/stderr separately.
+
+<details>
+<summary>Reproduce the comparison</summary>
+
+Build the baseline and candidate with the same compiler and release settings:
+
+```sh
+git worktree add /tmp/sgrep-model2vec-before dde0c13
+cargo build --manifest-path /tmp/sgrep-model2vec-before/Cargo.toml --release --locked
+cargo build --release --locked --features model2vec
+python3 tests/model2vec.py /tmp/sgrep-model2vec-before/target/release/sgrep target/release/sgrep /tmp/compatibility.json
+python3 benchmarks/model2vec/run.py /tmp/sgrep-model2vec-before/target/release/sgrep target/release/sgrep /path/to/evidence-bundle /path/to/new-output
+```
+
+The runner uses the same locally retained RepoQA/CoSQA corpus, queries and manifests
+as the October 9 benchmark. The checked-in timing receipt is sufficient to redraw the
+chart, but not to rerun searches without that bundle. Models and parsers must already
+be cached: the run forces offline mode and verifies source hashes before and after.
+The output directory must be new; failures retain native outputs and partial timings.
+
+To redraw the chart without model calls, install `matplotlib==3.11.2` and run
+`python3 benchmarks/model2vec/plot.py`. To use a new measurement, first copy its
+`results.json` into `benchmarks/model2vec/` and review all parity checks and provenance.
+
+</details>
+
 ## SWE-bench Verified (October 13)
 
 ![LLM API cost versus solved attempts](swe-bench/benchmark.svg)

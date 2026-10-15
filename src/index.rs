@@ -5,6 +5,7 @@ use crate::{
     source_files,
 };
 use memmap2::Mmap;
+use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
@@ -23,7 +24,7 @@ struct Stamp {
 fn manifest(path: &Path) -> Result<Vec<Stamp>> {
     let (root, files) = source_files(path)?;
     files
-        .into_iter()
+        .into_par_iter()
         .map(|path| {
             let mut file = File::open(root.join(&path))?;
             let mut digest = Sha256::new();

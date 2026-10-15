@@ -1,0 +1,26 @@
+{
+  "base_commit": "dde0c13c8d6081f9c6d6d1d33580eebf1034aecf",
+  "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "flags": {
+    "RUSTFLAGS": null,
+    "CARGO_ENCODED_RUSTFLAGS": null,
+    "RAYON_NUM_THREADS": null,
+    "TOKENIZERS_PARALLELISM": null
+  },
+  "builds": {
+    "before": "cargo build --release --locked at base_commit",
+    "after": "cargo build --release --locked --features model2vec",
+    "default": "cargo build --release --locked"
+  },
+  "candidate_source_sha256": {
+    "Cargo.toml": "868f71e71879d95a06814c3302593e69f0a13196a72972478baef77a3841f2ef",
+    "Cargo.lock": "35eb8db8761e7d2fb339ed205e6d6ec8627754050377ec9e40fa37b6fc13e55b",
+    "src/cache.rs": "878e0a9b72757379131539db63d032b34118cc8863248c280b9bdc1ea00c903b",
+    "src/splitter.rs": "6a414676c84f308a1d429f820037d58b51ba72a6bf7be7864ce04db792350218",
+    "src/index.rs": "0902ef830697931649d66b17e365783becde8f23fc30170006cd62a0d674b244",
+    "src/rg_input.rs": "ac22e812c1b6bcce285aa9193d92e7254606e39a20d36e893e29c98db74dcc98",
+    "src/main.rs": "d60a6593c7642186fbadd75454b91ab20833496d31b37e9c55606d2a32c744ba",
+    "src/model2vec.rs": "19df6432bc3a400a73976ec0f48d9c1ec8d9775ed64a6aade3d7024100ffbbff",
+    "src/codechunker.rs": "dd1a62d844a8850ff580e5f6ec629f7c780365ceb4cb921ec455805e83a06722"
+  }
+}

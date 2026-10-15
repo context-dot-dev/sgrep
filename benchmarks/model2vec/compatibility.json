@@ -1,0 +1,185 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "code: failed requests consume credits: no cache",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: failed requests consume credits: old index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: failed requests consume credits: new index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: failed requests consume credits: reverse index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: Caf\u00e9 \u6771\u4eac: no cache",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: Caf\u00e9 \u6771\u4eac: old index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: Caf\u00e9 \u6771\u4eac: new index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: Caf\u00e9 \u6771\u4eac: reverse index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: charge_request: no cache",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: charge_request: old index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: charge_request: new index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: charge_request: reverse index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: \ud83f\udfff refund: no cache",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: \ud83f\udfff refund: old index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: \ud83f\udfff refund: new index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: \ud83f\udfff refund: reverse index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: long piped input",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "code: empty pipe",
+      "results": 0,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: failed requests consume credits: no cache",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: failed requests consume credits: old index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: failed requests consume credits: new index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: failed requests consume credits: reverse index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: Caf\u00e9 \u6771\u4eac: no cache",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: Caf\u00e9 \u6771\u4eac: old index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: Caf\u00e9 \u6771\u4eac: new index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: Caf\u00e9 \u6771\u4eac: reverse index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: charge_request: no cache",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: charge_request: old index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: charge_request: new index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: charge_request: reverse index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: \ud83f\udfff refund: no cache",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: \ud83f\udfff refund: old index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: \ud83f\udfff refund: new index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: \ud83f\udfff refund: reverse index",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: long piped input",
+      "results": 4,
+      "max_score_delta": 0
+    },
+    {
+      "name": "text: empty pipe",
+      "results": 0,
+      "max_score_delta": 0
+    }
+  ]
+}

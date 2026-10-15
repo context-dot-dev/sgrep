@@ -1,10 +1,15 @@
 mod cache;
+#[cfg(feature = "model2vec")]
+mod model2vec;
+#[cfg(feature = "model2vec")]
+use model2vec::embed;
 mod codechunker;
 mod index;
 mod rg_input;
 mod splitter;
 
 use clap::{Parser, ValueEnum};
+#[cfg(not(feature = "model2vec"))]
 use half::f16;
 use rayon::prelude::*;
 use regex::Regex;
@@ -315,6 +320,7 @@ fn relative_scores(scores: &[f64]) -> Vec<f64> {
         .collect()
 }
 
+#[cfg(not(feature = "model2vec"))]
 fn embed(texts: Vec<String>, model: &Model, cache: &cache::Cache) -> Result<Vec<Vec<f32>>> {
     let mut tokenizer =
         tokenizers::Tokenizer::from_bytes(cache.model_bytes(model, &model.tokenizer)?)?;

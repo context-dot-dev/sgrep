@@ -34,6 +34,7 @@ def main():
         (root / "nested.py").write_text('try:\n    raise ValueError()\nexcept ValueError:\n    def exceptneedle():\n        pass\n\nmatch 1:\n    case 1:\n        def matchneedle():\n            pass\n\ndef outer():\n    def innerneedle():\n        pass\n    return innerneedle\n')
         (root / "binary").write_bytes(b'\x00binaryneedle\x00')
         (root / "docs").mkdir()
+        (root / "empty-path").mkdir()
         (root / "docs" / "shipping.MD").write_text("# Shipping orders\n\nDelivery takes three business days. Track your shipment with the delivery confirmation.\n")
         (root / "docs" / "returns.txt").write_text("# Returning orders\n\nRefunds are available within thirty days of purchase.\n")
         before = {str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
@@ -52,7 +53,7 @@ def main():
         run("invalid model", ["read", "--model", "wrong"], 2)
         run("invalid count", ["read", "-n", "0"], 2)
         run("missing path", ["read", "missing-dir"], 2)
-        run("missing ripgrep", ["read"], 2, {"PATH":str(Path(os.sys.executable).parent)})
+        run("missing ripgrep", ["read"], 2, {"PATH":str(root / "empty-path")})
         for name, query in [("approximate matches", "absentuniquezz"), ("gitignore", "ignoredneedle"), ("hidden files", "hiddenneedle"), ("binary files", "binaryneedle")]:
             rows = json.loads(run(name, [query, "--json"], env={"HF_HUB_OFFLINE":"1"}))
             assert all(r["path"] not in ("ignored.py", ".hidden.py", "binary") for r in rows)

@@ -316,11 +316,18 @@ fn relative_scores(scores: &[f64]) -> Vec<f64> {
 }
 
 fn embed(texts: Vec<String>, model: &Model, cache: &cache::Cache) -> Result<Vec<Vec<f32>>> {
-    let mut tokenizer =
-        tokenizers::Tokenizer::from_bytes(cache.model_bytes(model, &model.tokenizer)?)?;
-    tokenizer.with_truncation(None)?;
-    tokenizer.with_padding(None);
-    let file = cache.model_bytes(model, &model.weights)?;
+    let (tokenizer, file) = rayon::join(
+        || -> Result<_> {
+            let mut tokenizer =
+                tokenizers::Tokenizer::from_bytes(cache.model_bytes(model, &model.tokenizer)?)?;
+            tokenizer.with_truncation(None)?;
+            tokenizer.with_padding(None);
+            Ok(tokenizer)
+        },
+        || cache.model_bytes(model, &model.weights),
+    );
+    let tokenizer = tokenizer?;
+    let file = file?;
     let tensors = safetensors::SafeTensors::deserialize(&file)?;
     let tensor = tensors.tensor("embeddings")?;
     if tensor.dtype() != model.dtype || tensor.shape() != [model.rows, 256] {

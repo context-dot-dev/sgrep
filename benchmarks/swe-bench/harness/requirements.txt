@@ -47,7 +47,7 @@ jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
 kiwisolver==1.5.1
 linkify-it-py==2.2.0
-litellm==1.83.0
+litellm==1.93.2
 markdown-it-py==4.2.0
 markupsafe==3.0.4
 matplotlib==3.11.2

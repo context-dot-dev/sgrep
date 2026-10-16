@@ -1,0 +1,47 @@
+{
+  "benchmark": "CoSQA retrieval test-500, full 6267-snippet corpus",
+  "upstream_commit": "14ebcacf9e9bc3e7109102632bc63047876f27d2",
+  "sgrep_commit": "9594adce03b5825bc9e8c617072a00878df45ed4",
+  "scope": "Only benchmark harness, results, and benchmark documentation; no retrieval behavior changes.",
+  "primary_metrics": [
+    "Hit@1",
+    "Hit@5",
+    "Hit@10",
+    "MRR@10"
+  ],
+  "methods": [
+    "sgrep --model code --json -n 100",
+    "ck --sem --jsonl --full-section --threshold 0 --topk 100",
+    "ck --lex --jsonl --full-section --threshold 0 --topk 100",
+    "rg --no-config -l -i -F --sort path with OR query terms"
+  ],
+  "query_policy": "Exact original doc field; rg alone uses fixed sgrep-style query tokenization; no expansions or per-query tuning.",
+  "corpus_policy": "Original code including docstrings, unchanged UTF-8, one .py file per snippet with opaque SHA256 filename; labels, queries and logs outside corpus; no clone of original repos. Precreate an empty .ckignore so CK does not generate searchable comment text; verify CK semantic indexes all 6267 snippets and CK lexical has 6267 snippets plus its empty configuration document. Independently inspect lexical stored paths to confirm no missing snippets. The empty config has no searchable content.",
+  "ranking": "First 10 unique valid corpus paths in native result order; repeated chunks do not earn extra rank slots; one official relevant code per query.",
+  "failure_contract": [
+    "Missing or duplicate labels/IDs",
+    "Gold text differs from actual snippet",
+    "Queries or labels leak into searchable files",
+    "Wrong or changing source/binary snapshots",
+    "Stale index or corpus modifications",
+    "Duplicate chunks count as distinct code results",
+    "Invalid paths or malformed output silently score as success",
+    "Failures removed from denominator",
+    "Indexing time counted as query time",
+    "Cached timing presented as cold start",
+    "MRR@10 presented as full-corpus official MRR",
+    "Query-specific tuning or selective sampling"
+  ],
+  "evidence": "Dataset and binary SHA256, corpus manifest, exact argv, stdout/stderr and timings for every search, replay scoring verification, aggregate and per-query results.",
+  "timing": "Sequential fresh CLI invocations, rotating tool order per query; initial model warmup on dev split excluded and retained; initial CK index measured separately; filesystem caches not flushed; local host load uncontrolled.",
+  "limitations": [
+    "Python snippet retrieval, not whole-repository navigation",
+    "Single official positive may undercredit valid alternatives",
+    "Model training overlap not audited",
+    "Original docstrings retained",
+    "Literal OR ripgrep is not an agent writing grep patterns"
+  ],
+  "timeout_seconds": 120,
+  "selection": "All 500 held-out test queries; dev first query for parser/warmup only",
+  "protocol_revision": "The interrupted pilot exposed CK lexical indexing its generated .ckignore. CK --exclude did not remove it. Precreate an empty config, verify native index document counts, retain interrupted runs, rebuild the lexical index and rerun all methods on all queries. No retrieval model or query tuning."
+}

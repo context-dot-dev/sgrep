@@ -62,7 +62,7 @@ numpy==2.5.4
 openai==3.29.0
 packaging==26.3
 pandas==3.0.6
-pillow==12.3.0
+pillow==13.0.0
 platformdirs==4.13.0
 pre-commit==4.7.0
 prompt-toolkit==3.0.53

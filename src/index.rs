@@ -250,6 +250,17 @@ impl Index {
     }
 }
 
+fn report_size_skip(size: u64, limit: u64, estimated: bool) {
+    let size = if estimated {
+        format!("estimated {size}")
+    } else {
+        size.to_string()
+    };
+    eprintln!(
+        "sgrep: search index not saved: {size} bytes is over the {limit}-byte cache limit; set SGREP_CACHE_MAX_BYTES to raise it"
+    );
+}
+
 fn build(
     args: &Args,
     path: &Path,
@@ -265,11 +276,12 @@ fn build(
     let mut chunks = candidates(path, Some(&expected))?;
     let mut seen = HashSet::new();
     chunks.retain(|c| seen.insert((c.path.clone(), c.start, c.end)));
-    if chunks.iter().fold(0u64, |n, c| {
+    let estimate = chunks.iter().fold(0u64, |n, c| {
         n.saturating_add(c.content.len() as u64)
             .saturating_add(256 * 4)
-    }) > cache.max_bytes
-    {
+    });
+    if estimate > cache.max_bytes {
+        report_size_skip(estimate, cache.max_bytes, true);
         return Ok(None);
     }
     let prose = chunks.iter().all(|c| crate::is_prose(&c.path));
@@ -351,6 +363,7 @@ fn build(
     let checksum = crc32fast::hash(&bytes);
     bytes.extend_from_slice(&checksum.to_le_bytes());
     if bytes.len() as u64 > cache.max_bytes {
+        report_size_skip(bytes.len() as u64, cache.max_bytes, false);
         return Ok(None);
     }
     let _lock = cache.maintain(Some((file, bytes.len() as u64)))?;

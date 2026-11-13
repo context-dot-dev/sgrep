@@ -72,7 +72,8 @@ static STOP: LazyLock<HashSet<&str>> = LazyLock::new(|| {
 #[derive(Parser)]
 #[command(
     version,
-    about = "Search code and text with ripgrep and local static embeddings."
+    about = "Search code and text with ripgrep and local static embeddings.",
+    after_help = "Environment:\n  SGREP_CACHE_MAX_BYTES  Size limit in bytes for the search index cache (default 256 MiB); 0 disables the index cache."
 )]
 struct Args {
     /// Store models, parsers and search indexes under this directory.

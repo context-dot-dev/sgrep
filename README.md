@@ -135,7 +135,7 @@ Piped ranking does not use the index.
 
 The index cache has limits of 256 MiB and 128 entries. Cleanup removes the least recently used entries and entries unused for 30 days.
 Set `SGREP_CACHE_MAX_BYTES` to change the size limit; use 0 to disable the index cache.
-Large entries are not saved. Cache failures fall back to a search without the index.
+Large entries are not saved, and sgrep reports each skipped index on stderr. Cache failures fall back to a search without the index.
 Source copies remain until cleanup or manual deletion. Models and parsers are outside these limits.
 
 Cache locations, in priority order:

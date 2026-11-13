@@ -45,11 +45,89 @@ with tempfile.TemporaryDirectory(prefix='sgrep-index-e2e-') as temp:
     document.write_text('shipping oldneedle\n')
     env = os.environ | {'HF_HUB_OFFLINE': '1', 'SGREP_CACHE_DIR': str(cache)}
 
-    def call(*flags, query='shipping', overrides=None):
+    env.pop('SGREP_CACHE_MAX_BYTES', None)
+
+    def call_output(*flags, query='shipping', overrides=None):
         result = subprocess.run([cli, query, str(source), '--json', '--explain', *flags],
-                                env=env | (overrides or {}), capture_output=True, text=True, timeout=120)
-        assert result.returncode in (0, 1), result.stderr
-        return json.loads(result.stdout)
+                                env=env | (overrides or {}), capture_output=True, timeout=120)
+        return result.stdout, result.stderr.decode(), result.returncode
+
+    def call(*flags, query='shipping', overrides=None):
+        stdout, stderr, code = call_output(*flags, query=query, overrides=overrides)
+        assert code in (0, 1), stderr
+        return json.loads(stdout)
+
+    def size_notice(stderr, size, limit, estimated=False):
+        lines = [line for line in stderr.splitlines() if line.startswith('sgrep: ')]
+        assert len(lines) == 1, stderr
+        notice = lines[0]
+        assert 'SGREP_CACHE_MAX_BYTES' in notice, stderr
+        assert 'search index not saved' in notice, stderr
+        assert str(size) in notice and str(limit) in notice, stderr
+        assert ('estimated' in notice) == estimated, stderr
+
+    def estimated_limit():
+        isolated = root/'estimated-limit'
+        options = {'SGREP_CACHE_DIR': str(isolated), 'SGREP_CACHE_MAX_BYTES': '100'}
+        stdout, stderr, code = call_output(overrides=options)
+        expected, _, expected_code = call_output('--no-cache')
+        assert code == expected_code == 0, stderr
+        assert stdout == expected
+        assert not list(isolated.glob('*.bin'))
+        size_notice(stderr, document.stat().st_size + 256*4, 100, estimated=True)
+    record('estimated size limit reports once on stderr and preserves stdout', estimated_limit)
+
+    def saved_size(name):
+        isolated = root/name
+        _, stderr, code = call_output(overrides={'SGREP_CACHE_DIR': str(isolated)})
+        assert code == 0, stderr
+        assert 'SGREP_CACHE_MAX_BYTES' not in stderr, stderr
+        saved = list(isolated.glob('index-*.bin'))
+        assert len(saved) == 1
+        return saved[0].stat().st_size
+
+    def serialized_limit():
+        size = saved_size('serialized-reference')
+        assert size - 1 >= document.stat().st_size + 256*4, 'limit must pass the estimate'
+        isolated = root/'serialized-limit'
+        options = {'SGREP_CACHE_DIR': str(isolated), 'SGREP_CACHE_MAX_BYTES': str(size - 1)}
+        stdout, stderr, code = call_output(overrides=options)
+        expected, _, expected_code = call_output('--no-cache')
+        assert code == expected_code == 0, stderr
+        assert stdout == expected
+        assert not list(isolated.glob('*.bin'))
+        size_notice(stderr, size, size - 1)
+    record('serialized size limit reports once on stderr and preserves stdout', serialized_limit)
+
+    def exact_limit():
+        size = saved_size('boundary-reference')
+        isolated = root/'exact-limit'
+        options = {'SGREP_CACHE_DIR': str(isolated), 'SGREP_CACHE_MAX_BYTES': str(size)}
+        _, stderr, code = call_output(overrides=options)
+        assert code == 0, stderr
+        assert 'SGREP_CACHE_MAX_BYTES' not in stderr, stderr
+        saved = list(isolated.glob('index-*.bin'))
+        assert len(saved) == 1 and saved[0].stat().st_size == size
+    record('exact size limit saves index without notice', exact_limit)
+    record('default size limit saves index without notice', lambda: saved_size('default-limit'))
+
+    def bypass_notice(name, limit, *flags):
+        isolated = root/name
+        options = {'SGREP_CACHE_DIR': str(isolated), 'SGREP_CACHE_MAX_BYTES': limit}
+        _, stderr, code = call_output(*flags, overrides=options)
+        assert code == 0, stderr
+        assert 'SGREP_CACHE_MAX_BYTES' not in stderr, stderr
+        assert not isolated.exists()
+    record('zero size limit emits no notice', lambda: bypass_notice('zero-limit', '0'))
+    record('no-cache emits no size notice', lambda: bypass_notice('no-cache', '100', '--no-cache'))
+
+    def help_cache_limit():
+        result = subprocess.run([cli, '--help'], env=env, capture_output=True, text=True, timeout=120)
+        assert result.returncode == 0, result.stderr
+        assert 'SGREP_CACHE_MAX_BYTES' in result.stdout
+        assert '256 MiB' in result.stdout
+        assert '0 disables the index cache' in result.stdout
+    record('help documents index cache size limit', help_cache_limit)
 
     def entries():
         return list(cache.glob('*.bin'))
